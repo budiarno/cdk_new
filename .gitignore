@@ -1,0 +1,12 @@
+BUILDLOG/
+custom/yaud-*
+custom/release_*
+own_build/
+Patches/patch-neutrino/
+root/boot/*
+.deps/
+config*
+*~
+Makefile.local
+config.local
+m
