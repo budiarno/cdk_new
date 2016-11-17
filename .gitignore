@@ -10,3 +10,4 @@ config*
 Makefile.local
 config.local
 m
+build
