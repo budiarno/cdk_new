@@ -126,8 +126,8 @@ $(D)/libffi: $(D)/bootstrap $(ARCHIVE)/libffi-$(LIBFFI_VER).tar.gz
 # host_glib2_genmarshal
 #
 GLIB_MAJOR=2
-GLIB_MINOR=45
-GLIB_MICRO=4
+GLIB_MINOR=51
+GLIB_MICRO=0
 GLIB_VER=$(GLIB_MAJOR).$(GLIB_MINOR).$(GLIB_MICRO)
 
 $(ARCHIVE)/glib-$(GLIB_VER).tar.xz:
@@ -153,7 +153,7 @@ $(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 #
 # libglib2
 #
-$(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
+$(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(D)/libpcre $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/glib-$(GLIB_VER)
 	$(UNTAR)/glib-$(GLIB_VER).tar.xz
@@ -171,6 +171,7 @@ $(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(AR
 			--cache-file=config.cache \
 			--disable-gtk-doc \
 			--disable-gtk-doc-html \
+			--disable-libmount \
 			--with-threads="posix" \
 			--with-html-dir=/.remove \
 			--enable-static \
@@ -2238,6 +2239,32 @@ $(D)/lzo: $(D)/bootstrap $(ARCHIVE)/lzo-$(LZO_VER).tar.gz
 	$(TOUCH)
 
 #
+# libpcre
+#
+PCRE_VER = 8.39
+
+$(ARCHIVE)/pcre-$(PCRE_VER).tar.bz2:
+	$(WGET) http://sourceforge.net/projects/pcre/files/pcre/$(PCRE_VER)/pcre-$(PCRE_VER).tar.bz2
+
+$(D)/libpcre: $(D)/bootstrap $(ARCHIVE)/pcre-$(PCRE_VER).tar.bz2
+	$(START_BUILD)
+	$(REMOVE)/pcre-$(PCRE_VER)
+	$(UNTAR)/pcre-$(PCRE_VER).tar.bz2
+	set -e; cd $(BUILD_TMP)/pcre-$(PCRE_VER); \
+		$(CONFIGURE) \
+			--prefix=/usr \
+			--enable-utf8 \
+			--enable-unicode-properties \
+		; \
+		$(MAKE) all; \
+		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+	$(REWRITE_LIBTOOL)/libpcre.la
+	$(REWRITE_LIBTOOL)/libpcrecpp.la
+	$(REWRITE_LIBTOOL)/libpcreposix.la
+	$(REMOVE)/pcre-$(PCRE_VER)
+	$(TOUCH)
+
+#
 # minidlna
 #
 MINIDLNA_VER = 1.1.5
@@ -2552,16 +2579,16 @@ $(D)/gnutls: $(D)/bootstrap $(D)/nettle $(ARCHIVE)/gnutls-$(GNUTLS_VER).tar.xz
 	$(TOUCH)
 
 #
-# glibnetworking
+# glib-networking
 #
-GLIBNETW_MAJOR = 2.45
-GLIBNETW_MINOR = 1
+GLIBNETW_MAJOR = 2.50
+GLIBNETW_MINOR = 0
 GLIBNETW_VER = $(GLIBNETW_MAJOR).$(GLIBNETW_MINOR)
 
 $(ARCHIVE)/glib-networking-$(GLIBNETW_VER).tar.xz:
 	$(WGET) http://ftp.acc.umu.se/pub/GNOME/sources/glib-networking/$(GLIBNETW_MAJOR)/glib-networking-$(GLIBNETW_VER).tar.xz
 
-$(D)/glibnetworking: $(D)/bootstrap $(D)/gnutls $(D)/glib2 $(ARCHIVE)/glib-networking-$(GLIBNETW_VER).tar.xz
+$(D)/glib-networking: $(D)/bootstrap $(D)/gnutls $(D)/glib2 $(ARCHIVE)/glib-networking-$(GLIBNETW_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/glib-networking-$(GLIBNETW_VER)
 	$(UNTAR)/glib-networking-$(GLIBNETW_VER).tar.xz
