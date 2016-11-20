@@ -6,7 +6,7 @@ GSTREAMER_VER = 1.8.3
 $(ARCHIVE)/gstreamer-$(GSTREAMER_VER).tar.xz:
 	$(WGET) http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$(GSTREAMER_VER).tar.xz
 
-$(D)/gstreamer: $(D)/bootstrap $(D)/glib2 $(D)/libxml2_e2 $(D)/glibnetworking $(ARCHIVE)/gstreamer-$(GSTREAMER_VER).tar.xz
+$(D)/gstreamer: $(D)/bootstrap $(D)/glib2 $(D)/libxml2_e2 $(D)/glib-networking $(ARCHIVE)/gstreamer-$(GSTREAMER_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/gstreamer-$(GSTREAMER_VER)
 	$(UNTAR)/gstreamer-$(GSTREAMER_VER).tar.xz
