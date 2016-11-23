@@ -1611,7 +1611,7 @@ $(D)/sqlite: $(D)/bootstrap $(ARCHIVE)/sqlite-autoconf-$(SQLITE_VER).tar.gz
 			--prefix=/usr \
 			--mandir=/.remove \
 		; \
-		$(MAKE) all; \
+		$(MAKE) -j1 all; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/sqlite3.pc
 	$(REWRITE_LIBTOOL)/libsqlite3.la
