@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 20161115.1
+# Version 20161124.1
 
 ##############################################
 
@@ -294,6 +294,22 @@ case "$IMAGE" in
 #	enigma*)
 	*)
 		# Determine the OpenPLi diff-level
+		case $8 in
+			[1-3]) REPLY=$8;;
+			*)	echo -e "\nMedia Framework:"
+				echo "   1)  eplayer3"
+				echo "   2)  gstreamer"
+				echo "   3*) gstreamer+eplayer3 (recommended)"
+				read -p "Select media framework (1-3)? ";;
+		esac
+
+		case "$REPLY" in
+			1) MEDIAFW="eplayer3";;
+			2) MEDIAFW="gstreamer";;
+		#	3) MEDIAFW="gst-eplayer3";;
+			*) MEDIAFW="gst-eplayer3";;
+		esac
+
 		case $7 in
 			[0-5])	REPLY=$7;;
 			*)	echo
@@ -311,6 +327,7 @@ case "$IMAGE" in
 				echo "Media Framework         : $MEDIAFW"
 				read -p "Select Enigma2 revision : ";;
 		esac
+
 		case "$REPLY" in
 			1)	DIFF="1"
 				REVISION="local";;
@@ -327,22 +344,6 @@ case "$IMAGE" in
 		esac
 		echo "E2_DIFF=$DIFF" >> config
 		echo "E2_REVISION=$REVISION" >> config
-
-		case $8 in
-			[1-3]) REPLY=$8;;
-			*)	echo -e "\nMedia Framework:"
-				echo "   1)  eplayer3"
-				echo "   2)  gstreamer"
-				echo "   3*) gstreamer+eplayer3 (recommended)"
-				read -p "Select media framework (1-3)? ";;
-		esac
-
-		case "$REPLY" in
-			1) MEDIAFW="eplayer3";;
-			2) MEDIAFW="gstreamer";;
-		#	3) MEDIAFW="gst-eplayer3";;
-			*) MEDIAFW="gst-eplayer3";;
-		esac
 
 		echo "make yaud-enigma2" > $CURDIR/build
 

@@ -172,6 +172,7 @@ $(D)/gst_plugins_bad: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base libmod
 	$(UNTAR)/gst-plugins-bad-$(GSTREAMER_BAD_VER).tar.xz
 	set -e; cd $(BUILD_TMP)/gst-plugins-bad-$(GSTREAMER_BAD_VER); \
 		for i in \
+			gst-1.0-plugins-bad-fix-automake.patch \
 			gst-1.0-plugins-bad-fix-compile-error.patch \
 			gst-1.0-plugins-bad-rtmp-fix-seeking-and-potential-segfault.patch \
 		; do \
