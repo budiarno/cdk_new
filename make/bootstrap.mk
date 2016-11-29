@@ -8,7 +8,7 @@ BOOTSTRAP += $(HOSTPREFIX)/bin/opkg-module-deps.sh
 BOOTSTRAP += $(D)/host_pkgconfig $(D)/host_module_init_tools $(D)/host_mtd_utils
 
 $(D)/bootstrap: $(BOOTSTRAP)
-	touch $@
+	$(TOUCH)
 
 $(HOSTPREFIX)/bin/opkg%sh: | directories
 	ln -sf $(SCRIPTS_DIR)/$(shell basename $@) $(HOSTPREFIX)/bin
@@ -64,9 +64,11 @@ $(ARCHIVE)/stlinux24-sh4-glibc-dev-$(GLIBC_VER).sh4.rpm \
 $(ARCHIVE)/stlinux24-sh4-libgcc-$(LIBGCC_VER).sh4.rpm \
 $(ARCHIVE)/stlinux24-sh4-libstdc++-$(LIBGCC_VER).sh4.rpm \
 $(ARCHIVE)/stlinux24-sh4-libstdc++-dev-$(LIBGCC_VER).sh4.rpm
+	$(START_BUILD)
 	unpack-rpm.sh $(BUILD_TMP) $(STM_RELOCATE)/devkit/sh4 $(CROSS_DIR) \
 		$^
-	touch $(D)/$(notdir $@)
+	@touch $(D)/$(notdir $@)
+	@echo -e "Build of \033[01;32m$$@\033[0m completed."; echo
 
 #
 # crosstool-ng
@@ -111,6 +113,7 @@ crossmenuconfig: $(ARCHIVE)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
 crosstool: directories driver-symlink \
 $(HOSTPREFIX)/bin/unpack-rpm.sh \
 crosstool-rpminstall
+	$(START_BUILD)
 	set -e; cd $(CROSS_BASE); rm -f sh4-linux/sys-root; ln -s ../target sh4-linux/sys-root; \
 	if [ -e $(CROSS_DIR)/target/usr/lib/libstdc++.la ]; then \
 		sed -i "s,^libdir=.*,libdir='$(CROSS_DIR)/target/usr/lib'," $(CROSS_DIR)/target/usr/lib/lib{std,sup}c++.la; \
@@ -134,21 +137,25 @@ crosstool-rpminstall
 		cp -a $(CROSS_DIR)/target/etc/ld.so.conf $(TARGETPREFIX)/etc; \
 		cp -a $(CROSS_DIR)/target/etc/host.conf $(TARGETPREFIX)/etc; \
 	fi
-	touch $(D)/$(notdir $@)
+	@touch $(D)/$(notdir $@)
+	echo -e "Build of \033[01;32m$$@\033[0m completed."; echo
 
 #
 # host_u_boot_tools
 #
 host_u_boot_tools: \
 $(ARCHIVE)/stlinux24-host-u-boot-tools-1.3.1_stm24-9.i386.rpm
+	$(START_BUILD)
 	unpack-rpm.sh $(BUILD_TMP) $(STM_RELOCATE)/host/bin $(HOSTPREFIX)/bin \
 		$^
-	touch $(D)/$(notdir $@)
+	@touch $(D)/$(notdir $@)
+	@echo -e "Build of \033[01;32m$$@\033[0m completed."; echo
 
 #
 # directories
 #
 directories:
+	$(START_BUILD)
 	test -d $(D) || mkdir $(D)
 	test -d $(ARCHIVE) || mkdir $(ARCHIVE)
 	test -d $(BUILD_TMP) || mkdir $(BUILD_TMP)
@@ -171,7 +178,9 @@ directories:
 	install -d $(TARGETPREFIX)/var/{etc,lib,run}
 	install -d $(TARGETPREFIX)/var/lib/{misc,nfs}
 	install -d $(TARGETPREFIX)/var/bin
-	touch $(D)/$(notdir $@)
+	@touch $(D)/$(notdir $@)
+	@echo -e "Build of \033[01;32m$$@\033[0m completed."; echo
+
 
 #
 # ccache
@@ -190,8 +199,9 @@ CCACHE_ENV = install -d $(CCACHE_BINDIR); \
 	$(CCACHE_LINKS)
 
 $(D)/ccache:
+	$(START_BUILD)
 	$(CCACHE_ENV)
-	touch $@
+	$(TOUCH)
 
 # hack to make sure they are always copied
 PHONY += ccache bootstrap

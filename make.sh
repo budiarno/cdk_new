@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 20161124.1
+# Version 20161129.1
 
 ##############################################
 
@@ -21,7 +21,7 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 5: external LCD support (1-3)"
 	echo "Parameter 6: image (Enigma=1/2 Neutrino=3/4 (1-4)"
 	echo "Parameter 7: Neutrino variant (1-4) or Enigma2 diff (0-4)"
-	echo "Parameter 8: media Framework (1-4, Enigma2 only))"
+	echo "Parameter 8: media Framework (1-3, Enigma2 only))"
 	exit
 fi
 
@@ -77,6 +77,14 @@ echo
 
 ##############################################
 
+# Check if a build from ../cdk is present
+if [ -e ../cdk/LastChoice ]; then
+	echo -e -n "\nBuild from cdk found, performing make distclean..."
+	make distclean 2> /dev/null > /dev/null
+	echo "[Done]"
+fi
+
+##############################################
 case $1 in
 	[1-9] | 1[0-9] | 2[0-9] | 3[0-6]) REPLY=$1;;
 	*)
@@ -140,7 +148,7 @@ case "$REPLY" in
 	17) TARGET="cuberevo_3000hd";;
 	18) TARGET="fortis_hdbox";;
 	19) TARGET="octagon1008";;
-	20) TARGET="atevio7500";;
+#	20) TARGET="atevio7500";;
 	21) TARGET="hs7110";;
 	22) TARGET="hs7119";;
 	23) TARGET="hs7420";;
@@ -314,16 +322,16 @@ case "$IMAGE" in
 			[0-5])	REPLY=$7;;
 			*)	echo
 				echo "Please select one of the following Enigma2 revisions (default = 2):"
-				echo "================================================================================================="
-				echo " 0) Newest                 - E2 OpenPLi  any framework (CAUTION: may fail due to outdated patch)"
-				echo "================================================================================================="
-				echo " 1) Use your own Enigma2 git dir without patchfile"
-				echo "================================================================================================="
-				echo " 2) Mon, 16 May 2016 22:46 - E2 OpenPLi  any framework  577fa5ab7d5f0f83f18d625b547d148e93cf27d3"
-				echo " 3) Thu, 31 Mar 2016 21:52 - E2 OpenPLi  any framework  7d63bf16e99741f0a5798b84a3688759317eecb3"
-				echo " 4) Mon, 17 Aug 2015 07:08 - E2 OpenPLi  any framework  cd5505a4b8aba823334032bb6fd7901557575455"
-				echo " 5) Sun, 19 Apr 2015 17:05 - E2 OpenPLi  any framework  4f2db7ace4d9b081cbbb3c13947e05312134ed8e"
-				echo "================================================================================================="
+				echo "=================================================================================================="
+				echo " 0)  Newest                 - E2 OpenPLi  any framework (CAUTION: may fail due to outdated patch)"
+				echo "=================================================================================================="
+				echo " 1)  Use your own Enigma2 git dir without patchfile"
+				echo "=================================================================================================="
+				echo " 2*) Mon, 16 May 2016 22:46 - E2 OpenPLi  any framework  577fa5ab7d5f0f83f18d625b547d148e93cf27d3"
+				echo " 3)  Thu, 31 Mar 2016 21:52 - E2 OpenPLi  any framework  7d63bf16e99741f0a5798b84a3688759317eecb3"
+				echo " 4)  Mon, 17 Aug 2015 07:08 - E2 OpenPLi  any framework  cd5505a4b8aba823334032bb6fd7901557575455"
+				echo " 5)  Sun, 19 Apr 2015 17:05 - E2 OpenPLi  any framework  4f2db7ace4d9b081cbbb3c13947e05312134ed8e"
+				echo "=================================================================================================="
 				echo "Media Framework         : $MEDIAFW"
 				read -p "Select Enigma2 revision : ";;
 		esac
@@ -355,7 +363,7 @@ case "$IMAGE" in
 			fi
 		elif [ ! "$DIFF" == "$LASTDIFF" ]; then
 			echo "$DIFF $LASTDIFF"
-			echo -n "Diff changed, OpenPli Enigma2 will be rebuilt ."
+			echo -n "Diff changed, OpenPli Enigma2 will be rebuilt."
 			rm -f ./.deps/enigma2.do_prepare
 			rm -f ./.deps/enigma2_networkbrowser
 			rm -f ./.deps/enigma2_openwebif

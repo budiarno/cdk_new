@@ -1,6 +1,3 @@
-#
-# IMPORTANT: it is expected that only one define is set
-#
 DEPMOD = $(HOSTPREFIX)/bin/depmod
 
 #
@@ -63,7 +60,7 @@ OCTAGON1008_PATCHES_24 = $(COMMON_PATCHES_24) \
 ATEVIO7500_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-atevio7500_setup_stm24_$(KERNEL_LABEL).patch \
-		$(if $(ENIGMA2),linux-sh4-atevio7500_mtdconcat_stm24_$(KERNEL_LABEL).patch) \
+		linux-sh4-atevio7500_mtdconcat_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch
 
 HS7110_PATCHES_24 = $(COMMON_PATCHES_24) \
