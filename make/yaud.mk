@@ -57,4 +57,5 @@ yaud-none: \
 	$(D)/bootstrap \
 	$(D)/linux-kernel \
 	$(D)/system-tools
-	touch $(D)/$(notdir $@)
+	@touch $(D)/$(notdir $@)
+	@echo -e "Build of \033[01;32m$$@\033[0m completed."; echo

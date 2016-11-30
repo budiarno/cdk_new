@@ -68,7 +68,7 @@ $(ARCHIVE)/stlinux24-sh4-libstdc++-dev-$(LIBGCC_VER).sh4.rpm
 	unpack-rpm.sh $(BUILD_TMP) $(STM_RELOCATE)/devkit/sh4 $(CROSS_DIR) \
 		$^
 	@touch $(D)/$(notdir $@)
-	@echo -e "Build of \033[01;32m$$@\033[0m completed."; echo
+	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
 
 #
 # crosstool-ng
@@ -138,7 +138,7 @@ crosstool-rpminstall
 		cp -a $(CROSS_DIR)/target/etc/host.conf $(TARGETPREFIX)/etc; \
 	fi
 	@touch $(D)/$(notdir $@)
-	echo -e "Build of \033[01;32m$$@\033[0m completed."; echo
+	echo -e "Build of \033[01;32m$@\033[0m completed."; echo
 
 #
 # host_u_boot_tools
@@ -149,7 +149,7 @@ $(ARCHIVE)/stlinux24-host-u-boot-tools-1.3.1_stm24-9.i386.rpm
 	unpack-rpm.sh $(BUILD_TMP) $(STM_RELOCATE)/host/bin $(HOSTPREFIX)/bin \
 		$^
 	@touch $(D)/$(notdir $@)
-	@echo -e "Build of \033[01;32m$$@\033[0m completed."; echo
+	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
 
 #
 # directories
@@ -179,7 +179,7 @@ directories:
 	install -d $(TARGETPREFIX)/var/lib/{misc,nfs}
 	install -d $(TARGETPREFIX)/var/bin
 	@touch $(D)/$(notdir $@)
-	@echo -e "Build of \033[01;32m$$@\033[0m completed."; echo
+	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
 
 
 #

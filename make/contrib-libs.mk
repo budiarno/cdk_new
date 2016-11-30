@@ -2183,7 +2183,12 @@ $(D)/libdvbsi++: $(D)/bootstrap
 		fi
 	cp -ra $(ARCHIVE)/libdvbsi++.git $(BUILD_TMP)/libdvbsi++
 	set -e; cd $(BUILD_TMP)/libdvbsi++; \
-		$(PATCH)/libdvbsi++-git.patch; \
+		for i in \
+			libdvbsi++-git.patch \
+		; do \
+			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
+			$(PATCH)/$$i; \
+		done; \
 		$(CONFIGURE) \
 			--prefix=$(TARGETPREFIX)/usr \
 		; \

@@ -96,7 +96,7 @@ REMOVE                = rm -rf $(BUILD_TMP)
 RM_PKGPREFIX          = rm -rf $(PKGPREFIX)
 START_BUILD           = @echo "--------------------------------------------"; echo -e "Start build of \033[01;32m$(subst $(BASE_DIR)/cdk_new/.deps/,,$@)\033[0m."; echo
 #Comment next line if you want to see the names of the files being patched
-#SILENT_PATCH          = -s
+SILENT_PATCH          = -s
 PATCH                 = patch -p1 $(SILENT_PATCH) -i $(PATCHES)
 TOUCH                 = @touch $@; echo -e "Build of \033[01;32m$(subst $(BASE_DIR)/cdk_new/.deps/,,$@)\033[0m completed."; echo
 
@@ -121,8 +121,8 @@ MAKEFLAGS +=-j$(CPU_CORES)
 export MAKEFLAGS
 endif
 
-TUXBOX_YAUD_CUSTOMIZE = [ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
-TUXBOX_CUSTOMIZE      = [ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(BOXTYPE) || true
+TUXBOX_YAUD_CUSTOMIZE = @[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
+TUXBOX_CUSTOMIZE      = @[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(BOXTYPE) || true
 
 #
 #

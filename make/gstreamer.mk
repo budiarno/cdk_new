@@ -139,7 +139,12 @@ $(D)/gst_plugins_good: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(D)/
 	$(REMOVE)/gst-plugins-good-$(GSTREAMER_GOOD_VER)
 	$(UNTAR)/gst-plugins-good-$(GSTREAMER_GOOD_VER).tar.xz
 	set -e; cd $(BUILD_TMP)/gst-plugins-good-$(GSTREAMER_GOOD_VER); \
-		$(PATCH)/gst-1.0-plugins-good-gstrtpmp4gpay-set-dafault-value-for-MPEG4-without-co.patch; \
+		for i in \
+			gst-1.0-plugins-good-gstrtpmp4gpay-set-dafault-value-for-MPEG4-without-co.patch \
+		; do \
+			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
+			$(PATCH)/$$i; \
+		done; \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--enable-oss \

@@ -1,6 +1,6 @@
 --- a/libs/gst/base/gstbaseparse.c
 +++ b/libs/gst/base/gstbaseparse.c
-@@ -2985,6 +2985,7 @@
+@@ -3009,6 +3009,7 @@
    GstBuffer *tmpbuf = NULL;
    guint fsize = 1;
    gint skip = -1;
@@ -8,8 +8,8 @@
    guint min_size, av;
    GstClockTime pts, dts;
  
-@@ -3183,7 +3184,11 @@
-       parse->priv->next_dts = pts;
+@@ -3215,7 +3216,11 @@
+     }
  
      /* always pass all available data */
 +    data = gst_adapter_map (parse->priv->adapter, av);
@@ -21,7 +21,7 @@
  
      /* already inform subclass what timestamps we have planned,
       * at least if provided by time-based upstream */
-@@ -3198,6 +3203,9 @@
+@@ -3230,6 +3235,9 @@
      ret = gst_base_parse_handle_buffer (parse, tmpbuf, &skip, &flush);
      tmpbuf = NULL;
  
