@@ -69,6 +69,9 @@ HS7110_PATCHES_24 = $(COMMON_PATCHES_24) \
 		$(if $(NEUTRINO),linux-sh4-hs7110_mtdconcat_stm24_$(KERNEL_LABEL).patch) \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		$(if $(P0209),linux-sh4-i2c-stm-downgrade_stm24_$(KERNEL_LABEL).patch)
+ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
+HS7110_PATCHES_24 += linux-sh4-hs7110_mtdconcat_stm24_$(KERNEL_LABEL).patch
+endif
 
 HS7119_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
@@ -79,9 +82,11 @@ HS7119_PATCHES_24 = $(COMMON_PATCHES_24) \
 HS7420_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-hs7420_setup_stm24_$(KERNEL_LABEL).patch \
-		$(if $(NEUTRINO),linux-sh4-hs7420_mtdconcat_stm24_$(KERNEL_LABEL).patch) \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		$(if $(P0209),linux-sh4-i2c-stm-downgrade_stm24_$(KERNEL_LABEL).patch)
+ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
+HS7420_PATCHES_24 += linux-sh4-hs7420_mtdconcat_stm24_$(KERNEL_LABEL).patch
+endif
 
 HS7429_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
@@ -92,9 +97,11 @@ HS7429_PATCHES_24 = $(COMMON_PATCHES_24) \
 HS7810A_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-hs7810a_setup_stm24_$(KERNEL_LABEL).patch \
-		$(if $(NEUTRINO),linux-sh4-hs7810a_mtdconcat_stm24_$(KERNEL_LABEL).patch) \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		$(if $(P0209),linux-sh4-i2c-stm-downgrade_stm24_$(KERNEL_LABEL).patch)
+ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
+HS7810A_PATCHES_24 += linux-sh4-hs7810a_mtdconcat_stm24_$(KERNEL_LABEL).patch
+endif
 
 HS7819_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
@@ -357,7 +364,7 @@ linux-kernel.menuconfig linux-kernel.xconfig: \
 linux-kernel.%:
 	$(MAKE) -C $(KERNEL_DIR) ARCH=sh CROSS_COMPILE=$(TARGET)- $*
 	@echo ""
-	@echo "You have to edit m a n u a l l y $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) to make changes permanent !!!"
+	@echo "You have to edit $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) m a n u a l l y to make changes permanent !!!"
 	@echo ""
 	diff $(KERNEL_DIR)/.config.old $(KERNEL_DIR)/.config
 	@echo ""

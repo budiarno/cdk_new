@@ -138,7 +138,7 @@ crosstool-rpminstall
 		cp -a $(CROSS_DIR)/target/etc/host.conf $(TARGETPREFIX)/etc; \
 	fi
 	@touch $(D)/$(notdir $@)
-	echo -e "Build of \033[01;32m$@\033[0m completed."; echo
+	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
 
 #
 # host_u_boot_tools
