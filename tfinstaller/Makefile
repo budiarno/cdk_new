@@ -1,6 +1,8 @@
-##KERNEL_DIR=../linux-sh4
-BASE_DIR=..
-TFINSTALLER_DIR= $(CDK_DIR)/tfinstaller
+BASE_DIR = $(shell cd ../.. && pwd)
+KERNEL_DIR = $(BASE_DIR)/build_tmp/linux-sh4
+CDK_DIR = $(BASE_DIR)/cdk_new
+TFINSTALLER_DIR = $(CDK_DIR)/tfinstaller
+
 all:
 	cp $(KERNEL_DIR)/arch/sh/boot/uImage.gz $(TFINSTALLER_DIR)/uImage.gz.org
 	if [ -e $(KERNEL_DIR)/arch/sh/boot/uImage ]; then \
@@ -61,15 +63,13 @@ all:
 	if [ `grep -x -c "# CONFIG_INITRAMFS_COMPRESSION_LZMA is not set" $(KERNEL_DIR)/.config` == 0 ]; then \
 		echo "# CONFIG_INITRAMFS_COMPRESSION_LZMA is not set" >> $(KERNEL_DIR)/.config; \
 	fi
-#	cp $(KERNEL_DIR)/.config $(TFINSTALLER_DIR)/.config.tf
 	@export PATH=$(HOSTPREFIX)/bin:$(PATH) && \
-	$(MAKE) -C $(BASE_DIR) tfkernel.do_compile
+	$(MAKE) -C $(CDK_DIR) tfkernel
 	rm $(KERNEL_DIR)/initramfs_list
 	rm $(KERNEL_DIR)/.config
 	mv $(TFINSTALLER_DIR)/.config.org $(KERNEL_DIR)/.config
 	mv $(KERNEL_DIR)/arch/sh/boot/uImage.gz $(TFINSTALLER_DIR)/uImage
 	mv $(TFINSTALLER_DIR)/uImage.gz.org $(KERNEL_DIR)/arch/sh/boot/uImage.gz
-
 
 TFP_OBJS = io.o encode.o decode.o maketree.o maketbl.o huf.o tfpacker.o
 

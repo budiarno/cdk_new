@@ -66,7 +66,6 @@ ATEVIO7500_PATCHES_24 = $(COMMON_PATCHES_24) \
 HS7110_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-hs7110_setup_stm24_$(KERNEL_LABEL).patch \
-		$(if $(NEUTRINO),linux-sh4-hs7110_mtdconcat_stm24_$(KERNEL_LABEL).patch) \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		$(if $(P0209),linux-sh4-i2c-stm-downgrade_stm24_$(KERNEL_LABEL).patch)
 ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
@@ -286,6 +285,7 @@ $(D)/linux-kernel.do_prepare: $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) \
 	done; \
 	install -m 644 $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) $(KERNEL_DIR)/.config
 	sed -i "s#^\(CONFIG_EXTRA_FIRMWARE_DIR=\).*#\1\"$(CDK_DIR)/integrated_firmware\"#" $(KERNEL_DIR)/.config
+	ln -s $(KERNEL_DIR) $(BUILD_TMP)/linux-sh4
 	-rm $(KERNEL_DIR)/localversion*
 	echo "$(KERNEL_STM_LABEL)" > $(KERNEL_DIR)/localversion-stm
 ifeq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug))
@@ -341,10 +341,11 @@ $(D)/kernel-headers: linux-kernel.do_prepare
 		cp -a include/mtd $(TARGETPREFIX)/usr/include
 	$(TOUCH)
 
-$(D)/tfkernel.do_compile:
+tfkernel:
+	$(START_BUILD); 
 	cd $(KERNEL_DIR); \
-		$(MAKE) $(if $(TF7700),TF7700=y) ARCH=sh CROSS_COMPILE=$(target)- uImage
-	$(TOUCH)
+		$(MAKE) $(if $(TF7700),TF7700=y) ARCH=sh CROSS_COMPILE=$(TARGET)- uImage
+	@echo -e "Build of \033[01;32mtfkernel\033[0m completed."; echo
 
 
 linux-kernel-distclean:

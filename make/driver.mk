@@ -29,7 +29,7 @@ driver-symlink:
 
 $(D)/driver: $(DRIVER_DIR)/Makefile $(D)/bootstrap $(D)/linux-kernel
 	$(START_BUILD)
-	$(MAKE) -j1 -C $(DRIVER_DIR) ARCH=sh CONFIG_DEBUG_SECTION_MISMATCH=y \
+	$(MAKE) -C $(DRIVER_DIR) ARCH=sh CONFIG_DEBUG_SECTION_MISMATCH=y \
 		CONFIG_MODULES_PATH=$(CROSS_DIR)/target \
 		KERNEL_LOCATION=$(KERNEL_DIR) \
 		DRIVER_TOPDIR=$(DRIVER_DIR) \

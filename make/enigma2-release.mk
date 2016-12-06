@@ -656,7 +656,7 @@ release_enigma2_base:
 	cp $(SKEL_ROOT)/bin/vdstandby $(RELEASE_DIR)/bin/
 	cp $(SKEL_ROOT)/usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/
 	ln -sf ../../usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/fw_setenv
-	echo "576i50" > $(RELEASE_DIR)/etc/videomode
+	echo "720p50" > $(RELEASE_DIR)/etc/videomode
 	cp -dp $(TARGETPREFIX)/usr/bin/vsftpd $(RELEASE_DIR)/usr/bin/
 	cp -dp $(TARGETPREFIX)/usr/bin/irexec $(RELEASE_DIR)/usr/bin/
 	cp -p $(TARGETPREFIX)/usr/bin/ffmpeg $(RELEASE_DIR)/sbin/
@@ -1059,6 +1059,7 @@ endif
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/SystemPlugins/Videomode/YPbPr.png $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/Videomode/Component.png; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/SystemPlugins/Videomode/lcd_YPbPr.png $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/Videomode/lcd_Component.png; \
 	fi
+	echo "$(BOXTYPE)" > $(RELEASE_DIR)/etc/model
 #
 # The main target depends on the model.
 #
@@ -1074,7 +1075,6 @@ endif
 	find $(RELEASE_DIR)/usr/lib/enigma2/ -name '*.a' -exec rm -f {} \;
 	find $(RELEASE_DIR)/usr/lib/enigma2/ -name '*.o' -exec rm -f {} \;
 	find $(RELEASE_DIR)/usr/lib/enigma2/ -name '*.la' -exec rm -f {} \;
-#
 	find $(RELEASE_DIR)$(PYTHON_DIR)/ -name '*.pyc' -exec rm -f {} \;
 ifeq ($(OPTIMIZATIONS), size)
 	find $(RELEASE_DIR)$(PYTHON_DIR)/ -name '*.py' -exec rm -f {} \;
@@ -1093,7 +1093,6 @@ endif
 	find $(CDK_DIR)/own_build/enigma2/ -mindepth 1 -maxdepth 1 -exec cp -at$(RELEASE_DIR)/ -- {} +
 #	receiver specific (only if directory exist)
 	[ -d "$(CDK_DIR)/own_build/enigma2.$(BOXTYPE)" ] && find $(CDK_DIR)/own_build/enigma2.$(BOXTYPE)/ -mindepth 1 -maxdepth 1 -exec cp -at$(RELEASE_DIR)/ -- {} + || true
-	echo $(BOXTYPE) > $(RELEASE_DIR)/etc/model
 	rm -f $(RELEASE_DIR)/for_your_own_changes
 #
 # sh4-linux-strip all
@@ -1101,11 +1100,6 @@ endif
 ifneq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug))
 	find $(RELEASE_DIR)/ -name '*' -exec $(TARGET)-strip --strip-unneeded {} &>/dev/null \;
 endif
-	@echo "***************************************************************"
-	@echo -e "\033[01;32m"
-	@echo " Build of Enigma2 for $(BOXTYPE) successfully completed."
-	@echo -e "\033[00m"
-	@echo "***************************************************************"
 #
 # release-clean
 #

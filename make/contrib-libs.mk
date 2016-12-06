@@ -2001,6 +2001,7 @@ $(D)/libusb: $(D)/bootstrap $(ARCHIVE)/libusb-$(USB_VER).tar.bz2
 			--disable-log \
 			--disable-debug-log \
 			--disable-examples-build \
+			--disable-udev \
 		; \
 		$(MAKE) ; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
