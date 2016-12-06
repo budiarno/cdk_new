@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 20161201.2
+# Version 20161206.1
 
 ##############################################
 
@@ -81,7 +81,7 @@ echo
 if [ -e ../cdk/LastChoice ]; then
 	echo -e -n "\nBuild from cdk found, performing make distclean..."
 	make distclean 2> /dev/null > /dev/null
-	echo "[Done]"
+	echo " [Done]"
 fi
 
 ##############################################
@@ -313,7 +313,6 @@ case "$IMAGE" in
 		fi;;
 #	enigma*)
 	*)
-		# Determine the OpenPLi diff-level
 		case $8 in
 			[1-3]) REPLY=$8;;
 			*)	echo -e "\nMedia Framework:"
@@ -330,6 +329,7 @@ case "$IMAGE" in
 			*) MEDIAFW="gst-eplayer3";;
 		esac
 
+		# Determine the OpenPLi diff-level
 		case $7 in
 			[0-5])	REPLY=$7;;
 			*)	echo
