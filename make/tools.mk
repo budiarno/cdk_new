@@ -17,6 +17,8 @@ tools-clean:
 	-$(MAKE) -C $(APPS_DIR)/tools/spf_tool distclean
 	-$(MAKE) -C $(APPS_DIR)/tools/stfbcontrol distclean
 	-$(MAKE) -C $(APPS_DIR)/tools/streamproxy distclean
+	-$(MAKE) -C $(APPS_DIR)/tools/tdf2mtd distclean
+	-$(MAKE) -C $(APPS_DIR)/tools/tffpctl distclean
 	-$(MAKE) -C $(APPS_DIR)/tools/ustslave distclean
 	-$(MAKE) -C $(APPS_DIR)/tools/vfdctl distclean
 	-$(MAKE) -C $(APPS_DIR)/tools/wait4button distclean
@@ -206,6 +208,32 @@ $(D)/tools-streamproxy: $(D)/bootstrap
 	$(TOUCH)
 
 #
+# tfd2mtd
+#
+$(D)/tools-tfd2mtd: $(D)/bootstrap
+	$(START_BUILD)
+	@set -e; cd $(APPS_DIR)/tools/tfd2mtd; \
+		$(CONFIGURE_TOOLS) \
+			--prefix= \
+		; \
+		$(MAKE); \
+		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+	$(TOUCH)
+
+#
+# tffpctl
+#
+$(D)/tools-tffpctl: $(D)/bootstrap
+	$(START_BUILD)
+	@set -e; cd $(APPS_DIR)/tools/tffpctl; \
+		$(CONFIGURE_TOOLS) \
+			--prefix= \
+		; \
+		$(MAKE); \
+		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+	$(TOUCH)
+
+#
 # ustslave
 #
 $(D)/tools-ustslave: $(D)/bootstrap
@@ -248,7 +276,6 @@ $(D)/tools-wait4button: $(D)/bootstrap
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(TOUCH)
 
-
 TOOLS  = $(D)/tools-aio-grab
 TOOLS += $(D)/tools-devinit
 TOOLS += $(D)/tools-evremote2
@@ -270,6 +297,10 @@ TOOLS += $(D)/tools-libeplayer3
 endif
 ifeq ($(MEDIAFW), $(filter $(MEDIAFW), eplayer3))
 TOOLS += $(D)/tools-eplayer3
+endif
+ifeq ($(BOXTYPE), tf7700)
+TOOLS += $(D)/tools-tfd2mtd
+TOOLS += $(D)/tools-tffpctl
 endif
 
 $(D)/tools: $(TOOLS)
