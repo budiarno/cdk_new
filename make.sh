@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 20161206.1
+# Version 20161215.1
 
 ##############################################
 
@@ -78,10 +78,11 @@ echo
 ##############################################
 
 # Check if a build from ../cdk is present
-if [ -e ../cdk/LastChoice ]; then
+if [ -e ../cdk/lastChoice ]; then
 	echo -e -n "\nBuild from cdk found, performing make distclean..."
 	make distclean 2> /dev/null > /dev/null
 	echo " [Done]"
+	rm ../cdk/lastChoice
 fi
 
 ##############################################
