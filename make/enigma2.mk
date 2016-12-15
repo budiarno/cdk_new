@@ -98,7 +98,7 @@ endif
 E_CONFIG_OPTS +=$(LOCAL_ENIGMA2_BUILD_OPTIONS)
 
 ifeq ($(BOXTYPE), tf7700)
-YAUD_ENIGMA2_DEPS = $(D)/tfinstaller
+YAUD_ENIGMA2_DEPS = $(D)/uboot_tf7700 $(D)/u-boot.ftfd $(D)/tfinstaller
 endif
 
 #

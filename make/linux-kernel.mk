@@ -341,11 +341,11 @@ $(D)/kernel-headers: linux-kernel.do_prepare
 		cp -a include/mtd $(TARGETPREFIX)/usr/include
 	$(TOUCH)
 
-tfkernel:
+$(D)/tfkernel:
 	$(START_BUILD); 
 	cd $(KERNEL_DIR); \
 		$(MAKE) $(if $(TF7700),TF7700=y) ARCH=sh CROSS_COMPILE=$(TARGET)- uImage
-	@echo -e "Build of \033[01;32mtfkernel\033[0m completed."; echo
+	$(TOUCH)
 
 
 linux-kernel-distclean:
