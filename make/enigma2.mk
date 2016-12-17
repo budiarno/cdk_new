@@ -21,6 +21,11 @@ ifeq ($(IMAGE), enigma2-wlandriver)
 ENIGMA2_DEPS += $(D)/wpa_supplicant $(D)/wireless_tools
 endif
 
+ifeq ($(DESTINATION), USB)
+ENIGMA2_DEPS += $(D)/busybox_usb
+E_CONFIG_OPTS += --enable-run_from_usb
+endif
+
 ifeq ($(EXTERNAL_LCD), externallcd)
 ENIGMA2_DEPS  += $(D)/graphlcd
 E_CONFIG_OPTS += --with-graphlcd
@@ -97,12 +102,21 @@ endif
 
 E_CONFIG_OPTS +=$(LOCAL_ENIGMA2_BUILD_OPTIONS)
 
+ifeq ($(BOXTYPE), tf7700)
+YAUD_ENIGMA2_DEPS = $(D)/uboot_tf7700 $(D)/u-boot.ftfd $(D)/tfinstaller
+endif
+
 #
 # yaud-enigma2
 #
-yaud-enigma2: yaud-none $(D)/enigma2 $(D)/enigma2-plugins $(D)/release_enigma2
+yaud-enigma2: yaud-none $(D)/enigma2 $(D)/enigma2-plugins $(D)/release_enigma2 | $(YAUD_ENIGMA2_DEPS)
 	$(TUXBOX_YAUD_CUSTOMIZE)
-
+	@echo "***************************************************************"
+	@echo -e "\033[01;32m"
+	@echo " Build of Enigma2 for $(BOXTYPE) successfully completed."
+	@echo -e "\033[00m"
+	@echo "***************************************************************"
+	@touch $(D)/build_complete
 #
 # enigma2
 #

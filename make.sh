@@ -83,6 +83,7 @@ if [ -e ../cdk/lastChoice ]; then
 	echo -e -n "\nBuild from cdk found, performing make distclean..."
 	make distclean 2> /dev/null > /dev/null
 	echo " [Done]"
+	rm ../cdk/lastChoice
 fi
 
 ##############################################
@@ -293,8 +294,8 @@ case "$IMAGE" in
 		MEDIAFW="buildinplayer"
 
 		if [ "$LASTIMAGE1" ] || [ "$LASTIMAGE3" ] || [ ! "$LASTBOX" == "$TARGET" ]; then
-			if [ -e ./.deps ]; then
-				echo -n "Settings changed, performing distclean..."
+			if [ -e ./.deps/* ]; then
+				echo -n -e "\nSettings changed, performing distclean..."
 				make distclean 2> /dev/null > /dev/null
 				echo "[Done]"
 			fi

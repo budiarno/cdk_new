@@ -342,8 +342,8 @@ release_enigma2_hs7110:
 #
 # release_hs7420
 #
-release_enigma2_hs7420: release_enigma2_common_utils
-	echo "hs7420" > $(RELEASE_DIR)/release/etc/hostname
+release_enigma2_hs7420:
+	echo "hs7420" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_hs742x $(RELEASE_DIR)/etc/init.d/halt
 	chmod 755 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/nuvoton/nuvoton.ko $(RELEASE_DIR)/lib/modules/
@@ -365,16 +365,16 @@ release_enigma2_hs7420: release_enigma2_common_utils
 #
 # release_hs7429
 #
-release_enigma2_hs7429: release_enigma2_common_utils
-	echo "hs7429" > $(RELEASE_DIR)/release/etc/hostname
-	install -m 0755 $(SKEL_ROOT)release/halt_hs742x $(RELEASE_DIR)/etc/init.d/halt
+release_enigma2_hs7429:
+	echo "hs7429" > $(RELEASE_DIR)/etc/hostname
+	install -m 0755 $(SKEL_ROOT)/release/halt_hs742x $(RELEASE_DIR)/etc/init.d/halt
 	chmod 755 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/nuvoton/nuvoton.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/frontends/lnb/lnb.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/frontends/*.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/stgfb/stmfb/stmcore-display-sti7111.ko $(RELEASE_DIR)/lib/modules/
-	cp $(TARGETPREFIX)/boot/video_7111.elf $(RELEASE_DIR)/boot/video.elf
-	cp $(TARGETPREFIX)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
+	cp $(SKEL_ROOT)/boot/video_7111.elf $(RELEASE_DIR)/boot/video.elf
+	cp $(SKEL_ROOT)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fw
 	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs7429/rc.png || true
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD/plugin.py ]; then \
@@ -611,7 +611,7 @@ release_enigma2_base:
 	$(START_BUILD)
 	rm -rf $(RELEASE_DIR) || true
 	install -d $(RELEASE_DIR)
-	install -d $(RELEASE_DIR)/{bin,boot,dev,dev.static,etc,lib,media,mnt,proc,ram,root,sbin,share,sys,tmp,usr,var}
+	install -d $(RELEASE_DIR)/{autofs,bin,boot,dev,dev.static,etc,lib,media,mnt,proc,ram,root,sbin,share,sys,tmp,usr,var}
 	install -d $(RELEASE_DIR)/etc/{enigma2,init.d,network,mdev,tuxbox,tuxtxt}
 	install -d $(RELEASE_DIR)/etc/network/if-{post-{up,down},pre-{up,down},up,down}.d
 	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware}
@@ -656,7 +656,7 @@ release_enigma2_base:
 	cp $(SKEL_ROOT)/bin/vdstandby $(RELEASE_DIR)/bin/
 	cp $(SKEL_ROOT)/usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/
 	ln -sf ../../usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/fw_setenv
-	echo "576i50" > $(RELEASE_DIR)/etc/videomode
+	echo "720p50" > $(RELEASE_DIR)/etc/videomode
 	cp -dp $(TARGETPREFIX)/usr/bin/vsftpd $(RELEASE_DIR)/usr/bin/
 	cp -dp $(TARGETPREFIX)/usr/bin/irexec $(RELEASE_DIR)/usr/bin/
 	cp -p $(TARGETPREFIX)/usr/bin/ffmpeg $(RELEASE_DIR)/sbin/
@@ -1059,6 +1059,7 @@ endif
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/SystemPlugins/Videomode/YPbPr.png $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/Videomode/Component.png; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/SystemPlugins/Videomode/lcd_YPbPr.png $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/Videomode/lcd_Component.png; \
 	fi
+	echo "$(BOXTYPE)" > $(RELEASE_DIR)/etc/model
 #
 # The main target depends on the model.
 #
@@ -1069,12 +1070,15 @@ $(D)/%release_enigma2: release_enigma2_base release_enigma2_$(BOXTYPE)
 #
 	find $(RELEASE_DIR)/usr/lib/enigma2/ -name '*.pyc' -exec rm -f {} \;
 ifeq ($(OPTIMIZATIONS), size)
+ifneq ($(BOXTYPE), atevio7500)
 	find $(RELEASE_DIR)/usr/lib/enigma2/ -not -name 'mytest.py' -name '*.py' -exec rm -f {} \;
+else
+	find $(RELEASE_DIR)/usr/lib/enigma2/ -not -name 'mytest.py' -not -name 'Language.py' -name '*.py' -exec rm -f {} \;
+endif
 endif
 	find $(RELEASE_DIR)/usr/lib/enigma2/ -name '*.a' -exec rm -f {} \;
 	find $(RELEASE_DIR)/usr/lib/enigma2/ -name '*.o' -exec rm -f {} \;
 	find $(RELEASE_DIR)/usr/lib/enigma2/ -name '*.la' -exec rm -f {} \;
-#
 	find $(RELEASE_DIR)$(PYTHON_DIR)/ -name '*.pyc' -exec rm -f {} \;
 ifeq ($(OPTIMIZATIONS), size)
 	find $(RELEASE_DIR)$(PYTHON_DIR)/ -name '*.py' -exec rm -f {} \;
@@ -1093,7 +1097,6 @@ endif
 	find $(CDK_DIR)/own_build/enigma2/ -mindepth 1 -maxdepth 1 -exec cp -at$(RELEASE_DIR)/ -- {} +
 #	receiver specific (only if directory exist)
 	[ -d "$(CDK_DIR)/own_build/enigma2.$(BOXTYPE)" ] && find $(CDK_DIR)/own_build/enigma2.$(BOXTYPE)/ -mindepth 1 -maxdepth 1 -exec cp -at$(RELEASE_DIR)/ -- {} + || true
-	echo $(BOXTYPE) > $(RELEASE_DIR)/etc/model
 	rm -f $(RELEASE_DIR)/for_your_own_changes
 #
 # sh4-linux-strip all
@@ -1101,11 +1104,6 @@ endif
 ifneq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug))
 	find $(RELEASE_DIR)/ -name '*' -exec $(TARGET)-strip --strip-unneeded {} &>/dev/null \;
 endif
-	@echo "***************************************************************"
-	@echo -e "\033[01;32m"
-	@echo " Build of Enigma2 for $(BOXTYPE) successfully completed."
-	@echo -e "\033[00m"
-	@echo "***************************************************************"
 #
 # release-clean
 #

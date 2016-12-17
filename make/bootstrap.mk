@@ -138,7 +138,7 @@ crosstool-rpminstall
 		cp -a $(CROSS_DIR)/target/etc/host.conf $(TARGETPREFIX)/etc; \
 	fi
 	@touch $(D)/$(notdir $@)
-	echo -e "Build of \033[01;32m$@\033[0m completed."; echo
+	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
 
 #
 # host_u_boot_tools
@@ -181,7 +181,6 @@ directories:
 	@touch $(D)/$(notdir $@)
 	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
 
-
 #
 # ccache
 #
@@ -205,4 +204,47 @@ $(D)/ccache:
 
 # hack to make sure they are always copied
 PHONY += ccache bootstrap
+
+#
+# TF7700 installer
+#
+TFINSTALLER_DIR := $(CDK_DIR)/tfinstaller
+U_BOOT_VER = 1.3.1
+
+$(D)/tfinstaller: 
+	$(START_BUILD)
+	$(MAKE) $(MAKE_OPTS) -C $(TFINSTALLER_DIR)
+	$(TOUCH)
+
+$(D)/u-boot.ftfd: $(D)/uboot_tf7700 $(D)/tfpacker
+	$(START_BUILD)
+	$(TFINSTALLER_DIR)/tfpacker $(BUILD_TMP)/u-boot-$(U_BOOT_VER)/u-boot.bin $(TFINSTALLER_DIR)/u-boot.ftfd
+	$(TFINSTALLER_DIR)/tfpacker -t $(BUILD_TMP)/u-boot-$(U_BOOT_VER)/u-boot.bin $(TFINSTALLER_DIR)/Enigma_Installer.tfd
+	$(REMOVE)/uboot_tf7700
+	$(TOUCH)
+
+$(D)/tfpacker:
+	$(START_BUILD)
+	$(MAKE) -C $(TFINSTALLER_DIR) tfpacker
+	$(TOUCH)
+
+$(ARCHIVE)/u-boot-$(U_BOOT_VER).tar.bz2:
+	$(WGET) ftp://ftp.denx.de/pub/u-boot/u-boot-$(U_BOOT_VER).tar.bz2
+
+$(D)/uboot_tf7700: $(ARCHIVE)/u-boot-$(U_BOOT_VER).tar.bz2
+	$(START_BUILD)
+	$(REMOVE)/u-boot-$(U_BOOT_VER)
+	$(UNTAR)/u-boot-$(U_BOOT_VER).tar.bz2
+	@set -e; cd $(BUILD_TMP)/u-boot-$(U_BOOT_VER); \
+		for i in \
+			u-boot-$(U_BOOT_VER).patch \
+			u-boot-$(U_BOOT_VER)_tf7700.patch \
+		; do \
+			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
+			$(PATCH)/$$i; \
+		done; \
+		$(MAKE) tf7700_config && \
+		$(MAKE)
+#	$(REMOVE)/uboot_tf7700
+	$(TOUCH)
 

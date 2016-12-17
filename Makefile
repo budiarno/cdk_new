@@ -38,7 +38,6 @@ printenv:
 	@echo "BOXARCH          : $(BOXARCH)"
 	@echo "BUILD            : $(BUILD)"
 	@echo "TARGET           : $(TARGET)"
-#	@echo "PLATFORM         : $(PLATFORM)"
 	@echo "BOXTYPE          : $(BOXTYPE)"
 	@echo "KERNEL_VERSION   : $(KERNEL_VERSION)"
 	@echo "MULTICOM_VERSION : $(MULTICOM_VER)"

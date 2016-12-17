@@ -124,6 +124,12 @@ NEUTRINO_MP_CST_NEXT_MAX_PATCHES =
 yaud-neutrino-mp-cst-next-max: yaud-none \
 		$(D)/neutrino-mp-cst-next-max $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
+	@echo "********************************************************************************"
+	@echo -e "\033[01;32m"
+	@echo " Build of neutrino-mp-cst-next-max for $(BOXTYPE) successfully completed."
+	@echo -e "\033[00m"
+	@echo "********************************************************************************"
+	@touch $(D)/build_complete
 
 yaud-neutrino-mp-cst-next-max-plugins: yaud-none \
 		$(D)/neutrino-mp-cst-next-max $(D)/neutrino-mp-plugins $(D)/release_neutrino
@@ -276,6 +282,12 @@ libstb-hal-cst-next-distclean:
 yaud-neutrino-mp-cst-next: yaud-none \
 		neutrino-mp-cst-next $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
+	@echo "***************************************************************************"
+	@echo -e "\033[01;32m"
+	@echo " Build of neutrino-mp-cst-next for $(BOXTYPE) successfully completed."
+	@echo -e "\033[00m"
+	@echo "***************************************************************************"
+	@touch $(D)/build_complete
 
 yaud-neutrino-mp-cst-next-plugins: yaud-none \
 		$(D)/neutrino-mp-cst-next $(D)/neutrino-mp-plugins $(D)/release_neutrino
@@ -380,6 +392,12 @@ neutrino-mp-cst-next-distclean:
 yaud-neutrino-mp-cst-next-ni: yaud-none \
 		neutrino-mp-cst-next-ni $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
+	@echo "******************************************************************************"
+	@echo -e "\033[01;32m"
+	@echo " Build of neutrino-mp-cst-next-ni for $(BOXTYPE) successfully completed."
+	@echo -e "\033[00m"
+	@echo "******************************************************************************"
+	@touch $(D)/build_complete
 
 yaud-neutrino-mp-cst-next-ni-plugins: yaud-none \
 		$(D)/neutrino-mp-cst-next-ni $(D)/neutrino-mp-plugins $(D)/release_neutrino
@@ -491,6 +509,12 @@ neutrino-cdkroot-clean:
 yaud-neutrino-hd2: yaud-none \
 		$(D)/neutrino-hd2 $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
+	@echo "*********************************************************************"
+	@echo -e "\033[01;32m"
+	@echo " Build of neutrino-hd2 for $(BOXTYPE) successfully completed."
+	@echo -e "\033[00m"
+	@echo "*********************************************************************"
+	@touch $(D)/build_complete
 
 yaud-neutrino-hd2-plugins: yaud-none \
 		$(D)/neutrino-hd2 $(D)/neutrino-hd2-plugins $(D)/release_neutrino
@@ -581,6 +605,12 @@ neutrino-hd2-distclean: neutrino-cdkroot-clean
 yaud-neutrino-mp-tangos: yaud-none \
 		$(D)/neutrino-mp-tangos $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
+	@echo "***************************************************************************"
+	@echo -e "\033[01;32m"
+	@echo " Build of neutrino-mp-tangos for $(BOXTYPE) successfully completed."
+	@echo -e "\033[00m"
+	@echo "***************************************************************************"
+	@touch $(D)/build_complete
 
 yaud-neutrino-mp-tangos-plugins: yaud-none \
 		$(D)/neutrino-mp-tangos $(D)/neutrino-mp-plugins $(D)/release_neutrino

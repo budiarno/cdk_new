@@ -33,6 +33,39 @@ $(D)/busybox: $(D)/bootstrap $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2 $(PATCHES
 	$(TOUCH)
 
 #
+# busybox_usb
+#
+BUSYBOX_USB_VER = $(BUSYBOX_VER)
+
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), spark spark7162 ufs912 ufs913))
+BUSYBOX_USB_CONFIG = busybox_usb.config_nandwrite
+else
+BUSYBOX_USB_CONFIG = busybox_usb.config
+endif
+
+$(D)/busybox_usb: $(D)/bootstrap $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2 $(PATCHES)/$(BUSYBOX_USB_CONFIG)
+	$(START_BUILD)
+	@rm -fr $(BUILD_TMP)/busybox_usb-$(BUSYBOX_USB_VER)
+	@mkdir $(BUILD_TMP)/busybox_usb-$(BUSYBOX_USB_VER)
+	@tar -C $(BUILD_TMP)/busybox_usb-$(BUSYBOX_USB_VER) -xf $(ARCHIVE)/busybox-$(BUSYBOX_USB_VER).tar.bz2 --strip-components=1
+	set -e; cd $(BUILD_TMP)/busybox_usb-$(BUSYBOX_USB_VER); \
+		for i in \
+			busybox-$(BUSYBOX_USB_VER)-nandwrite.patch \
+			busybox-$(BUSYBOX_USB_VER)-unicode.patch \
+			busybox-$(BUSYBOX_USB_VER)-extra.patch \
+		; do \
+			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
+			$(PATCH)/$$i; \
+		done; \
+		install -m 0644 $(lastword $^) .config; \
+		sed -i -e 's#^CONFIG_PREFIX.*#CONFIG_PREFIX="$(TARGETPREFIX)"#' .config; \
+		$(BUILDENV) $(MAKE) busybox CROSS_COMPILE=$(TARGET)- CFLAGS_EXTRA="$(TARGET_CFLAGS)"; \
+		$(MAKE) install CROSS_COMPILE=$(TARGET)- CFLAGS_EXTRA="$(TARGET_CFLAGS)" CONFIG_PREFIX=$(TARGETPREFIX)
+		cp -f $(BUILD_TMP)/busybox_usb-$(BUSYBOX_USB_VER)/busybox $(APPS_DIR)/tools/USB_boot
+	$(REMOVE)/busybox_usb-$(BUSYBOX_USB_VER)
+	$(TOUCH)
+
+#
 # host_pkgconfig
 #
 PKGCONFIG_VER = 0.29.1
@@ -1356,7 +1389,12 @@ $(D)/wireless_tools: $(D)/bootstrap $(ARCHIVE)/wireless_tools.$(WIRELESSTOOLS_VE
 	$(REMOVE)/wireless_tools.$(WIRELESSTOOLS_VER)
 	$(UNTAR)/wireless_tools.$(WIRELESSTOOLS_VER).tar.gz
 	set -e; cd $(BUILD_TMP)/wireless_tools.$(WIRELESSTOOLS_VER); \
-		$(PATCH)/wireless-tools.$(WIRELESSTOOLS_VER).patch; \
+		for i in \
+			wireless-tools.$(WIRELESSTOOLS_VER).patch \
+		; do \
+			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
+			$(PATCH)/$$i; \
+		done; \
 		$(MAKE) CC="$(TARGET)-gcc" CFLAGS="$(TARGET_CFLAGS) -I."; \
 		$(MAKE) install PREFIX=$(TARGETPREFIX)/usr INSTALL_MAN=$(TARGETPREFIX)/.remove
 	$(REMOVE)/wireless_tools.$(WIRELESSTOOLS_VER)
