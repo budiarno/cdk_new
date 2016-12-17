@@ -66,9 +66,11 @@ ATEVIO7500_PATCHES_24 = $(COMMON_PATCHES_24) \
 HS7110_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-hs7110_setup_stm24_$(KERNEL_LABEL).patch \
-		$(if $(NEUTRINO),linux-sh4-hs7110_mtdconcat_stm24_$(KERNEL_LABEL).patch) \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		$(if $(P0209),linux-sh4-i2c-stm-downgrade_stm24_$(KERNEL_LABEL).patch)
+ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
+HS7110_PATCHES_24 += linux-sh4-hs7110_mtdconcat_stm24_$(KERNEL_LABEL).patch
+endif
 
 HS7119_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
@@ -79,9 +81,11 @@ HS7119_PATCHES_24 = $(COMMON_PATCHES_24) \
 HS7420_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-hs7420_setup_stm24_$(KERNEL_LABEL).patch \
-		$(if $(NEUTRINO),linux-sh4-hs7420_mtdconcat_stm24_$(KERNEL_LABEL).patch) \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		$(if $(P0209),linux-sh4-i2c-stm-downgrade_stm24_$(KERNEL_LABEL).patch)
+ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
+HS7420_PATCHES_24 += linux-sh4-hs7420_mtdconcat_stm24_$(KERNEL_LABEL).patch
+endif
 
 HS7429_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
@@ -92,9 +96,11 @@ HS7429_PATCHES_24 = $(COMMON_PATCHES_24) \
 HS7810A_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-hs7810a_setup_stm24_$(KERNEL_LABEL).patch \
-		$(if $(NEUTRINO),linux-sh4-hs7810a_mtdconcat_stm24_$(KERNEL_LABEL).patch) \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		$(if $(P0209),linux-sh4-i2c-stm-downgrade_stm24_$(KERNEL_LABEL).patch)
+ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
+HS7810A_PATCHES_24 += linux-sh4-hs7810a_mtdconcat_stm24_$(KERNEL_LABEL).patch
+endif
 
 HS7819_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
@@ -248,8 +254,14 @@ ARIVALINK200_PATCHES_24 = $(COMMON_PATCHES_24) \
 HOST_KERNEL_PATCHES = $(KERNEL_PATCHES_24)
 HOST_KERNEL_CONFIG = linux-sh4-$(subst _stm24_,_,$(KERNEL_VERSION))_$(BOXTYPE).config
 
+ifneq ($(DESTINATION), USB)
 $(D)/linux-kernel.do_prepare: $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) \
 	$(if $(HOST_KERNEL_PATCHES),$(HOST_KERNEL_PATCHES:%=$(PATCHES)/$(BUILD_CONFIG)/%))
+else
+$(D)/linux-kernel.do_prepare: $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) \
+	busybox_usb e2fsprogs sysvinit \
+	$(if $(HOST_KERNEL_PATCHES),$(HOST_KERNEL_PATCHES:%=$(PATCHES)/$(BUILD_CONFIG)/%))
+endif
 	@rm -rf $(KERNEL_DIR)
 	@REPO=https://github.com/Duckbox-Developers/linux-sh4-2.6.32.71.git;protocol=https;branch=stmicro; \
 	echo; echo "Starting Kernel build"; echo "====================="; echo; \
@@ -279,31 +291,54 @@ $(D)/linux-kernel.do_prepare: $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) \
 	done; \
 	install -m 644 $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) $(KERNEL_DIR)/.config
 	sed -i "s#^\(CONFIG_EXTRA_FIRMWARE_DIR=\).*#\1\"$(CDK_DIR)/integrated_firmware\"#" $(KERNEL_DIR)/.config
+	ln -s $(KERNEL_DIR) $(BUILD_TMP)/linux-sh4
 	-rm $(KERNEL_DIR)/localversion*
 	echo "$(KERNEL_STM_LABEL)" > $(KERNEL_DIR)/localversion-stm
 ifeq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug))
 	@echo "Using kernel debug"
-	@grep -v "CONFIG_PRINTK" "$(KERNEL_DIR)/.config" > "$(KERNEL_DIR)/.config.tmp"
-	cp "$(KERNEL_DIR)/.config.tmp" "$(KERNEL_DIR)/.config"
-	@echo "CONFIG_PRINTK=y" >> "$(KERNEL_DIR)/.config"
-	@echo "CONFIG_PRINTK_TIME=y" >> "$(KERNEL_DIR)/.config"
+	@grep -v "CONFIG_PRINTK" "$(KERNEL_DIR)/.config" > $(KERNEL_DIR)/.config.tmp
+	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@echo "CONFIG_PRINTK=y" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_PRINTK_TIME=y" >> $(KERNEL_DIR)/.config
 endif
 ifeq ($(IMAGE), $(filter $(IMAGE), enigma2-wlandriver neutrino-wlandriver))
 	@echo "Using kernel wireless"
-	@grep -v "CONFIG_WIRELESS" "$(KERNEL_DIR)/.config" > "$(KERNEL_DIR)/.config.tmp"
-	cp "$(KERNEL_DIR)/.config.tmp" "$(KERNEL_DIR)/.config"
-	@echo "CONFIG_WIRELESS=y" >> "$(KERNEL_DIR)/.config"
-	@echo "# CONFIG_CFG80211 is not set" >> "$(KERNEL_DIR)/.config"
-	@echo "# CONFIG_WIRELESS_OLD_REGULATORY is not set" >> "$(KERNEL_DIR)/.config"
-	@echo "CONFIG_WIRELESS_EXT=y" >> "$(KERNEL_DIR)/.config"
-	@echo "CONFIG_WIRELESS_EXT_SYSFS=y" >> "$(KERNEL_DIR)/.config"
-	@echo "# CONFIG_LIB80211 is not set" >> "$(KERNEL_DIR)/.config"
-	@echo "CONFIG_WLAN=y" >> "$(KERNEL_DIR)/.config"
-	@echo "# CONFIG_WLAN_PRE80211 is not set" >> "$(KERNEL_DIR)/.config"
-	@echo "CONFIG_WLAN_80211=y" >> "$(KERNEL_DIR)/.config"
-	@echo "# CONFIG_LIBERTAS is not set" >> "$(KERNEL_DIR)/.config"
-	@echo "# CONFIG_USB_ZD1201 is not set" >> "$(KERNEL_DIR)/.config"
-	@echo "# CONFIG_HOSTAP is not set" >> "$(KERNEL_DIR)/.config"
+	@grep -v "CONFIG_WIRELESS" "$(KERNEL_DIR)/.config" > $(KERNEL_DIR)/.config.tmp
+	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@echo "CONFIG_WIRELESS=y" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_CFG80211 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_WIRELESS_OLD_REGULATORY is not set" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_WIRELESS_EXT=y" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_WIRELESS_EXT_SYSFS=y" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_LIB80211 is not set" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_WLAN=y" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_WLAN_PRE80211 is not set" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_WLAN_80211=y" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_LIBERTAS is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_USB_ZD1201 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_HOSTAP is not set" >> $(KERNEL_DIR)/.config
+endif
+ifeq ($(DESTINATION), USB)
+	@echo "Using kernel USB"
+	@grep -v "CONFIG_BLK_DEV_INITRD" "$(KERNEL_DIR)/.config" > $(KERNEL_DIR)/.config.tmp
+	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@echo "CONFIG_BLK_DEV_INITRD=y " >> $(KERNEL_DIR)/.config
+	echo "CONFIG_INITRAMFS_SOURCE=\"$(APPS_DIR)/tools/USB_boot/initramfs_no_hdd\"" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_INITRAMFS_ROOT_UID=0" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_INITRAMFS_ROOT_GID=0" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_RD_GZIP=y" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_RD_BZIP2=y" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_RD_LZMA is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_INITRAMFS_COMPRESSION_NONE is not set" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_INITRAMFS_COMPRESSION_GZIP=y" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_INITRAMFS_COMPRESSION_BZIP2 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_INITRAMFS_COMPRESSION_LZMA is not set" >> $(KERNEL_DIR)/.config
+	@grep -v "CONFIG_DECOMPRESS_GZIP" "$(KERNEL_DIR)/.config" > $(KERNEL_DIR)/.config.tmp
+	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@echo "CONFIG_DECOMPRESS_GZIP=y" >> $(KERNEL_DIR)/.config
+	@grep -v "CONFIG_DECOMPRESS_BZIP2" $(KERNEL_DIR)/.config > $(KERNEL_DIR)/.config.tmp
+	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@echo "CONFIG_DECOMPRESS_BZIP2=y" >> $(KERNEL_DIR)/.config
 endif
 	@touch $@
 
@@ -334,10 +369,11 @@ $(D)/kernel-headers: linux-kernel.do_prepare
 		cp -a include/mtd $(TARGETPREFIX)/usr/include
 	$(TOUCH)
 
-$(D)/tfkernel.do_compile:
+tfkernel:
+	$(START_BUILD); 
 	cd $(KERNEL_DIR); \
-		$(MAKE) $(if $(TF7700),TF7700=y) ARCH=sh CROSS_COMPILE=$(target)- uImage
-	$(TOUCH)
+		$(MAKE) $(if $(TF7700),TF7700=y) ARCH=sh CROSS_COMPILE=$(TARGET)- uImage
+	@echo -e "Build of \033[01;32mtfkernel\033[0m completed."; echo
 
 
 linux-kernel-distclean:
@@ -357,7 +393,7 @@ linux-kernel.menuconfig linux-kernel.xconfig: \
 linux-kernel.%:
 	$(MAKE) -C $(KERNEL_DIR) ARCH=sh CROSS_COMPILE=$(TARGET)- $*
 	@echo ""
-	@echo "You have to edit m a n u a l l y $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) to make changes permanent !!!"
+	@echo "You have to edit $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) m a n u a l l y to make changes permanent !!!"
 	@echo ""
 	diff $(KERNEL_DIR)/.config.old $(KERNEL_DIR)/.config
 	@echo ""

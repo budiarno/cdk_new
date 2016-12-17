@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 20161129.1
+# Version 20161217.1
 
 ##############################################
 
@@ -22,6 +22,7 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 6: image (Enigma=1/2 Neutrino=3/4 (1-4)"
 	echo "Parameter 7: Neutrino variant (1-4) or Enigma2 diff (0-4)"
 	echo "Parameter 8: media Framework (1-3, Enigma2 only))"
+	echo "Parameter 9: destination (1-2)"
 	exit
 fi
 
@@ -78,10 +79,10 @@ echo
 ##############################################
 
 # Check if a build from ../cdk is present
-if [ -e ../cdk/LastChoice ]; then
+if [ -e ../cdk/lastChoice ]; then
 	echo -e -n "\nBuild from cdk found, performing make distclean..."
 	make distclean 2> /dev/null > /dev/null
-	echo "[Done]"
+	echo " [Done]"
 fi
 
 ##############################################
@@ -89,42 +90,40 @@ case $1 in
 	[1-9] | 1[0-9] | 2[0-9] | 3[0-6]) REPLY=$1;;
 	*)
 		echo "Target receivers:"
-		echo "    1)  Kathrein UFS-910"
-		echo "    2)  Kathrein UFS-912"
-		echo "    3)  Kathrein UFS-913"
-		echo "    4)  Kathrein UFS-922"
-		echo "    5)  Kathrein UFC-960"
-		echo "    6)  Topfield TF77X0 HDPVR"
-		echo "    7)  IPBOX55"
-		echo "    8)  IPBOX99"
-		echo "    9)  IPBOX9900"
-		echo "   10)  Cuberevo [ IPBOX 9000 ]"
-		echo "   11)  Cuberevo mini [ IPBOX 900 ]"
-		echo "   12)  Cuberevo mini2 [ IPBOX 910 ]"
-		echo "   13)  Cuberevo 250 [ IPBOX 91 ]"
-		echo "   14)  Cuberevo 9500HD [ 7000HD ]"
-		echo "   15)  Cuberevo 2000HD"
-		echo "   16)  Cuberevo mini_fta [ 200HD ]"
-		echo "   17)  Xsarius Alpha [ Cuberevo 3000HD ]"
-		echo "   18)  Fortis HDbox [ Fortis FS9000/9200 ]"
-		echo "   19)  Octagon SF1008P [ Fortis HS9510 ]"
-		echo "   20*) Atevio AV7500 [ Fortis HS8200 ]"
-		echo "   21)  Fortis HS7110"
-		echo "   22)  Fortis HS7119"
-		echo "   23)  Fortis HS7420"
-		echo "   24)  Fortis HS7429"
-		echo "   25)  Fortis HS7810A"
-		echo "   26)  Fortis HS7819"
-		echo "   27)  Atemio AM520"
-		echo "   28)  Atemio AM530"
-		echo "   29)  Edision Argus VIP1 v1 [ single tuner + 2 CI + 2 USB ]"
-		echo "   30)  SpiderBox HL-101"
-		echo "   31)  SPARK"
-		echo "   32)  SPARK7162"
+		echo
+		echo "  Kathrein             Fortis"
+		echo "    1)  UFS-910          7)  FS9000 / FS9200 (formerly Fortis HDbox)"
+		echo "    2)  UFS-912          8)  HS9510 (formerly Octagon SF1008P)"
+		echo "    3)  UFS-913          9*) HS8200 (formerly Atevio AV7500)"
+		echo "    4)  UFS-922         10)  HS7110"
+		echo "    5)  UFC-960         11)  HS7119"
+		echo "                        12)  HS7420"
+		echo "  Topfield              13)  HS7429"
+		echo "    6)  TF77X0 HDPVR    14)  HS7810A"
+		echo "                        15)  HS7819"
+		echo
+		echo "  AB IPBox             Cuberevo"
+		echo "   16)  55HD            19)  id."
+		echo "   17)  99HD            20)  mini"
+		echo "   18)  9900HD          21)  mini2"
+		echo "   19)  9000HD          22)  250HD"
+		echo "   20)  900HD           23)  9500HD / 7000HD"
+		echo "   21)  910HD           24)  2000HD"
+		echo "   13)  91HD            25)  mini_fta / 200HD"
+		echo "                        26)  3000HD / Xsarius Alpha"
+		echo
+		echo "  Fulan                Atemio"
+		echo "   27)  Spark           29)  AM520"
+		echo "   28)  Spark7162       30)  AM530"
+		echo
+		echo "  Various"
+		echo "   31)  Edision Argus VIP1 v1 [ single tuner + 2 CI + 2 USB ]"
+		echo "   32)  SpiderBox HL-101"
 		echo "   33)  B4Team ADB 5800S"
 		echo "   34)  Vitamin HD5000"
 		echo "   35)  SagemCom 88 series"
 		echo "   36)  Ferguson Ariva @Link 200"
+		echo
 		read -p "Select target (1-36)? ";;
 esac
 
@@ -135,32 +134,32 @@ case "$REPLY" in
 	 4) TARGET="ufs922";;
 	 5) TARGET="ufc960";;
 	 6) TARGET="tf7700";;
-	 7) TARGET="ipbox55";;
-	 8) TARGET="ipbox99";;
-	 9) TARGET="ipbox9900";;
-	10) TARGET="cuberevo";;
-	11) TARGET="cuberevo_mini";;
-	12) TARGET="cuberevo_mini2";;
-	13) TARGET="cuberevo_250hd";;
-	14) TARGET="cuberevo_9500hd";;
-	15) TARGET="cuberevo_2000hd";;
-	16) TARGET="cuberevo_mini_fta";;
-	17) TARGET="cuberevo_3000hd";;
-	18) TARGET="fortis_hdbox";;
-	19) TARGET="octagon1008";;
-#	20) TARGET="atevio7500";;
-	21) TARGET="hs7110";;
-	22) TARGET="hs7119";;
-	23) TARGET="hs7420";;
-	24) TARGET="hs7429";;
-	25) TARGET="hs7810a";;
-	26) TARGET="hs7819";;
-	27) TARGET="atemio520";;
-	28) TARGET="atemio530";;
-	29) TARGET="hl101";;
-	30) TARGET="hl101";;
-	31) TARGET="spark";;
-	32) TARGET="spark7162";;
+	 7) TARGET="fortis_hdbox";;
+	 8) TARGET="octagon1008";;
+#	 9) TARGET="atevio7500";;
+	10) TARGET="hs7110";;
+	11) TARGET="hs7119";;
+	12) TARGET="hs7420";;
+	13) TARGET="hs7429";;
+	14) TARGET="hs7810a";;
+	15) TARGET="hs7819";;
+	16) TARGET="ipbox55";;
+	17) TARGET="ipbox99";;
+	18) TARGET="ipbox9900";;
+	19) TARGET="cuberevo";;
+	20) TARGET="cuberevo_mini";;
+	21) TARGET="cuberevo_mini2";;
+	22) TARGET="cuberevo_250hd";;
+	23) TARGET="cuberevo_9500hd";;
+	24) TARGET="cuberevo_2000hd";;
+	25) TARGET="cuberevo_mini_fta";;
+	26) TARGET="cuberevo_3000hd";;
+	27) TARGET="spark";;
+	28) TARGET="spark7162";;
+	29) TARGET="atemio520";;
+	30) TARGET="atemio530";;
+	31) TARGET="hl101";;
+	32) TARGET="hl101";;
 	33) TARGET="adb_box";;
 	34) TARGET="vitamin_hd5000";;
 	35) TARGET="sagemcom88";;
@@ -246,6 +245,7 @@ case "$REPLY" in
 	*) EXTERNAL_LCD="none";;
 esac
 echo "EXTERNAL_LCD=$EXTERNAL_LCD" >> config
+
 ##############################################
 
 case $6 in
@@ -301,7 +301,6 @@ case "$IMAGE" in
 		fi;;
 #	enigma*)
 	*)
-		# Determine the OpenPLi diff-level
 		case $8 in
 			[1-3]) REPLY=$8;;
 			*)	echo -e "\nMedia Framework:"
@@ -318,6 +317,7 @@ case "$IMAGE" in
 			*) MEDIAFW="gst-eplayer3";;
 		esac
 
+		# Determine the OpenPLi diff-level
 		case $7 in
 			[0-5])	REPLY=$7;;
 			*)	echo
@@ -356,14 +356,13 @@ case "$IMAGE" in
 		echo "make yaud-enigma2" > $CURDIR/build
 
 		if [ "$LASTIMAGE2" ] || [ "$LASTIMAGE3" ] || [ ! "$LASTBOX" == "$TARGET" ]; then
-			if [ -e ./.deps ]; then
-				echo -n "Settings changed, performing distclean..."
+			if [ -e ./.deps/ ]; then
+				echo -n -e "\nSettings changed, performing distclean..."
 				make distclean 2> /dev/null > /dev/null
-				echo "[Done]"
+				echo " [Done]"
 			fi
 		elif [ ! "$DIFF" == "$LASTDIFF" ]; then
-			echo "$DIFF $LASTDIFF"
-			echo -n "Diff changed, OpenPli Enigma2 will be rebuilt."
+			echo -n -e "\nDiff changed, OpenPli Enigma2 will be rebuilt."
 			rm -f ./.deps/enigma2.do_prepare
 			rm -f ./.deps/enigma2_networkbrowser
 			rm -f ./.deps/enigma2_openwebif
@@ -372,8 +371,33 @@ case "$IMAGE" in
 
 echo "MEDIAFW=$MEDIAFW" >> config
 
-chmod 755 $CURDIR/build
 ##############################################
+
+case "$TARGET" in
+	hs7110|hs7119|hs7420|hs7429|hs7810a|hs7819)
+		case $9 in
+			[1-2])	REPLY=$9;;
+			*)	echo -e "\nWhere will the image be running:"
+				echo "   1*) Flash memory or hard disk"
+				echo "   2)  USB stick"
+				read -p "Select destination (1-2)? ";;
+		esac
+
+		case "$REPLY" in
+#			1) DESTINATION="flash";;
+			2) DESTINATION="USB";;
+			*) DESTINATION="flash";;
+		esac
+		echo "DESTINATION=$DESTINATION" >> config;;
+	*)
+		;;
+esac
+
+
+##############################################
+
+chmod 755 $CURDIR/build
+
 make printenv
 ##############################################
 echo "Your build environment is ready :-)"
