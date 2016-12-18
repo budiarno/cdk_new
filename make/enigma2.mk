@@ -120,26 +120,28 @@ yaud-enigma2: yaud-none $(D)/enigma2 $(D)/enigma2-plugins $(D)/release_enigma2 |
 #
 # enigma2
 #
+REPO="https://github.com/OpenPLi/enigma2.git"
 REPO_REPLY_1="https://github.com/MaxWiesel/enigma2-openpli-fulan.git"
-
 $(D)/enigma2.do_prepare: | $(ENIGMA2_DEPS)
-	rm -rf $(SOURCE_DIR)/enigma2; \
-	rm -rf $(SOURCE_DIR)/enigma2.org; \
+	REPO_0=$(REPO); \
+	REPO_1=$(REPO_REPLY_1); \
 	REVISION=$(E2_REVISION); \
 	HEAD="master"; \
 	DIFF=$(E2_DIFF); \
+	rm -rf $(SOURCE_DIR)/enigma2; \
+	rm -rf $(SOURCE_DIR)/enigma2.org; \
 	clear; \
 	echo "Starting OpenPLi Enigma2 build"; \
 	echo "=============================="; \
 	echo; \
-	echo "Revision        : "$$REVISION; \
-	echo "Diff            : "$$DIFF; \
+	echo "Revision : "$$REVISION; \
+	echo "Diff     : "$$DIFF; \
 	echo ""; \
 	if [ "$$DIFF" != "1" ]; then \
 		[ -d "$(ARCHIVE)/enigma2-pli-nightly.git" ] && \
 		(cd $(ARCHIVE)/enigma2-pli-nightly.git; echo "Pulling archived OpenPLi git..."; git pull -q; echo "Checking out HEAD..."; git checkout -q HEAD; cd "$(BUILD_TMP)";); \
 		[ -d "$(ARCHIVE)/enigma2-pli-nightly.git" ] || \
-		(echo "Cloning remote OpenPLi git..."; git clone -q -b $$HEAD $$REPO $(ARCHIVE)/enigma2-pli-nightly.git;); \
+		(echo "Cloning remote OpenPLi git..."; git clone -q -b $$HEAD $$REPO_0 $(ARCHIVE)/enigma2-pli-nightly.git;); \
 		echo "Copying local git content to build environment..."; cp -ra $(ARCHIVE)/enigma2-pli-nightly.git $(SOURCE_DIR)/enigma2; \
 		[ "$$REVISION" == "" ] || (cd $(SOURCE_DIR)/enigma2; echo "Checking out revision $$REVISION..."; git checkout -q "$$REVISION"; cd "$(BUILD_TMP)";); \
 		cp -ra $(SOURCE_DIR)/enigma2 $(SOURCE_DIR)/enigma2.org; \
@@ -160,7 +162,7 @@ $(D)/enigma2.do_prepare: | $(ENIGMA2_DEPS)
 	else \
 		[ -d "$(SOURCE_DIR)/enigma2" ] ; \
 		echo "Cloning local git content to build environment..."; \
-		git clone -b $$HEAD $$REPO_REPLY_1 $(SOURCE_DIR)/enigma2; \
+		git clone -b $$HEAD $$REPO_1 $(SOURCE_DIR)/enigma2; \
 	fi
 	@touch $@
 
