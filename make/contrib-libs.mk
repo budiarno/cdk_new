@@ -766,11 +766,11 @@ $(D)/libjpeg_turbo: $(D)/bootstrap $(ARCHIVE)/libjpeg-turbo-$(JPEG_TURBO_VER).ta
 #
 # libpng
 #
-PNG_VER = 1.6.25
+PNG_VER = 1.6.28
 PNG_VER_X = 16
 
 $(ARCHIVE)/libpng-$(PNG_VER).tar.xz:
-	$(WGET) http://sourceforge.net/projects/libpng/files/libpng$(PNG_VER_X)/$(PNG_VER)/libpng-$(PNG_VER).tar.xz
+	$(WGET) http://prdownloads.sourceforge.net/libpng/libpng-$(PNG_VER).tar.xz
 
 $(D)/libpng: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libpng-$(PNG_VER).tar.xz
 	$(START_BUILD)
