@@ -1468,7 +1468,7 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensions/hs8200VFD/plugin.py enigma2/lib/python/Plugins/Extensions/hs8200VFD/plugin.py
 --- enigma2.org/lib/python/Plugins/Extensions/hs8200VFD/plugin.py	1970-01-01 01:00:00.000000000 +0100
 +++ enigma2/lib/python/Plugins/Extensions/hs8200VFD/plugin.py	2013-12-18 20:00:00.000000000 +0100
-@@ -0,0 +1,418 @@
+@@ -0,0 +1,583 @@
 +# -*- coding: utf-8 -*-
 +from Plugins.Plugin import PluginDescriptor
 +from ServiceReference import ServiceReference
@@ -1487,7 +1487,7 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +from Tools.HardwareInfo import HardwareInfo
 +from Screens.Screen import Screen
 +import gettext
-+#Version 140406.1
++#Version 170207.1
 +stb = HardwareInfo().get_device_name()
 +lang = language.getLanguage()
 +environ['LANGUAGE'] = lang[:2]
@@ -1528,7 +1528,8 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +		("channel number", _("channel number")),
 +		("channel", _("channel name")),
 +		("channel namenumber", _("channel number and name")),
-+		("time", _("time")),
++		("time", _("time (with seconds)")),
++		("timeHM", _("time (without seconds)")),
 +		("date", _("date")),
 +		("time_date", _("time and date")),
 +		("day_date", _("day and date"))
@@ -1536,7 +1537,8 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +config.plugins.vfdicon.stbshow = ConfigSelection(default = "time_date",
 +	choices = [
 +		("nothing", _("nothing")),
-+		("time", _("time")),
++		("time", _("time (with seconds)")),
++		("timeHM", _("time (without seconds)")),
 +		("date", _("date")),
 +		("time_date", _("time and date")),
 +		("day_date", _("day and date"))
@@ -1599,6 +1601,7 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +		self.cfglist.append(getConfigListEntry(_("Uppercase letters only"), config.plugins.vfdicon.uppercase))
 +		self.cfglist.append(getConfigListEntry(_("Scroll text"), config.plugins.vfdicon.textscroll))
 +		self.cfglist.append(getConfigListEntry(_("Center text"), config.plugins.vfdicon.textcenter))
++		self.cfglist.append(getConfigListEntry(_("Show icons"), config.plugins.vfdicon.showicons))
 +		self.icons_showicons = config.plugins.vfdicon.showicons.value
 +		if DisplayType == 5:
 +			self.cfglist.append(getConfigListEntry(_('Stby LED brightness'), config.plugins.vfdicon.standbyredledon))
@@ -1683,13 +1686,19 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +		self.session = session
 +		self.onClose = []
 +		print '[VFD-Icons] Start'
++		self.tuned = False
++		self.play = False
++		self.record = False
++		self.timeshift = False
 +		self.standby = False
++		self.usb = 0
 +		self.dolbyAvailable = False
 +		self.mp3Available = False
-+		self.DTSAvailable = False
++#		self.DTSAvailable = False
 +		self.timer = eTimer()
 +		self.timer.callback.append(self.timerEvent)
 +		self.timer.start(60000, False) # start one minute timer
++		Console().ePopen("fp_control -i 23 0")
 +		b = str(config.plugins.vfdicon.ledbright.value)
 +		c = str(config.plugins.vfdicon.crossbright.value)
 +		Console().ePopen("fp_control -l 0 0 -l 1 " + b + " -l 4 " + c + " -l 5 " + c + " -l 6 " + c + " -l 7 " + c)
@@ -1701,9 +1710,19 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +				{
 +					iPlayableService.evUpdatedInfo: self.UpdatedInfo,
 +					iPlayableService.evUpdatedEventInfo: self.__evUpdatedEventInfo,
++					iPlayableService.evVideoSizeChanged: self.__evVideoSizeChanged,
++					iPlayableService.evSeekableStatusChanged: self.__evSeekableStatusChanged,
++					iPlayableService.evTunedIn: self.__evTunedIn,
++					iPlayableService.evTuneFailed: self.__evTuneFailed,
 +					iPlayableService.evStart: self.__evStart
 +				})
 +			config.misc.standbyCounter.addNotifier(self.onEnterStandby, initial_call = False)
++			session.nav.record_event.append(self.gotRecordEvent)
++			try:
++				from Plugins.SystemPlugins.Hotplug.plugin import hotplugNotifier
++				hotplugNotifier.append(self.hotplugCB)
++			except:
++				pass
 +		else:
 +			self.__event_tracker = ServiceEventTracker(screen = self,eventmap =
 +				{
@@ -1723,6 +1742,7 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +
 +	def __evStart(self):
 +		print '[VFD-Icons] __evStart'
++		self.__evSeekableStatusChanged()
 +
 +	def __evUpdatedEventInfo(self):
 +		print '[VFD-Icons] __evUpdatedEventInfo'
@@ -1732,10 +1752,16 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +		print '[VFD-Icons] __evUpdatedInfo'
 +		self.checkAudioTracks()
 +		self.writeName()
++		if DisplayType == 5:
++			self.showCrypted()
++			self.showDolby()
++			self.showMP3()
++			self.showTuned()
++			self.showMute()
 +
 +	def writeName(self):
 +		if (config.plugins.vfdicon.displayshow.value != "date" and config.plugins.vfdicon.displayshow.value != "day_date"
-+			and config.plugins.vfdicon.displayshow.value != "time_date" and config.plugins.vfdicon.displayshow.value != "time"):
++			and config.plugins.vfdicon.displayshow.value != "time_date" and config.plugins.vfdicon.displayshow.value != "time" and config.plugins.vfdicon.displayshow.value != "timeHM"):
 +			servicename = "            "
 +			if config.plugins.vfdicon.displayshow.value != "nothing":
 +				service = self.session.nav.getCurrentlyPlayingServiceOrGroup()
@@ -1771,6 +1797,17 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +			servicename = servicename.replace('  ', ' ')
 +			evfd.getInstance().vfd_write_string(servicename[0:63])
 +
++	def showCrypted(self):
++		if config.plugins.vfdicon.showicons.value != "none":
++			service = self.session.nav.getCurrentService()
++			if service:
++				info = service.info()
++				crypted = info.getInfo(iServiceInformation.sIsCrypted)
++				if crypted == 1:
++					Console().ePopen("fp_control -i 7 1") #padlock icon
++				else:
++					Console().ePopen("fp_control -i 7 0")
++
 +	def checkAudioTracks(self):
 +		self.dolbyAvailable = False
 +		self.mp3Available = False
@@ -1788,18 +1825,127 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +							self.dolbyAvailable = True
 +						if description.find("MP3") != -1:
 +							self.mp3Available = True
-+						if description.find("DTS") != -1:
-+							self.DTSAvailable = True
++#						if description.find("DTS") != -1:
++#							self.DTSAvailable = True
++
++	def showDolby(self):
++		if self.dolbyAvailable:
++			Console().ePopen("fp_control -i 8 1") #Dolby
++		else:
++			Console().ePopen("fp_control -i 8 0")
++
++	def showMP3(self):
++		if self.mp3Available:
++			Console().ePopen("fp_control -i 12 1") #MP3
++		else:
++			Console().ePopen("fp_control -i 12 0")
++
++	def showTuned(self):
++		if config.plugins.vfdicon.showicons.value == "all":
++			if self.tuned == True:
++				service = self.session.nav.getCurrentService()
++				if service is not None and self.play == False:
++					info = service.info()
++					TPdata = info and info.getInfoObject(iServiceInformation.sTransponderData)
++#					tunerType = TPdata.get("tuner_type")
++#					if tunerType == "DVB-S":
++					feinfo = service.frontendInfo()
++					FEdata = feinfo and feinfo.getAll(True)
++					tunerNumber = FEdata and FEdata.get("tuner_number")
++					print "[VFD-Icons] Set tuner number icon ", tunerNumber
++					if tunerNumber == 0:
++						Console().ePopen("fp_control -i 10 1 -i 11 0") #Tu1 on, Tu2 off
++					else:
++						Console().ePopen("fp_control -i 10 0 -i 11 1") #Tu1 off, Tu2 on
++#					elif tunerType == "DVB-T" or tunerType == "DVB-C":
++#						print "[VFD-Icons] Set TER icon"
++#						Console().ePopen("fp_control -i 26 1 -i 2 0 -i 44 0 -i 45 0 -i 29 0") #TER on, SAT, Tu1, Tu2 off
++				else:
++					print "[VFD-Icons] No TER or SAT icon"
++					Console().ePopen("fp_control -i 10 0 -i 11 0") #TER, SAT, Tu1, Tu2 off
++			else:
++				                              # HD, Timeshift,Dolby,MP3,    Tu1    Tu2 off
++				Console().ePopen("fp_control  -i 5 0 -i 3 0 -i 8 0 -i 12 0 -i 10 0 -i 11 0")
++
++	def showMute(self):
++		if config.plugins.vfdicon.showicons.value != "none":
++			self.isMuted = eDVBVolumecontrol.getInstance().isMuted()
++			if self.isMuted:
++				Console().ePopen("fp_control -i 9 1") #Mute
++			else:
++				Console().ePopen("fp_control -i 9 0")
++
++	def showTimer(self):
++		if config.plugins.vfdicon.showicons.value == "all":
++			# check if timers are set
++			next_rec_time = -1
++			next_rec_time = self.session.nav.RecordTimer.getNextRecordingTime()
++			if next_rec_time > 0:
++				Console().ePopen("fp_control -i 4 1") #Timer
++			else:
++				Console().ePopen("fp_control -i 4 0")
 +
 +	def timerEvent(self):
++		self.showTimer() #update timer icon
 + 		if self.standby == False:
-+			disptype = config.plugins.vfdicon.displayshow.value
-+		else:
-+			disptype = config.plugins.vfdicon.stbshow.value
-+		self.writeDate(disptype)
++			self.showMute() #update mute icon
++			if config.plugins.vfdicon.showicons.value == "all":
++				if (self.record == True or self.timeshift == True): # if recording or timeshifting, display a rotating disc
++					Console().ePopen("fp_control  -i 24 1")
++		if self.record == False and self.timeshift == False:
++ 			if self.standby == False:
++				if config.plugins.vfdicon.showicons.value == "all":
++					Console().ePopen("fp_control  -i 24 0")
++				disptype = config.plugins.vfdicon.displayshow.value
++			else:
++				disptype = config.plugins.vfdicon.stbshow.value
++			self.writeDate(disptype)
++
++	def __evVideoSizeChanged(self):
++		if config.plugins.vfdicon.showicons.value != "none":
++			service = self.session.nav.getCurrentService()
++			if service:
++				info = service.info()
++				height = info.getInfo(iServiceInformation.sVideoHeight)
++				if height > 576: #set HD icon
++					Console().ePopen("fp_control -i 5 1")
++				else:
++					Console().ePopen("fp_control -i 5 0")
++
++	def __evSeekableStatusChanged(self):
++		if config.plugins.vfdicon.showicons.value == "all":
++			service = self.session.nav.getCurrentService()
++			if service:
++				if self.play == False:
++					ts = service and service.timeshift()
++#					if ts and ts.isTimeshiftEnabled() > 0:
++					if ts and ts.isTimeshiftActive() > 0:
++						self.timeshift = True
++						Console().ePopen("fp_control -i 3 1") #Time shift
++					else:
++						self.timeshift = False
++						Console().ePopen("fp_control -i 3 0") #Time shift icon off
++
++	def gotRecordEvent(self, service, event):
++		if config.plugins.vfdicon.showicons.value != 'none':
++			if event in (iRecordableService.evEnd, iRecordableService.evStart, None):
++				recs = self.session.nav.getRecordings()
++				nrecs = len(recs)
++				if nrecs > 0: #recording active
++					self.record = True
++					Console().ePopen("fp_control -i 3 1") #REC on
++				else: # no recording active
++					Console().ePopen("fp_control -i 3 0") #REC off
++					self.RecordEnd()
++
++	def RecordEnd(self):
++		if self.record:
++			self.record = False
++			self.session.nav.record_event.remove(self.gotRecordEvent)
++			self.showTimer() #update timer icon
 +
 +	def writeDate(self, disp): #TODO: replace with case
-+		if disp == "date" or disp == "day_date" or disp == "time" or disp == "time_date" or disp == "nothing":
++		if disp == "date" or disp == "day_date" or disp == "time" or disp == "timeHM" or disp == "time_date" or disp == "nothing":
 +			tm = localtime()
 +			if disp == "day_date":
 +				date = strftime("%a", tm)[0:2] + strftime(" %d-%m-%y", tm)
@@ -1807,11 +1953,19 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +				date = strftime("%d-%m-%y", tm) 
 +			elif disp == "time_date":
 +				date = strftime("%d-%m %H:%M", tm) 
++			elif disp == "timeHM":
++				date = strftime("    %H:%M", tm)
 +			elif disp == "time":
 +				date = strftime("    %H:%M:%S", tm)
 +			elif disp == "nothing":
 +				date = ("            ")
 +			evfd.getInstance().vfd_write_string(date[0:12])
++
++	def __evTunedIn(self):
++		self.tuned = True
++
++	def __evTuneFailed(self):
++		self.tuned = False
 +
 +	def onLeaveStandby(self):
 +		self.standby = False
@@ -1845,11 +1999,22 @@ diff -Nur --exclude=.git --exclude=tuxtxt enigma2.org/lib/python/Plugins/Extensi
 +			self.timer.stop() # stop minute timer
 +			self.timer.start(999, False) # start one second timer
 +			print "[VFD-Icons] second timer started"
-+		if (config.plugins.vfdicon.stbshow.value == "date" or config.plugins.vfdicon.stbshow.value == "day_date" or config.plugins.vfdicon.stbshow.value == "time" or config.plugins.vfdicon.stbshow.value == "time_date"):
++		if (config.plugins.vfdicon.stbshow.value == "date" or config.plugins.vfdicon.stbshow.value == "day_date" or config.plugins.vfdicon.stbshow.value == "timeHM" or config.plugins.vfdicon.stbshow.value == "time" or config.plugins.vfdicon.stbshow.value == "time_date"):
 +			self.writeDate(config.plugins.vfdicon.stbshow.value)
 +		else:
 +			evfd.getInstance().vfd_clear_string()
 +		self.standby = True
++
++	def hotplugCB(self, dev, media_state):
++		if config.plugins.vfdicon.showicons.value == "all":
++			if dev.__contains__('sda') or dev.__contains__('sdb') or dev.__contains__('sdc'):
++#				if media_state == "add" or media_state == "change":
++				if media_state == "add":
++					Console().ePopen("fp_control -i 6 1")
++					self.usb = 1
++				if media_state == "remove":
++					Console().ePopen("fp_control -i 6 0")
++					self.usb = 0
 +
 +VFDIconsInstance = None
 +
