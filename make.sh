@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 20161217.1
+# Version 20170302.1
 
 ##############################################
 
@@ -273,9 +273,9 @@ case "$IMAGE" in
 		case $7 in
 			[1-4])	REPLY=$7;;
 			*)	echo -e "\nWhich Neutrino variant do you want to build?"
-				echo "   1)  Neutrino mp (cst-next)"
-				echo "   2) Neutrino mp (cst-next-ni)"
-				echo "   3)  Neutrino HD2 exp"
+				echo "   1)   Neutrino mp (cst-next)"
+				echo "   2)   Neutrino mp (cst-next-ni)"
+				echo "   3)   Neutrino HD2 exp"
 				echo "   4*)  Neutrino mp (Tangos)"
 #				echo "   5)  Neutrino mp (martii-github)"
 				read -p " Select Neutrino variant (1-4)? ";;
