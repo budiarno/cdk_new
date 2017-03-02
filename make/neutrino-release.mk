@@ -734,7 +734,9 @@ endif
 #
 # iso-codes
 #
-	cp -aR $(TARGETPREFIX)/usr/local/share/iso-codes $(RELEASE_DIR)/usr/share/
+	if [ -e $(TARGETPREFIX)/usr/local/share/iso-codes/ ]; then \
+		cp -aR $(TARGETPREFIX)/usr/local/share/iso-codes $(RELEASE_DIR)/usr/share/; \
+	fi
 #
 # httpd/icons/locale/themes
 #
