@@ -372,7 +372,6 @@ $(D)/neutrino-mp-cst-next: $(D)/neutrino-mp-cst-next.do_prepare $(D)/neutrino-mp
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
-	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
 	$(TOUCH)
 
 neutrino-mp-cst-next-clean:
@@ -699,7 +698,7 @@ $(D)/neutrino-mp-tangos: $(D)/neutrino-mp-tangos.do_prepare $(D)/neutrino-mp-tan
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
-	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
+#	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
 	$(TOUCH)
 
 neutrino-mp-tangos-clean:
