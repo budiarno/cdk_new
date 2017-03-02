@@ -221,9 +221,10 @@ release_enigma2_spark:
 	cp -dp $(SKEL_ROOT)/release/lircd_spark.conf $(RELEASE_DIR)/etc/lircd.conf
 	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
 	mkdir -p $(RELEASE_DIR)/var/run/lirc
+	cp -f $(SKEL_ROOT)/release/rc_spark.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_spark.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/spark/rc.png || true
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/leddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD; \
@@ -240,6 +241,7 @@ release_enigma2_spark7162:
 	cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/stgfb/stmfb/stmcore-display-sti7105.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/frontends/*.ko $(RELEASE_DIR)/lib/modules/
 	cp -f $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/i2c_spi/i2s.ko $(RELEASE_DIR)/lib/modules/
+	cp -f $(SKEL_ROOT)/release/fstab_spark7162 $(RELEASE_DIR)/etc/fstab
 	cp $(SKEL_ROOT)/boot/video_7105.elf $(RELEASE_DIR)/boot/video.elf
 	cp $(SKEL_ROOT)/boot/audio_7105.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7105_pdk7105.fw $(RELEASE_DIR)/lib/firmware/component.fw
@@ -247,9 +249,9 @@ release_enigma2_spark7162:
 	cp -dp $(SKEL_ROOT)/release/lircd_spark7162.conf $(RELEASE_DIR)/etc/lircd.conf
 	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
 	mkdir -p $(RELEASE_DIR)/var/run/lirc
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_spark.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/spark/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_spark.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/vfddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD; \
@@ -267,9 +269,9 @@ release_enigma2_fortis_hdbox:
 	cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/stgfb/stmfb/stmcore-display-stx7109c3.ko $(RELEASE_DIR)/lib/modules/
 	cp $(SKEL_ROOT)/boot/video_7109.elf $(RELEASE_DIR)/boot/video.elf
 	cp $(SKEL_ROOT)/boot/audio_7100.elf $(RELEASE_DIR)/boot/audio.elf
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_fs9000.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/fs9000/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_fs9000.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/fs9000VFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/vfddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/fs9000VFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/fs9000VFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/fs9000VFD; \
@@ -292,10 +294,9 @@ release_enigma2_atevio7500:
 	cp $(SKEL_ROOT)/firmware/dvb-fe-stv6306.fw $(RELEASE_DIR)/lib/firmware/
 	rm -f $(RELEASE_DIR)/lib/modules/boxtype.ko
 	rm -f $(RELEASE_DIR)/lib/modules/mpeg2hw.ko
-	cp -f $(SKEL_ROOT)/release/rc_fs9000.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png; \
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_fs9000.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs8200/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_fs9000.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs8200VFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/vfddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs8200VFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs8200VFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/hs8200VFD; \
@@ -315,9 +316,9 @@ release_enigma2_octagon1008:
 	cp $(SKEL_ROOT)/boot/audio_7100.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/dvb-fe-avl2108.fw $(RELEASE_DIR)/lib/firmware/
 	cp $(SKEL_ROOT)/firmware/dvb-fe-stv6306.fw $(RELEASE_DIR)/lib/firmware/
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs9510/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/vfddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD; \
@@ -337,7 +338,7 @@ release_enigma2_hs7110:
 	cp $(SKEL_ROOT)/boot/video_7111.elf $(RELEASE_DIR)/boot/video.elf
 	cp $(SKEL_ROOT)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fw
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_hs7110.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs7110/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_hs7110.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 
 #
 # release_hs7420
@@ -353,9 +354,9 @@ release_enigma2_hs7420:
 	cp $(SKEL_ROOT)/boot/video_7111.elf $(RELEASE_DIR)/boot/video.elf
 	cp $(SKEL_ROOT)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fw
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs7420/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/vfddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD; \
@@ -376,9 +377,9 @@ release_enigma2_hs7429:
 	cp $(SKEL_ROOT)/boot/video_7111.elf $(RELEASE_DIR)/boot/video.elf
 	cp $(SKEL_ROOT)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fw
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs7429/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/vfddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/hs9510VFD; \
@@ -398,9 +399,9 @@ release_enigma2_hs7810a:
 	cp $(SKEL_ROOT)/boot/video_7111.elf $(RELEASE_DIR)/boot/video.elf
 	cp $(SKEL_ROOT)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fww
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs7810a/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/vfddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD; \
@@ -420,9 +421,9 @@ release_enigma2_hs7119:
 	cp $(SKEL_ROOT)/boot/video_7111.elf $(RELEASE_DIR)/boot/video.elf
 	cp $(SKEL_ROOT)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fw
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_hs7110.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs7110/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_hs7110.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/vfddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD; \
@@ -442,9 +443,9 @@ release_enigma2_hs7819:
 	cp $(SKEL_ROOT)/boot/video_7111.elf $(RELEASE_DIR)/boot/video.elf
 	cp $(SKEL_ROOT)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fw
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs7819/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD/plugin.py ]; then \
-		rm -f $(RELEASE_DIR)usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
+		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/vfddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD; \
 		cp -rf $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD/* $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons; \
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/hs7810aVFD; \
@@ -539,7 +540,7 @@ release_enigma2_tf7700:
 	cp -f $(SKEL_ROOT)/release/fstab_tf7700 $(RELEASE_DIR)/etc/fstab
 	cp -f $(TARGETPREFIX)/sbin/shutdown $(RELEASE_DIR)/sbin/
 	rm -f $(RELEASE_DIR)/bin/vdstandby
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_tf7700.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs8200/rc.png || true
+	cp -f $(SKEL_ROOT)/release/rc_tf7700.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	cp -f $(SKEL_ROOT)/root_enigma2/usr/local/share/enigma2/keymap_tf7700.xml $(RELEASE_DIR)/usr/local/share/enigma2/keymap.xml
 
 #
