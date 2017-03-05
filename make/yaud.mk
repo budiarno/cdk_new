@@ -57,5 +57,5 @@ yaud-none: \
 	$(D)/bootstrap \
 	$(D)/linux-kernel \
 	$(D)/system-tools
-	@touch $(D)/$(notdir $@)
+	$(SILENT)touch $(D)/$(notdir $@)
 	@echo -e "Build of \033[01;32myaud-none\033[0m completed."; echo

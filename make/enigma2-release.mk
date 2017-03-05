@@ -696,16 +696,13 @@ endif
 		stm/platform/p2div64.ko \
 		media/sysfs/stm/stmsysfs.ko \
 	;do \
-		echo `pwd` player2/linux/drivers/$$mod; \
 		if [ -e player2/linux/drivers/$$mod ]; then \
 			cp player2/linux/drivers/$$mod $(RELEASE_DIR)/lib/modules/; \
 			$(TARGET)-strip --strip-unneeded $(RELEASE_DIR)/lib/modules/`basename $$mod`; \
 		else \
 			touch $(RELEASE_DIR)/lib/modules/`basename $$mod`; \
 		fi; \
-		echo "."; \
 	done
-	echo "touched";
 #
 # modules
 #
@@ -769,7 +766,7 @@ endif
 	[ -e $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl871x/8712u.ko ] && cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl871x/8712u.ko $(RELEASE_DIR)/lib/modules/ || true
 	[ -e $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8188eu/8188eu.ko ] && cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8188eu/8188eu.ko $(RELEASE_DIR)/lib/modules/ || true
 	[ -e $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8192cu/8192cu.ko ] && cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8192cu/8192cu.ko $(RELEASE_DIR)/lib/modules/ || true
-	[ -e $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8192du/8192du.ko ] && cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8192du/8192du.ko $(RELEASE_DIR)/release/lib/modules || true
+	[ -e $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8192du/8192du.ko ] && cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8192du/8192du.ko $(RELEASE_DIR)/lib/modules/ || true
 ifeq ($(IMAGE), $(filter $(IMAGE), enigma2-wlandriver neutrino-wlandriver))
 	install -d $(RELEASE_DIR)/etc/Wireless
 	cp -aR $(SKEL_ROOT)/firmware/Wireless/* $(RELEASE_DIR)/etc/Wireless/
@@ -1103,7 +1100,9 @@ endif
 # sh4-linux-strip all
 #
 ifneq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug))
+	echo -n "Stripping..." ;
 	find $(RELEASE_DIR)/ -name '*' -exec $(TARGET)-strip --strip-unneeded {} &>/dev/null \;
+	echo -e " done.\n" ;
 endif
 #
 # release-clean

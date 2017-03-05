@@ -3,7 +3,7 @@
 #
 $(D)/diverse-tools:
 	$(START_BUILD)
-	( cd root/etc && for i in $(DIVERSE_TOOLS_ADAPTED_ETC_FILES); do \
+	$(SILENT)( cd root/etc && for i in $(DIVERSE_TOOLS_ADAPTED_ETC_FILES); do \
 		[ -f $$i ] && install -m 644 $$i $(TARGETPREFIX)/etc/$$i || true; \
 		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(TARGETPREFIX)/etc/$$i || true; done ) ; \
 	( cd root/etc && for i in $(INITSCRIPTS_ADAPTED_ETC_FILES); do \
@@ -80,7 +80,7 @@ INITSCRIPTS_ADAPTED_ETC_FILES = \
 # for updating init scripts in runlevel for yaud targets
 #
 define adapted-etc-files
-	cd root/etc && \
+	$(SILENT)cd root/etc && \
 	for i in $(1); do \
 		[ -f $$i ] && install -m 644 $$i $(TARGETPREFIX)/etc/$$i || true; \
 		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(TARGETPREFIX)/etc/$$i || true; \

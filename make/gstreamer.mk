@@ -10,7 +10,7 @@ $(D)/gstreamer: $(D)/bootstrap $(D)/glib2 $(D)/libxml2_e2 $(D)/glib-networking $
 	$(START_BUILD)
 	$(REMOVE)/gstreamer-$(GSTREAMER_VER)
 	$(UNTAR)/gstreamer-$(GSTREAMER_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/gstreamer-$(GSTREAMER_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gstreamer-$(GSTREAMER_VER); \
 		for i in \
 			gstreamer-1.0-fix-crash-with-gst-inspect.patch \
 			gstreamer-1.0-revert-use-new-gst-adapter-get-buffer.patch \
@@ -63,7 +63,7 @@ $(D)/gst_plugins_base: $(D)/bootstrap $(D)/glib2 $(D)/orc $(D)/gstreamer $(D)/li
 	$(START_BUILD)
 	$(REMOVE)/gst-plugins-base-$(GSTREAMER_BASE_VER)
 	$(UNTAR)/gst-plugins-base-$(GSTREAMER_BASE_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/gst-plugins-base-$(GSTREAMER_BASE_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gst-plugins-base-$(GSTREAMER_BASE_VER); \
 		for i in \
 			gst-1.0-plugins-base-get-caps-from-src-pad-when-query-caps.patch \
 			gst-1.0-plugins-base-riff-media-added-fourcc-to-all-mpeg4-video-caps.patch \
@@ -87,8 +87,8 @@ $(D)/gst_plugins_base: $(D)/bootstrap $(D)/glib2 $(D)/orc $(D)/gstreamer $(D)/li
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
-		$(REWRITE_LIBTOOL)/gstreamer-1.0/$$i; done
+	$(SILENT)for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
+		$(REWRITE_LIBTOOL_NS)/gstreamer-1.0/$$i; done
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/gstreamer-allocators-1.0.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/gstreamer-app-1.0.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/gstreamer-audio-1.0.pc
@@ -138,7 +138,7 @@ $(D)/gst_plugins_good: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(D)/
 	$(START_BUILD)
 	$(REMOVE)/gst-plugins-good-$(GSTREAMER_GOOD_VER)
 	$(UNTAR)/gst-plugins-good-$(GSTREAMER_GOOD_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/gst-plugins-good-$(GSTREAMER_GOOD_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gst-plugins-good-$(GSTREAMER_GOOD_VER); \
 		for i in \
 			gst-1.0-plugins-good-gstrtpmp4gpay-set-dafault-value-for-MPEG4-without-co.patch \
 		; do \
@@ -158,8 +158,8 @@ $(D)/gst_plugins_good: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(D)/
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
-		$(REWRITE_LIBTOOL)/gstreamer-1.0/$$i; done
+	$(SILENT)for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
+		$(REWRITE_LIBTOOL_NS)/gstreamer-1.0/$$i; done
 	$(REMOVE)/gst-plugins-good-$(GSTREAMER_GOOD_VER)
 	$(TOUCH)
 
@@ -175,7 +175,7 @@ $(D)/gst_plugins_bad: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base libmod
 	$(START_BUILD)
 	$(REMOVE)/gst-plugins-bad-$(GSTREAMER_BAD_VER)
 	$(UNTAR)/gst-plugins-bad-$(GSTREAMER_BAD_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/gst-plugins-bad-$(GSTREAMER_BAD_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gst-plugins-bad-$(GSTREAMER_BAD_VER); \
 		for i in \
 			gst-1.0-plugins-bad-fix-automake.patch \
 			gst-1.0-plugins-bad-fix-compile-error.patch \
@@ -251,8 +251,8 @@ $(D)/gst_plugins_bad: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base libmod
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
-		$(REWRITE_LIBTOOL)/gstreamer-1.0/$$i; done
+	$(SILENT)for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
+		$(REWRITE_LIBTOOL_NS)/gstreamer-1.0/$$i; done
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/gstreamer-codecparsers-1.0.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/gstreamer-bad-audio-1.0.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/gstreamer-bad-base-1.0.pc
@@ -290,7 +290,7 @@ $(D)/gst_plugins_ugly: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(ARC
 	$(START_BUILD)
 	$(REMOVE)/gst-plugins-ugly-$(GSTREAMER_UGLY_VER)
 	$(UNTAR)/gst-plugins-ugly-$(GSTREAMER_UGLY_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/gst-plugins-ugly-$(GSTREAMER_UGLY_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gst-plugins-ugly-$(GSTREAMER_UGLY_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--disable-fatal-warnings \
@@ -306,8 +306,8 @@ $(D)/gst_plugins_ugly: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(ARC
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
-		$(REWRITE_LIBTOOL)/gstreamer-1.0/$$i; done
+	$(SILENT)for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
+		$(REWRITE_LIBTOOL_NS)/gstreamer-1.0/$$i; done
 	$(REMOVE)/gst-plugins-ugly-$(GSTREAMER_UGLY_VER)
 	$(TOUCH)
 
@@ -323,7 +323,7 @@ $(D)/gst_libav: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(ARCHIVE)/g
 	$(START_BUILD)
 	$(REMOVE)/gst-libav-$(GSTREAMER_LIBAV_VER)
 	$(UNTAR)/gst-libav-$(GSTREAMER_LIBAV_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/gst-libav-$(GSTREAMER_LIBAV_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gst-libav-$(GSTREAMER_LIBAV_VER); \
 		for i in \
 			gst-1.0-libav-disable-yasm-for-libav-when-disable-yasm.patch \
 			gst-1.0-libav-fix-sh4-compile-gcc48.patch \
@@ -386,7 +386,7 @@ $(D)/gst_plugins_fluendo_mpegdemux: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugi
 	$(START_BUILD)
 	$(REMOVE)/gst-fluendo-mpegdemux-$(GSTREAMER_FLUENDO_VER)
 	$(UNTAR)/gst-fluendo-mpegdemux-$(GSTREAMER_FLUENDO_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/gst-fluendo-mpegdemux-$(GSTREAMER_FLUENDO_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gst-fluendo-mpegdemux-$(GSTREAMER_FLUENDO_VER); \
 		for i in \
 			gst-plugins-fluendo-mpegdemux-$(GSTREAMER_FLUENDO_VER).patch \
 		; do \
@@ -414,7 +414,7 @@ $(D)/gst_gmediarender: $(D)/bootstrap $(D)/gst_plugins_dvbmediasink $(D)/libupnp
 	$(START_BUILD)
 	$(REMOVE)/gmediarender-$(GSTREAMER_GMEDIARENDER_VER)
 	$(UNTAR)/gmediarender-$(GSTREAMER_GMEDIARENDER_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/gmediarender-$(GSTREAMER_GMEDIARENDER_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gmediarender-$(GSTREAMER_GMEDIARENDER_VER); \
 		for i in \
 			gst-gmediarender-$(GSTREAMER_GMEDIARENDER_VER).patch; \
 		; do \
@@ -442,7 +442,7 @@ $(D)/orc: $(D)/bootstrap $(ARCHIVE)/orc-$(ORC_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/orc-$(ORC_VER)
 	$(UNTAR)/orc-$(ORC_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/orc-$(ORC_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/orc-$(ORC_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \
@@ -467,7 +467,7 @@ $(D)/libdca: $(D)/bootstrap $(ARCHIVE)/libdca-$(LIBDCA_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/libdca-$(LIBDCA_VER)
 	$(UNTAR)/libdca-$(LIBDCA_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/libdca-$(LIBDCA_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libdca-$(LIBDCA_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \
@@ -486,14 +486,14 @@ $(D)/libdca: $(D)/bootstrap $(ARCHIVE)/libdca-$(LIBDCA_VER).tar.bz2
 $(D)/gst_plugin_subsink: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(D)/gst_plugins_good $(D)/gst_plugins_bad $(D)/gst_plugins_ugly
 	$(START_BUILD)
 	$(REMOVE)/gstreamer1.0-plugin-subsink
-	set -e; if [ -d $(ARCHIVE)/gstreamer1.0-plugin-subsink.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/gstreamer1.0-plugin-subsink.git ]; \
 		then cd $(ARCHIVE)/gstreamer1.0-plugin-subsink.git; git pull; \
 		else cd $(ARCHIVE); git clone git://github.com/christophecvr/gstreamer1.0-plugin-subsink.git gstreamer1.0-plugin-subsink.git; \
 		fi
 	cp -ra $(ARCHIVE)/gstreamer1.0-plugin-subsink.git $(BUILD_TMP)/gstreamer1.0-plugin-subsink
-	set -e; cd $(BUILD_TMP)/gstreamer1.0-plugin-subsink; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gstreamer1.0-plugin-subsink; \
 		aclocal --force -I m4; \
-		libtoolize --copy --ltdl --force; \
+		libtoolize $(CONFIGURE_SILENT) --copy --ltdl --force; \
 		autoconf --force; \
 		autoheader --force; \
 		automake --add-missing --copy --force-missing --foreign; \
@@ -502,8 +502,8 @@ $(D)/gst_plugin_subsink: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(D
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
-		$(REWRITE_LIBTOOL)/gstreamer-1.0/$$i; done
+	$(SILENT)for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
+		$(REWRITE_LIBTOOL_NS)/gstreamer-1.0/$$i; done
 	$(REMOVE)/gstreamer1.0-plugin-subsink
 	$(TOUCH)
 
@@ -513,14 +513,14 @@ $(D)/gst_plugin_subsink: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(D
 $(D)/gst_plugins_dvbmediasink: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(D)/gst_plugins_good $(D)/gst_plugins_bad $(D)/gst_plugins_ugly $(D)/gst_plugin_subsink $(D)/libdca
 	$(START_BUILD)
 	$(REMOVE)/gstreamer1.0-plugin-multibox-dvbmediasink
-	set -e; if [ -d $(ARCHIVE)/gstreamer1.0-plugin-multibox-dvbmediasink.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/gstreamer1.0-plugin-multibox-dvbmediasink.git ]; \
 		then cd $(ARCHIVE)/gstreamer1.0-plugin-multibox-dvbmediasink.git; git pull; \
 		else cd $(ARCHIVE); git clone -b experimental git://github.com/christophecvr/gstreamer1.0-plugin-multibox-dvbmediasink.git gstreamer1.0-plugin-multibox-dvbmediasink.git; \
 		fi
 	cp -ra $(ARCHIVE)/gstreamer1.0-plugin-multibox-dvbmediasink.git $(BUILD_TMP)/gstreamer1.0-plugin-multibox-dvbmediasink
-	set -e; cd $(BUILD_TMP)/gstreamer1.0-plugin-multibox-dvbmediasink; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gstreamer1.0-plugin-multibox-dvbmediasink; \
 		aclocal --force -I m4; \
-		libtoolize --copy --force; \
+		libtoolize $(CONFIGURE_SILENT) --copy --force; \
 		autoconf --force; \
 		autoheader --force; \
 		automake --add-missing --copy --force-missing --foreign; \
@@ -536,7 +536,7 @@ $(D)/gst_plugins_dvbmediasink: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_ba
 		; \
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
-		$(REWRITE_LIBTOOL)/gstreamer-1.0/$$i; done
+	$(SILENT)for i in `cd $(TARGETPREFIX)/usr/lib/gstreamer-1.0; echo *.la`; do \
+		$(REWRITE_LIBTOOL_NS)/gstreamer-1.0/$$i; done
 	$(REMOVE)/gstreamer1.0-plugin-multibox-dvbmediasink
 	$(TOUCH)

@@ -10,7 +10,7 @@ $(D)/libncurses: $(D)/bootstrap $(ARCHIVE)/ncurses-$(NCURSES_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/ncurses-$(NCURSES_VER)
 	$(UNTAR)/ncurses-$(NCURSES_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/ncurses-$(NCURSES_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/ncurses-$(NCURSES_VER); \
 		$(CONFIGURE) \
 			--target=$(TARGET) \
 			--prefix=/usr \
@@ -62,7 +62,7 @@ $(D)/gmp: $(D)/bootstrap $(ARCHIVE)/gmp-$(GMP_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/gmp-$(GMP_MAJOR)
 	$(UNTAR)/gmp-$(GMP_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/gmp-$(GMP_MAJOR); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gmp-$(GMP_MAJOR); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \
@@ -84,7 +84,7 @@ $(D)/host_libffi: $(ARCHIVE)/libffi-$(LIBFFI_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libffi-$(LIBFFI_VER)
 	$(UNTAR)/libffi-$(LIBFFI_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libffi-$(LIBFFI_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libffi-$(LIBFFI_VER); \
 		./configure $(CONFIGURE_SILENT) \
 			--prefix=$(HOSTPREFIX) \
 			--disable-static \
@@ -101,7 +101,7 @@ $(D)/libffi: $(D)/bootstrap $(ARCHIVE)/libffi-$(LIBFFI_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libffi-$(LIBFFI_VER)
 	$(UNTAR)/libffi-$(LIBFFI_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libffi-$(LIBFFI_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libffi-$(LIBFFI_VER); \
 		for i in \
 			libffi-$(LIBFFI_VER).patch \
 		; do \
@@ -137,9 +137,9 @@ $(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/glib-$(GLIB_VER)
 	$(UNTAR)/glib-$(GLIB_VER).tar.xz
-	export PKG_CONFIG=/usr/bin/pkg-config; \
-	export PKG_CONFIG_PATH=$(HOSTPREFIX)/lib/pkgconfig; \
-	set -e; cd $(BUILD_TMP)/glib-$(GLIB_VER); \
+	$(SILENT)export PKG_CONFIG=/usr/bin/pkg-config
+	$(SILENT)export PKG_CONFIG_PATH=$(HOSTPREFIX)/lib/pkgconfig
+	$(SILENT)set -e; cd $(BUILD_TMP)/glib-$(GLIB_VER); \
 		./configure $(CONFIGURE_SILENT) \
 			--enable-static=yes \
 			--enable-shared=no \
@@ -157,7 +157,7 @@ $(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(D)
 	$(START_BUILD)
 	$(REMOVE)/glib-$(GLIB_VER)
 	$(UNTAR)/glib-$(GLIB_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/glib-$(GLIB_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/glib-$(GLIB_VER); \
 		echo "glib_cv_va_copy=no" > config.cache; \
 		echo "glib_cv___va_copy=yes" >> config.cache; \
 		echo "glib_cv_va_val_copy=yes" >> config.cache; \
@@ -211,7 +211,7 @@ $(D)/libarchive: $(D)/bootstrap $(ARCHIVE)/libarchive-$(LIBARCHIVE_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libarchive-$(LIBARCHIVE_VER)
 	$(UNTAR)/libarchive-$(LIBARCHIVE_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libarchive-$(LIBARCHIVE_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libarchive-$(LIBARCHIVE_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
@@ -243,7 +243,7 @@ $(D)/libreadline: $(D)/bootstrap $(ARCHIVE)/readline-$(READLINE_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/readline-$(READLINE_VER)
 	$(UNTAR)/readline-$(READLINE_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/readline-$(READLINE_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/readline-$(READLINE_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
@@ -270,7 +270,7 @@ $(D)/openssl: $(D)/bootstrap $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).
 	$(START_BUILD)
 	$(REMOVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER)
 	$(UNTAR)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz
-	set -e; cd $(BUILD_TMP)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER); \
 		for i in \
 			openssl-$(OPENSSL_VER)-optimize-for-size.patch \
 			openssl-$(OPENSSL_VER)-makefile-dirs.patch \
@@ -314,7 +314,7 @@ $(D)/libbluray: $(D)/bootstrap $(ARCHIVE)/libbluray-$(LIBBLURAY_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/libbluray-$(LIBBLURAY_VER)
 	$(UNTAR)/libbluray-$(LIBBLURAY_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/libbluray-$(LIBBLURAY_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libbluray-$(LIBBLURAY_VER); \
 		for i in \
 			libbluray-$(LIBBLURAY_VER).patch \
 		; do \
@@ -355,12 +355,12 @@ $(ARCHIVE)/lua-$(LUA_VER).tar.gz:
 $(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/lua-$(LUA_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/lua-$(LUA_VER)
-	set -e; if [ ! -d $(ARCHIVE)/luaposix.git ]; \
+	$(SILENT)set -e; if [ ! -d $(ARCHIVE)/luaposix.git ]; \
 		then cd $(ARCHIVE); git clone -b release-v$(LUAPOSIX_VER) git://github.com/luaposix/luaposix.git luaposix.git; \
 		fi
 	mkdir -p $(TARGETPREFIX)/usr/share/lua/$(LUA_VER_SHORT)
 	$(UNTAR)/lua-$(LUA_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/lua-$(LUA_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/lua-$(LUA_VER); \
 		for i in \
 			lua-$(LUA_VER)-luaposix-$(LUAPOSIX_VER).patch \
 		; do \
@@ -385,12 +385,12 @@ $(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/lua-$(LUA_VER).tar.gz
 $(D)/luacurl: $(D)/bootstrap $(D)/libcurl $(D)/lua
 	$(START_BUILD)
 	$(REMOVE)/luacurl
-	set -e; if [ -d $(ARCHIVE)/luacurl.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/luacurl.git ]; \
 		then cd $(ARCHIVE)/luacurl.git; git pull; \
 		else cd $(ARCHIVE); git clone git://github.com/Lua-cURL/Lua-cURLv3.git luacurl.git; \
 		fi
 	cp -ra $(ARCHIVE)/luacurl.git $(BUILD_TMP)/luacurl
-	set -e; cd $(BUILD_TMP)/luacurl; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/luacurl; \
 		$(MAKE) CC=$(TARGET)-gcc LDFLAGS="-L$(TARGETPREFIX)/usr/lib" \
 			LIBDIR=$(TARGETPREFIX)/usr/lib \
 			LUA_INC=$(TARGETPREFIX)/usr/include; \
@@ -410,7 +410,7 @@ $(D)/luaexpat: $(D)/bootstrap $(D)/lua $(D)/libexpat $(ARCHIVE)/luaexpat-$(LUAEX
 	$(START_BUILD)
 	$(REMOVE)/luaexpat-$(LUAEXPAT_VER)
 	$(UNTAR)/luaexpat-$(LUAEXPAT_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/luaexpat-$(LUAEXPAT_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/luaexpat-$(LUAEXPAT_VER); \
 		for i in \
 			luaexpat-$(LUAEXPAT_VER).patch \
 		; do \
@@ -428,12 +428,12 @@ $(D)/luaexpat: $(D)/bootstrap $(D)/lua $(D)/libexpat $(ARCHIVE)/luaexpat-$(LUAEX
 $(D)/luasocket: $(D)/bootstrap $(D)/lua
 	$(START_BUILD)
 	$(REMOVE)/luasocket
-	set -e; if [ -d $(ARCHIVE)/luasocket.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/luasocket.git ]; \
 		then cd $(ARCHIVE)/luasocket.git; git pull; \
 		else cd $(ARCHIVE); git clone git://github.com/diegonehab/luasocket.git luasocket.git; \
 		fi
 	cp -ra $(ARCHIVE)/luasocket.git $(BUILD_TMP)/luasocket
-	set -e; cd $(BUILD_TMP)/luasocket; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/luasocket; \
 		$(MAKE) CC=$(TARGET)-gcc LD=$(TARGET)-gcc LUAV=$(LUA_VER_SHORT) LUAINC_linux=$(TARGETPREFIX)/usr/include LUAPREFIX_linux=$(TARGETPREFIX)/usr LUALIB_linux=$(TARGETPREFIX)/usr/lib; \
 		$(MAKE) install-unix LUAPREFIX_linux=$(TARGETPREFIX)/usr LUAV=$(LUA_VER_SHORT)
 	$(REMOVE)/luasocket
@@ -445,12 +445,12 @@ $(D)/luasocket: $(D)/bootstrap $(D)/lua
 $(D)/lua-feedparser: $(D)/bootstrap $(D)/lua $(D)/luasocket $(D)/luaexpat
 	$(START_BUILD)
 	$(REMOVE)/lua-feedparser
-	set -e; if [ -d $(ARCHIVE)/lua-feedparser.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/lua-feedparser.git ]; \
 		then cd $(ARCHIVE)/lua-feedparser.git; git pull; \
 		else cd $(ARCHIVE); git clone git://github.com/slact/lua-feedparser.git lua-feedparser.git; \
 		fi
-	cp -ra $(ARCHIVE)/lua-feedparser.git $(BUILD_TMP)/lua-feedparser
-	set -e; cd $(BUILD_TMP)/lua-feedparser; \
+	$(SILENT)cp -ra $(ARCHIVE)/lua-feedparser.git $(BUILD_TMP)/lua-feedparser
+	$(SILENT)set -e; cd $(BUILD_TMP)/lua-feedparser; \
 		sed -i -e "s/^PREFIX.*//" -e "s/^LUA_DIR.*//" Makefile ; \
 		$(BUILDENV) $(MAKE) install  LUA_DIR=$(TARGETPREFIX)/usr/share/lua/$(LUA_VER_SHORT)
 	$(REMOVE)/lua-feedparser
@@ -468,7 +468,7 @@ $(D)/luasoap: $(D)/bootstrap $(D)/lua $(D)/luasocket $(D)/luaexpat $(ARCHIVE)/lu
 	$(START_BUILD)
 	$(REMOVE)/luasoap-$(LUASOAP_VER)
 	$(UNTAR)/luasoap-$(LUASOAP_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/luasoap-$(LUASOAP_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/luasoap-$(LUASOAP_VER); \
 		$(PATCH)/luasoap-$(LUASOAP_VER).patch; \
 		$(MAKE) install LUA_DIR=$(TARGETPREFIX)/usr/share/lua/$(LUA_VER_SHORT)
 	$(REMOVE)/luasoap-$(LUASOAP_VER)
@@ -500,7 +500,7 @@ $(D)/libboost: $(D)/bootstrap $(ARCHIVE)/boost_$(BOOST_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/boost_$(BOOST_VER)
 	$(UNTAR)/boost_$(BOOST_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/boost_$(BOOST_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/boost_$(BOOST_VER); \
 		$(PATCH)/libboost.patch; \
 		rm -rf $(TARGETPREFIX)/usr/include/boost; \
 		mv $(BUILD_TMP)/boost_$(BOOST_VER)/boost $(TARGETPREFIX)/usr/include/boost; \
@@ -519,7 +519,7 @@ $(D)/zlib: $(D)/bootstrap $(ARCHIVE)/zlib-$(ZLIB_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/zlib-$(ZLIB_VER)
 	$(UNTAR)/zlib-$(ZLIB_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/zlib-$(ZLIB_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/zlib-$(ZLIB_VER); \
 		for i in \
 			zlib-$(ZLIB_VER).patch \
 		; do \
@@ -551,7 +551,7 @@ $(D)/bzip2: $(D)/bootstrap $(ARCHIVE)/bzip2-$(BZIP2_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/bzip2-$(BZIP2_VER)
 	$(UNTAR)/bzip2-$(BZIP2_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/bzip2-$(BZIP2_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/bzip2-$(BZIP2_VER); \
 		for i in \
 			bzip2-$(BZIP2_VER).patch \
 		; do \
@@ -562,7 +562,7 @@ $(D)/bzip2: $(D)/bootstrap $(ARCHIVE)/bzip2-$(BZIP2_VER).tar.gz
 		CC=$(TARGET)-gcc AR=$(TARGET)-ar RANLIB=$(TARGET)-ranlib \
 		$(MAKE) all; \
 		$(MAKE) install PREFIX=$(TARGETPREFIX)/usr
-	cd $(TARGETPREFIX) && rm -f usr/bin/bzip2
+	$(SILENT)cd $(TARGETPREFIX) && rm -f usr/bin/bzip2
 	$(REMOVE)/bzip2-$(BZIP2_VER)
 	$(TOUCH)
 
@@ -582,7 +582,7 @@ $(D)/timezone: $(D)/bootstrap find-zic $(ARCHIVE)/tzdata$(TZ_VER).tar.gz
 	$(REMOVE)/timezone
 	mkdir $(BUILD_TMP)/timezone
 	tar -C $(BUILD_TMP)/timezone -xf $(ARCHIVE)/tzdata$(TZ_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/timezone; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/timezone; \
 		unset ${!LC_*}; LANG=POSIX; LC_ALL=POSIX; export LANG LC_ALL; \
 		for zone in $(TZDATA_ZONELIST); do \
 			zic -d zoneinfo -L /dev/null -y yearistype.sh $$zone ; \
@@ -596,7 +596,7 @@ $(D)/timezone: $(D)/bootstrap find-zic $(ARCHIVE)/tzdata$(TZ_VER).tar.gz
 		if [ -e $(TARGETPREFIX)/usr/share/zoneinfo/$(DEFAULT_TIMEZONE) ]; then \
 			echo ${DEFAULT_TIMEZONE} > $(TARGETPREFIX)/etc/timezone; \
 		fi; \
-	install -m 0644 $(SKEL_ROOT)/etc/timezone.xml $(TARGETPREFIX)/etc/
+	$(SILENT)install -m 0644 $(SKEL_ROOT)/etc/timezone.xml $(TARGETPREFIX)/etc/
 	$(REMOVE)/timezone
 	$(TOUCH)
 
@@ -612,7 +612,7 @@ $(D)/libfreetype: $(D)/bootstrap $(D)/zlib $(D)/bzip2 $(D)/libpng $(ARCHIVE)/fre
 	$(START_BUILD)
 	$(REMOVE)/freetype-$(FREETYPE_VER)
 	$(UNTAR)/freetype-$(FREETYPE_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/freetype-$(FREETYPE_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/freetype-$(FREETYPE_VER); \
 		for i in \
 			libfreetype-$(FREETYPE_VER).patch \
 		; do \
@@ -659,7 +659,7 @@ $(D)/lirc: $(D)/bootstrap $(ARCHIVE)/lirc-$(LIRC_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/lirc-$(LIRC_VER)
 	$(UNTAR)/lirc-$(LIRC_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/lirc-$(LIRC_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/lirc-$(LIRC_VER); \
 		for i in \
 			lirc-$(LIRC_VER).patch \
 		; do \
@@ -701,7 +701,7 @@ $(D)/libjpeg_old: $(D)/bootstrap $(ARCHIVE)/jpegsrc.v$(JPEG_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/jpeg-$(JPEG_VER)
 	$(UNTAR)/jpegsrc.v$(JPEG_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/jpeg-$(JPEG_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/jpeg-$(JPEG_VER); \
 		for i in \
 			jpeg-$(JPEG_VER).patch \
 		; do \
@@ -734,7 +734,7 @@ $(D)/libjpeg_turbo: $(D)/bootstrap $(ARCHIVE)/libjpeg-turbo-$(JPEG_TURBO_VER).ta
 	$(START_BUILD)
 	$(REMOVE)/libjpeg-turbo-$(JPEG_TURBO_VER)
 	$(UNTAR)/libjpeg-turbo-$(JPEG_TURBO_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libjpeg-turbo-$(JPEG_TURBO_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libjpeg-turbo-$(JPEG_TURBO_VER); \
 		export CC=$(TARGET)-gcc; \
 		$(CONFIGURE) \
 			--prefix=/usr \
@@ -759,7 +759,7 @@ $(D)/libjpeg_turbo: $(D)/bootstrap $(ARCHIVE)/libjpeg-turbo-$(JPEG_TURBO_VER).ta
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_LIBTOOL)/libjpeg.la
-	rm -f $(TARGETPREFIX)/usr/lib/libturbojpeg* $(TARGETPREFIX)/usr/include/turbojpeg.h
+	$(SILENT)rm -f $(TARGETPREFIX)/usr/lib/libturbojpeg* $(TARGETPREFIX)/usr/include/turbojpeg.h
 	$(REMOVE)/libjpeg-turbo-$(JPEG_TURBO_VER)
 	$(TOUCH)
 
@@ -776,7 +776,7 @@ $(D)/libpng: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libpng-$(PNG_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/libpng-$(PNG_VER)
 	$(UNTAR)/libpng-$(PNG_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/libpng-$(PNG_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libpng-$(PNG_VER); \
 		for i in \
 			libpng-$(PNG_VER)-disable-tools.patch \
 		; do \
@@ -805,7 +805,7 @@ $(D)/png++: $(D)/bootstrap $(D)/libpng $(ARCHIVE)/png++-$(PNGPP_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/png++-$(PNGPP_VER)
 	$(UNTAR)/png++-$(PNGPP_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/png++-$(PNGPP_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/png++-$(PNGPP_VER); \
 		$(MAKE) install-headers PREFIX=$(TARGETPREFIX)/usr
 	$(REMOVE)/png++-$(PNGPP_VER)
 	$(TOUCH)
@@ -822,7 +822,7 @@ $(D)/libungif: $(D)/bootstrap $(ARCHIVE)/libungif-$(UNGIF_VER).tar.bz2
 	$(START_BUILD)
 	$(RM_PKGPREFIX)
 	$(UNTAR)/libungif-$(UNGIF_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/libungif-$(UNGIF_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libungif-$(UNGIF_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--bindir=/.remove \
@@ -846,7 +846,7 @@ $(D)/libgif: $(D)/bootstrap $(ARCHIVE)/giflib-$(GIFLIB_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/giflib-$(GIFLIB_VER)
 	$(UNTAR)/giflib-$(GIFLIB_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/giflib-$(GIFLIB_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/giflib-$(GIFLIB_VER); \
 		export ac_cv_prog_have_xmlto=no; \
 		$(CONFIGURE) \
 			--prefix=/usr \
@@ -869,7 +869,7 @@ $(ARCHIVE)/curl-$(CURL_VER).tar.bz2:
 $(D)/libcurl: $(D)/bootstrap $(D)/openssl $(D)/zlib $(ARCHIVE)/curl-$(CURL_VER).tar.bz2
 	$(START_BUILD)
 	$(UNTAR)/curl-$(CURL_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/curl-$(CURL_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/curl-$(CURL_VER); \
 		for i in \
 			libcurl-$(CURL_VER).patch \
 		; do \
@@ -901,7 +901,7 @@ $(D)/libcurl: $(D)/bootstrap $(D)/openssl $(D)/zlib $(ARCHIVE)/curl-$(CURL_VER).
 		rm -f $(TARGETPREFIX)/usr/bin/curl-config
 	$(REWRITE_LIBTOOL)/libcurl.la
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libcurl.pc
-	cd $(TARGETPREFIX) && rm usr/bin/curl
+	$(SILENT)cd $(TARGETPREFIX) && rm usr/bin/curl
 	$(REMOVE)/curl-$(CURL_VER)
 	$(TOUCH)
 
@@ -917,7 +917,7 @@ $(D)/libfribidi: $(D)/bootstrap $(ARCHIVE)/fribidi-$(FRIBIDI_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/fribidi-$(FRIBIDI_VER)
 	$(UNTAR)/fribidi-$(FRIBIDI_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/fribidi-$(FRIBIDI_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/fribidi-$(FRIBIDI_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
@@ -932,7 +932,7 @@ $(D)/libfribidi: $(D)/bootstrap $(ARCHIVE)/fribidi-$(FRIBIDI_VER).tar.bz2
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/fribidi.pc
 	$(REWRITE_LIBTOOL)/libfribidi.la
-	cd $(TARGETPREFIX) && rm usr/bin/fribidi
+	$(SILENT)cd $(TARGETPREFIX) && rm usr/bin/fribidi
 	$(REMOVE)/fribidi-$(FRIBIDI_VER)
 	$(TOUCH)
 
@@ -950,7 +950,7 @@ $(ARCHIVE)/libsigc++-$(LIBSIGCPP_E2_VER).tar.gz:
 $(D)/libsigc++_e2: $(D)/bootstrap $(ARCHIVE)/libsigc++-$(LIBSIGCPP_E2_VER).tar.gz
 	$(START_BUILD)
 	$(UNTAR)/libsigc++-$(LIBSIGCPP_E2_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libsigc++-$(LIBSIGCPP_E2_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libsigc++-$(LIBSIGCPP_E2_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--disable-checks \
@@ -976,7 +976,7 @@ $(ARCHIVE)/libsigc++-$(LIBSIGCPP_VER).tar.xz:
 $(D)/libsigc++: $(D)/bootstrap $(ARCHIVE)/libsigc++-$(LIBSIGCPP_VER).tar.xz
 	$(START_BUILD)
 	$(UNTAR)/libsigc++-$(LIBSIGCPP_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/libsigc++-$(LIBSIGCPP_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libsigc++-$(LIBSIGCPP_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--enable-shared \
@@ -1006,7 +1006,7 @@ $(D)/libmad: $(D)/bootstrap $(ARCHIVE)/libmad-$(MAD_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libmad-$(MAD_VER)
 	$(UNTAR)/libmad-$(MAD_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libmad-$(MAD_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libmad-$(MAD_VER); \
 		for i in \
 			libmad-$(MAD_VER).patch \
 		; do \
@@ -1042,7 +1042,7 @@ $(D)/libid3tag: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libid3tag-$(ID3TAG_VER).tar.
 	$(START_BUILD)
 	$(REMOVE)/libid3tag-$(ID3TAG_VER)
 	$(UNTAR)/libid3tag-$(ID3TAG_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libid3tag-$(ID3TAG_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libid3tag-$(ID3TAG_VER); \
 		for i in \
 			libid3tag-$(ID3TAG_VER).patch \
 		; do \
@@ -1074,7 +1074,7 @@ $(D)/libvorbis: $(D)/bootstrap $(D)/libogg $(ARCHIVE)/libvorbis-$(VORBIS_VER).ta
 	$(START_BUILD)
 	$(REMOVE)/libvorbis-$(VORBIS_VER)
 	$(UNTAR)/libvorbis-$(VORBIS_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/libvorbis-$(VORBIS_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libvorbis-$(VORBIS_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--docdir=/.remove \
@@ -1109,7 +1109,7 @@ $(D)/libvorbisidec: $(D)/bootstrap $(D)/libogg $(ARCHIVE)/libvorbisidec_$(VORBIS
 	$(START_BUILD)
 	$(REMOVE)/libvorbisidec-$(VORBISIDEC_VER)
 	$(UNTAR)/libvorbisidec_$(VORBISIDEC_VER)$(VORBISIDEC_VER_APPEND).tar.gz
-	set -e; cd $(BUILD_TMP)/libvorbisidec-$(VORBISIDEC_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libvorbisidec-$(VORBISIDEC_VER); \
 		for i in \
 			libvorbisidec-$(VORBISIDEC_VER).patch \
 		; do \
@@ -1138,7 +1138,7 @@ $(D)/libiconv: $(D)/bootstrap $(ARCHIVE)/libiconv-$(ICONV_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libiconv-$(ICONV_ER)
 	$(UNTAR)/libiconv-$(ICONV_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libiconv-$(ICONV_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libiconv-$(ICONV_VER); \
 		$(CONFIGURE) \
 			--target=$(TARGET) \
 			--prefix=/usr \
@@ -1166,7 +1166,7 @@ $(D)/libexpat: $(D)/bootstrap $(ARCHIVE)/expat-$(EXPAT_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/expat-$(EXPAT_VER)
 	$(UNTAR)/expat-$(EXPAT_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/expat-$(EXPAT_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/expat-$(EXPAT_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
@@ -1191,7 +1191,7 @@ $(D)/fontconfig: $(D)/bootstrap $(D)/libfreetype $(D)/libexpat $(ARCHIVE)/fontco
 	$(START_BUILD)
 	$(REMOVE)/fontconfig-$(FONTCONFIG_VER)
 	$(UNTAR)/fontconfig-$(FONTCONFIG_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/fontconfig-$(FONTCONFIG_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/fontconfig-$(FONTCONFIG_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--with-freetype-config=$(hostprefix)/bin/freetype-config \
@@ -1218,7 +1218,7 @@ $(ARCHIVE)/libdvdcss-$(LIBDVDCSS_VER).tar.bz2:
 $(D)/libdvdcss: $(D)/bootstrap $(ARCHIVE)/libdvdcss-$(LIBDVDCSS_VER).tar.bz2
 	$(START_BUILD)
 	$(UNTAR)/libdvdcss-$(LIBDVDCSS_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/libdvdcss-$(LIBDVDCSS_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libdvdcss-$(LIBDVDCSS_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--disable-doc \
@@ -1242,7 +1242,7 @@ $(D)/libdvdnav: $(D)/bootstrap $(D)/libdvdread $(ARCHIVE)/libdvdnav-$(LIBDVDNAV_
 	$(START_BUILD)
 	$(REMOVE)/libdvdnav-$(LIBDVDNAV_VER)
 	$(UNTAR)/libdvdnav-$(LIBDVDNAV_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/libdvdnav-$(LIBDVDNAV_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libdvdnav-$(LIBDVDNAV_VER); \
 		for i in \
 			libdvdnav-$(LIBDVDNAV_VER).patch \
 		; do \
@@ -1250,7 +1250,7 @@ $(D)/libdvdnav: $(D)/bootstrap $(D)/libdvdread $(ARCHIVE)/libdvdnav-$(LIBDVDNAV_
 			$(PATCH)/$$i; \
 		done; \
 		$(BUILDENV) \
-		libtoolize --copy --ltdl --force; \
+		libtoolize $(CONFIGURE_SILENT) --copy --ltdl --force; \
 		./autogen.sh \
 			--build=$(BUILD) \
 			--host=$(TARGET) \
@@ -1279,7 +1279,7 @@ $(D)/libdvdread: $(D)/bootstrap $(ARCHIVE)/libdvdread-$(LIBDVDREAD_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/libdvdread-$(LIBDVDREAD_VER)
 	$(UNTAR)/libdvdread-$(LIBDVDREAD_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/libdvdread-$(LIBDVDREAD_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libdvdread-$(LIBDVDREAD_VER); \
 		for i in \
 			libdvdread-$(LIBDVDREAD_VER).patch \
 		; do \
@@ -1304,12 +1304,12 @@ $(D)/libdvdread: $(D)/bootstrap $(ARCHIVE)/libdvdread-$(LIBDVDREAD_VER).tar.xz
 $(D)/libdreamdvd: $(D)/bootstrap $(D)/libdvdnav
 	$(START_BUILD)
 	$(REMOVE)/libdreamdvd
-	set -e; if [ -d $(ARCHIVE)/libdreamdvd.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/libdreamdvd.git ]; \
 		then cd $(ARCHIVE)/libdreamdvd.git; git pull; \
 		else cd $(ARCHIVE); git clone git://github.com/mirakels/libdreamdvd.git libdreamdvd.git; \
 		fi
-	cp -ra $(ARCHIVE)/libdreamdvd.git $(BUILD_TMP)/libdreamdvd
-	set -e; cd $(BUILD_TMP)/libdreamdvd; \
+	$(SILENT)cp -ra $(ARCHIVE)/libdreamdvd.git $(BUILD_TMP)/libdreamdvd
+	$(SILENT)set -e; cd $(BUILD_TMP)/libdreamdvd; \
 		for i in \
 			libdreamdvd-1.0-sh4-support.patch \
 		; do \
@@ -1317,7 +1317,7 @@ $(D)/libdreamdvd: $(D)/bootstrap $(D)/libdvdnav
 			$(PATCH)/$$i; \
 		done; \
 		$(BUILDENV) \
-		libtoolize --copy --ltdl --force; \
+		libtoolize $(CONFIGURE_SILENT) --copy --ltdl --force; \
 		autoreconf --verbose --force --install; \
 		./configure $(CONFIGURE_SILENT) \
 			--build=$(BUILD) \
@@ -1353,7 +1353,7 @@ $(D)/ffmpeg: $(D)/bootstrap $(D)/openssl $(D)/bzip2 $(D)/libass $(D)/libroxml $(
 	$(START_BUILD)
 	$(REMOVE)/ffmpeg-$(FFMPEG_VER)
 	$(UNTAR)/ffmpeg-$(FFMPEG_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/ffmpeg-$(FFMPEG_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/ffmpeg-$(FFMPEG_VER); \
 		for i in \
 			ffmpeg-buffer-size-$(FFMPEG_VER).patch \
 			ffmpeg-hds-libroxml-$(FFMPEG_VER).patch \
@@ -1573,7 +1573,7 @@ $(D)/libass: $(D)/bootstrap $(D)/libfreetype $(D)/libfribidi $(ARCHIVE)/libass-$
 	$(START_BUILD)
 	$(REMOVE)/libass-$(LIBASS_VER)
 	$(UNTAR)/libass-$(LIBASS_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/libass-$(LIBASS_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libass-$(LIBASS_VER); \
 		for i in \
 			libass-$(LIBASS_VER).patch \
 		; do \
@@ -1606,7 +1606,7 @@ $(D)/sqlite: $(D)/bootstrap $(ARCHIVE)/sqlite-autoconf-$(SQLITE_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/sqlite-autoconf-$(SQLITE_VER)
 	$(UNTAR)/sqlite-autoconf-$(SQLITE_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/sqlite-autoconf-$(SQLITE_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/sqlite-autoconf-$(SQLITE_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
@@ -1632,7 +1632,7 @@ $(D)/libsoup: $(D)/bootstrap $(D)/sqlite $(D)/libxml2_e2 $(D)/glib2 $(ARCHIVE)/l
 	$(START_BUILD)
 	$(REMOVE)/libsoup-$(LIBSOUP_VER)
 	$(UNTAR)/libsoup-$(LIBSOUP_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/libsoup-$(LIBSOUP_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libsoup-$(LIBSOUP_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--disable-more-warnings \
@@ -1657,7 +1657,7 @@ $(D)/libogg: $(D)/bootstrap $(ARCHIVE)/libogg-$(OGG_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libogg-$(OGG_VER)
 	$(UNTAR)/libogg-$(OGG_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libogg-$(OGG_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libogg-$(OGG_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--docdir=/.remove \
@@ -1683,7 +1683,7 @@ $(D)/libflac: $(D)/bootstrap $(ARCHIVE)/flac-$(FLAC_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/flac-$(FLAC_VER)
 	$(UNTAR)/flac-$(FLAC_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/flac-$(FLAC_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/flac-$(FLAC_VER); \
 		for i in \
 			libflac-$(FLAC_VER).patch \
 		; do \
@@ -1731,7 +1731,7 @@ $(D)/libxml2_e2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_E2_VER).t
 	$(START_BUILD)
 	$(REMOVE)/libxml2-$(LIBXML2_E2_VER).tar.gz
 	$(UNTAR)/libxml2-$(LIBXML2_E2_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libxml2-$(LIBXML2_E2_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libxml2-$(LIBXML2_E2_VER); \
 		for i in \
 			libxml2-$(LIBXML2_E2_VER).patch \
 		; do \
@@ -1754,7 +1754,7 @@ $(D)/libxml2_e2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_E2_VER).t
 		$(MAKE) install DESTDIR=$(TARGETPREFIX);
 		mv $(TARGETPREFIX)/usr/bin/xml2-config $(HOSTPREFIX)/bin
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libxml-2.0.pc $(HOSTPREFIX)/bin/xml2-config
-	sed -i 's/^\(Libs:.*\)/\1 -lz/' $(PKG_CONFIG_PATH)/libxml-2.0.pc
+	$(SILENT)sed -i 's/^\(Libs:.*\)/\1 -lz/' $(PKG_CONFIG_PATH)/libxml-2.0.pc
 		if [ -e "$(TARGETPREFIX)$(PYTHON_DIR)/site-packages/libxml2mod.la" ]; then \
 			sed -e "/^dependency_libs/ s,/usr/lib/libxml2.la,$(TARGETPREFIX)/usr/lib/libxml2.la,g" -i $(TARGETPREFIX)$(PYTHON_DIR)/site-packages/libxml2mod.la; \
 			sed -e "/^libdir/ s,$(PYTHON_DIR)/site-packages,$(TARGETPREFIX)$(PYTHON_DIR)/site-packages,g" -i $(TARGETPREFIX)$(PYTHON_DIR)/site-packages/libxml2mod.la; \
@@ -1777,7 +1777,7 @@ $(D)/libxslt: $(D)/bootstrap $(D)/libxml2_e2 $(ARCHIVE)/libxslt-$(LIBXSLT_VER).t
 	$(START_BUILD)
 	$(REMOVE)/libxslt-$(LIBXSLT_VER)
 	$(UNTAR)/libxslt-$(LIBXSLT_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libxslt-$(LIBXSLT_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libxslt-$(LIBXSLT_VER); \
 		$(CONFIGURE) \
 			CPPFLAGS="$(CPPFLAGS) -I$(TARGETPREFIX)/usr/include/libxml2" \
 			--prefix=/usr \
@@ -1820,7 +1820,7 @@ $(D)/libxml2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libxml2-$(LIBXML2_VER).tar.gz
 	$(UNTAR)/libxml2-$(LIBXML2_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libxml2-$(LIBXML2_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libxml2-$(LIBXML2_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--datarootdir=/.remove \
@@ -1838,9 +1838,9 @@ $(D)/libxml2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_VER).tar.gz
 		$(MAKE) install DESTDIR=$(TARGETPREFIX);
 		mv $(TARGETPREFIX)/usr/bin/xml2-config $(HOSTPREFIX)/bin
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libxml-2.0.pc $(HOSTPREFIX)/bin/xml2-config
-	sed -i 's/^\(Libs:.*\)/\1 -lz/' $(PKG_CONFIG_PATH)/libxml-2.0.pc
-	sed -e "/^XML2_LIBDIR/ s,/usr/lib,$(TARGETPREFIX)/usr/lib,g" -i $(TARGETPREFIX)/usr/lib/xml2Conf.sh
-	sed -e "/^XML2_INCLUDEDIR/ s,/usr/include,$(TARGETPREFIX)/usr/include,g" -i $(TARGETPREFIX)/usr/lib/xml2Conf.sh
+	$(SILENT)sed -i 's/^\(Libs:.*\)/\1 -lz/' $(PKG_CONFIG_PATH)/libxml-2.0.pc
+	$(SILENT)sed -e "/^XML2_LIBDIR/ s,/usr/lib,$(TARGETPREFIX)/usr/lib,g" -i $(TARGETPREFIX)/usr/lib/xml2Conf.sh
+	$(SILENT)sed -e "/^XML2_INCLUDEDIR/ s,/usr/include,$(TARGETPREFIX)/usr/include,g" -i $(TARGETPREFIX)/usr/lib/xml2Conf.sh
 	$(REWRITE_LIBTOOL)/libxml2.la
 	$(REMOVE)/libxml2-$(LIBXML2_VER)
 	$(TOUCH)
@@ -1857,7 +1857,7 @@ $(D)/libroxml: $(D)/bootstrap $(ARCHIVE)/libroxml-$(LIBROXML_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libroxml-$(LIBROXML_VER)
 	$(UNTAR)/libroxml-$(LIBROXML_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libroxml-$(LIBROXML_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libroxml-$(LIBROXML_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--enable-shared \
@@ -1883,7 +1883,7 @@ $(D)/pugixml: $(D)/bootstrap $(ARCHIVE)/pugixml-$(PUGIXML_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/pugixml-$(PUGIXML_VER)
 	$(UNTAR)/pugixml-$(PUGIXML_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/pugixml-$(PUGIXML_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/pugixml-$(PUGIXML_VER); \
 		cmake \
 		--no-warn-unused-cli \
 		-DCMAKE_INSTALL_PREFIX=/usr \
@@ -1905,12 +1905,12 @@ $(D)/pugixml: $(D)/bootstrap $(ARCHIVE)/pugixml-$(PUGIXML_VER).tar.gz
 $(D)/graphlcd: $(D)/bootstrap $(D)/libfreetype $(D)/libusb
 	$(START_BUILD)
 	$(REMOVE)/graphlcd
-	set -e; if [ -d $(ARCHIVE)/graphlcd-base-touchcol.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/graphlcd-base-touchcol.git ]; \
 		then cd $(ARCHIVE)/graphlcd-base-touchcol.git; git pull; \
 		else cd $(ARCHIVE); git clone -b touchcol git://projects.vdr-developer.org/graphlcd-base.git graphlcd-base-touchcol.git; \
 		fi
-	cp -ra $(ARCHIVE)/graphlcd-base-touchcol.git $(BUILD_TMP)/graphlcd
-	set -e; cd $(BUILD_TMP)/graphlcd; \
+	$(SILENT)cp -ra $(ARCHIVE)/graphlcd-base-touchcol.git $(BUILD_TMP)/graphlcd
+	$(SILENT)set -e; cd $(BUILD_TMP)/graphlcd; \
 		for i in \
 			graphlcd-base-touchcol.patch \
 		; do \
@@ -1930,12 +1930,12 @@ $(D)/graphlcd: $(D)/bootstrap $(D)/libfreetype $(D)/libusb
 $(D)/lcd4linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd $(D)/libusb
 	$(START_BUILD)
 	$(REMOVE)/lcd4linux
-	set -e; if [ -d $(ARCHIVE)/lcd4linux.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/lcd4linux.git ]; \
 		then cd $(ARCHIVE)/lcd4linux.git; git pull; \
 		else cd $(ARCHIVE); git clone https://github.com/TangoCash/lcd4linux.git lcd4linux.git; \
 		fi
-	cp -ra $(ARCHIVE)/lcd4linux.git $(BUILD_TMP)/lcd4linux
-	set -e; cd $(BUILD_TMP)/lcd4linux; \
+	$(SILENT)cp -ra $(ARCHIVE)/lcd4linux.git $(BUILD_TMP)/lcd4linux
+	$(SILENT)set -e; cd $(BUILD_TMP)/lcd4linux; \
 		$(BUILDENV) ./bootstrap; \
 		$(BUILDENV) ./configure $(CONFIGURE_SILENT) $(CONFIGURE_OPTS) \
 			--prefix=/usr \
@@ -1945,8 +1945,8 @@ $(D)/lcd4linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd $(D)/libusb
 		; \
 		$(MAKE) vcs_version all; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	install -m 755 $(SKEL_ROOT)/etc/init.d/lcd4linux $(TARGETPREFIX)/etc/init.d/
-	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_ni.conf $(TARGETPREFIX)/etc/lcd4linux.conf
+	$(SILENT)install -m 755 $(SKEL_ROOT)/etc/init.d/lcd4linux $(TARGETPREFIX)/etc/init.d/
+	$(SILENT)install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_ni.conf $(TARGETPREFIX)/etc/lcd4linux.conf
 	$(REMOVE)/lcd4linux
 	$(TOUCH)
 
@@ -1962,7 +1962,7 @@ $(D)/libgd: $(D)/bootstrap $(D)/libpng $(D)/libjpeg $(D)/libfreetype $(ARCHIVE)/
 	$(START_BUILD)
 	$(REMOVE)/libgd-$(GD_VER)
 	$(UNTAR)/libgd-$(GD_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/libgd-$(GD_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libgd-$(GD_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--bindir=/.remove \
@@ -1988,7 +1988,7 @@ $(D)/libusb: $(D)/bootstrap $(ARCHIVE)/libusb-$(USB_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/libusb-$(USB_VER)
 	$(UNTAR)/libusb-$(USB_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/libusb-$(USB_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libusb-$(USB_VER); \
 		for i in \
 			libusb-$(USB_VER).patch \
 		; do \
@@ -2021,7 +2021,7 @@ $(D)/libusbcompat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/libusb-compat-$(USBCOMP
 	$(START_BUILD)
 	$(REMOVE)/libusb-compat-$(USBCOMPAT_VER)
 	$(UNTAR)/libusb-compat-$(USBCOMPAT_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/libusb-compat-$(USBCOMPAT_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libusb-compat-$(USBCOMPAT_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--disable-log \
@@ -2030,7 +2030,7 @@ $(D)/libusbcompat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/libusb-compat-$(USBCOMP
 		; \
 		$(MAKE) ; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	rm -f $(TARGETPREFIX)/usr/bin/libusb-config
+	$(SILENT)rm -f $(TARGETPREFIX)/usr/bin/libusb-config
 	$(REWRITE_LIBTOOL)/libusb.la
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libusb.pc
 	$(REMOVE)/libusb-compat-$(USBCOMPAT_VER)
@@ -2048,7 +2048,7 @@ $(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/alsa-lib-$(ALSA_VER)
 	$(UNTAR)/alsa-lib-$(ALSA_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/alsa-lib-$(ALSA_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/alsa-lib-$(ALSA_VER); \
 		for i in \
 			alsa-lib-$(ALSA_VER).patch \
 			alsa-lib-$(ALSA_VER)-link_fix.patch \
@@ -2072,7 +2072,7 @@ $(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	for i in `cd $(TARGETPREFIX)/usr/lib/alsa/smixer; echo *.la`; do \
+	$(SILENT)for i in `cd $(TARGETPREFIX)/usr/lib/alsa/smixer; echo *.la`; do \
 		$(REWRITE_LIBTOOL_NS)/alsa/smixer/$$i; done
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/alsa.pc
 	$(REWRITE_LIBTOOL)/libasound.la
@@ -2089,7 +2089,7 @@ $(D)/alsa-utils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/alsa-utils-$(ALSA_VER).
 	$(START_BUILD)
 	$(REMOVE)/alsa-utils-$(ALSA_VER)
 	$(UNTAR)/alsa-utils-$(ALSA_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/alsa-utils-$(ALSA_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/alsa-utils-$(ALSA_VER); \
 		sed -ir -r "s/(alsamixer|amidi|aplay|iecset|speaker-test|seq|alsactl|alsaucm|topology)//g" Makefile.am ;\
 		autoreconf -fi -I $(TARGETPREFIX)/usr/share/aclocal; \
 		$(CONFIGURE) \
@@ -2107,10 +2107,10 @@ $(D)/alsa-utils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/alsa-utils-$(ALSA_VER).
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(REMOVE)/alsa-utils-$(ALSA_VER)
-	install -m 755 $(SKEL_ROOT)/etc/init.d/amixer $(TARGETPREFIX)/etc/init.d/amixer
-	install -m 644 $(SKEL_ROOT)/etc/amixer.conf $(TARGETPREFIX)/etc/amixer.conf
-	install -m 644 $(SKEL_ROOT)/etc/asound.conf $(TARGETPREFIX)/etc/asound.conf
-	cd $(TARGETPREFIX) && rm -f usr/bin/aserver
+	$(SILENT)install -m 755 $(SKEL_ROOT)/etc/init.d/amixer $(TARGETPREFIX)/etc/init.d/amixer
+	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/amixer.conf $(TARGETPREFIX)/etc/amixer.conf
+	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/asound.conf $(TARGETPREFIX)/etc/asound.conf
+	$(SILENT)cd $(TARGETPREFIX) && rm -f usr/bin/aserver
 	$(TOUCH)
 
 #
@@ -2119,12 +2119,12 @@ $(D)/alsa-utils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/alsa-utils-$(ALSA_VER).
 $(D)/libopenthreads: $(D)/bootstrap
 	$(START_BUILD)
 	$(REMOVE)/openthreads
-	set -e; if [ -d $(ARCHIVE)/library-openthreads.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/library-openthreads.git ]; \
 		then cd $(ARCHIVE)/library-openthreads.git; git pull; \
 		else cd $(ARCHIVE); git clone --recursive git://github.com/tuxbox-neutrino/library-openthreads.git library-openthreads.git; \
 		fi
 	cp -ra $(ARCHIVE)/library-openthreads.git $(BUILD_TMP)/openthreads
-	set -e; cd $(BUILD_TMP)/openthreads; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/openthreads; \
 		git submodule init; \
 		git submodule update; \
 		$(PATCH)/libopenthreads.patch; \
@@ -2151,12 +2151,12 @@ $(D)/libopenthreads: $(D)/bootstrap
 $(D)/librtmpdump: $(D)/bootstrap $(D)/zlib $(D)/openssl
 	$(START_BUILD)
 	$(REMOVE)/librtmpdump
-	set -e; if [ -d $(ARCHIVE)/rtmpdump.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/rtmpdump.git ]; \
 		then cd $(ARCHIVE)/rtmpdump.git; git pull; \
 		else cd $(ARCHIVE); git clone git://github.com/oe-alliance/rtmpdump.git rtmpdump.git; \
 		fi
-	cp -ra $(ARCHIVE)/rtmpdump.git $(BUILD_TMP)/librtmpdump
-	set -e; cd $(BUILD_TMP)/librtmpdump; \
+	$(SILENT)cp -ra $(ARCHIVE)/rtmpdump.git $(BUILD_TMP)/librtmpdump
+	$(SILENT)set -e; cd $(BUILD_TMP)/librtmpdump; \
 		for i in \
 			rtmpdump-2.4.patch \
 		; do \
@@ -2176,12 +2176,12 @@ $(D)/librtmpdump: $(D)/bootstrap $(D)/zlib $(D)/openssl
 $(D)/libdvbsi++: $(D)/bootstrap
 	$(START_BUILD)
 	$(REMOVE)/libdvbsi++
-	set -e; if [ -d $(ARCHIVE)/libdvbsi++.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/libdvbsi++.git ]; \
 		then cd $(ARCHIVE)/libdvbsi++.git; git pull; \
 		else cd $(ARCHIVE); git clone git://git.opendreambox.org/git/obi/libdvbsi++.git libdvbsi++.git; \
 		fi
-	cp -ra $(ARCHIVE)/libdvbsi++.git $(BUILD_TMP)/libdvbsi++
-	set -e; cd $(BUILD_TMP)/libdvbsi++; \
+	$(SILENT)cp -ra $(ARCHIVE)/libdvbsi++.git $(BUILD_TMP)/libdvbsi++
+	$(SILENT)set -e; cd $(BUILD_TMP)/libdvbsi++; \
 		for i in \
 			libdvbsi++-git.patch \
 		; do \
@@ -2208,7 +2208,7 @@ $(D)/libmodplug: $(D)/bootstrap $(ARCHIVE)/libmodplug-$(LIBMODPLUG_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libmodplug-$(LIBMODPLUG_VER)
 	$(UNTAR)/libmodplug-$(LIBMODPLUG_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libmodplug-$(LIBMODPLUG_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libmodplug-$(LIBMODPLUG_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \
@@ -2231,7 +2231,7 @@ $(D)/lzo: $(D)/bootstrap $(ARCHIVE)/lzo-$(LZO_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/lzo-$(LZO_VER)
 	$(UNTAR)/lzo-$(LZO_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/lzo-$(LZO_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/lzo-$(LZO_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--docdir=/.remove \
@@ -2254,7 +2254,7 @@ $(D)/libpcre: $(D)/bootstrap $(ARCHIVE)/pcre-$(PCRE_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/pcre-$(PCRE_VER)
 	$(UNTAR)/pcre-$(PCRE_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/pcre-$(PCRE_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/pcre-$(PCRE_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--enable-utf8 \
@@ -2280,7 +2280,7 @@ $(D)/minidlna: $(D)/bootstrap $(D)/zlib $(D)/sqlite $(D)/libexif $(D)/libjpeg $(
 	$(START_BUILD)
 	$(REMOVE)/minidlna-$(MINIDLNA_VER)
 	$(UNTAR)/minidlna-$(MINIDLNA_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/minidlna-$(MINIDLNA_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/minidlna-$(MINIDLNA_VER); \
 		for i in \
 			minidlna-$(MINIDLNA_VER).patch \
 		; do \
@@ -2308,7 +2308,7 @@ $(D)/libexif: $(D)/bootstrap $(ARCHIVE)/libexif-$(LIBEXIF_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libexif-$(LIBEXIF_VER)
 	$(UNTAR)/libexif-$(LIBEXIF_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libexif-$(LIBEXIF_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libexif-$(LIBEXIF_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \
@@ -2331,7 +2331,7 @@ $(D)/djmount: $(D)/bootstrap $(D)/fuse $(ARCHIVE)/djmount-$(DJMOUNT_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/djmount-$(DJMOUNT_VER)
 	$(UNTAR)/djmount-$(DJMOUNT_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/djmount-$(DJMOUNT_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/djmount-$(DJMOUNT_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \
@@ -2352,7 +2352,7 @@ $(D)/libupnp: $(D)/bootstrap $(ARCHIVE)/libupnp-$(LIBUPNP_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/libupnp-$(LIBUPNP_VER)
 	$(UNTAR)/libupnp-$(LIBUPNP_VER).tar.bz2
-	set -e; cd $(BUILD_TMP)/libupnp-$(LIBUPNP_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libupnp-$(LIBUPNP_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \
@@ -2377,7 +2377,7 @@ $(D)/rarfs: $(D)/bootstrap $(D)/fuse $(ARCHIVE)/rarfs-$(RARFS_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/rarfs-$(RARFS_VER)
 	$(UNTAR)/rarfs-$(RARFS_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/rarfs-$(RARFS_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/rarfs-$(RARFS_VER); \
 		export PKG_CONFIG_PATH=$(PKG_CONFIG_PATH); \
 		$(CONFIGURE) \
 		CFLAGS="$(TARGET_CFLAGS) -D_FILE_OFFSET_BITS=64" \
@@ -2402,7 +2402,7 @@ $(D)/sshfs: $(D)/bootstrap $(D)/glib2 $(D)/fuse $(ARCHIVE)/sshfs-fuse-$(SSHFS_VE
 	$(START_BUILD)
 	$(REMOVE)/sshfs-fuse-$(SSHFS_VER)
 	$(UNTAR)/sshfs-fuse-$(SSHFS_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/sshfs-fuse-$(SSHFS_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/sshfs-fuse-$(SSHFS_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \
@@ -2423,7 +2423,7 @@ $(D)/howl: $(D)/bootstrap $(ARCHIVE)/howl-$(HOWL_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/howl-$(HOWL_VER)
 	$(UNTAR)/howl-$(HOWL_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/howl-$(HOWL_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/howl-$(HOWL_VER); \
 		$(CONFIGURE) \
 			--target=$(TARGET) \
 			--prefix=/usr \
@@ -2447,7 +2447,7 @@ $(D)/libdaemon: $(D)/bootstrap $(ARCHIVE)/libdaemon-$(LIBDAEMON_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libdaemon-$(LIBDAEMON_VER)
 	$(UNTAR)/libdaemon-$(LIBDAEMON_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libdaemon-$(LIBDAEMON_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libdaemon-$(LIBDAEMON_VER); \
 		$(CONFIGURE) \
 			ac_cv_func_setpgrp_void=yes \
 			--prefix=/usr \
@@ -2472,8 +2472,8 @@ $(D)/libplist: $(D)/bootstrap $(D)/libxml2_e2 $(ARCHIVE)/libplist-$(LIBPLIST_VER
 	$(START_BUILD)
 	$(REMOVE)/libplist-$(LIBPLIST_VER)
 	$(UNTAR)/libplist-$(LIBPLIST_VER).tar.gz
-	export PKG_CONFIG_PATH=$(PKG_CONFIG_PATH); \
-	set -e; cd $(BUILD_TMP)/libplist-$(LIBPLIST_VER); \
+	$(SILENT)export PKG_CONFIG_PATH=$(PKG_CONFIG_PATH)
+	$(SILENT)set -e; cd $(BUILD_TMP)/libplist-$(LIBPLIST_VER); \
 		rm CMakeFiles/* -rf CMakeCache.txt cmake_install.cmake; \
 		cmake . -DCMAKE_BUILD_TYPE=Release \
 			-DCMAKE_SYSTEM_NAME="Linux" \
@@ -2503,7 +2503,7 @@ $(D)/libao: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/libao-$(LIBAO_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libao-$(LIBAO_VER)
 	$(UNTAR)/libao-$(LIBAO_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/libao-$(LIBAO_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/libao-$(LIBAO_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--enable-shared \
@@ -2530,7 +2530,7 @@ $(D)/nettle: $(D)/bootstrap $(D)/gmp $(ARCHIVE)/nettle-$(NETTLE_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/nettle-$(NETTLE_VER)
 	$(UNTAR)/nettle-$(NETTLE_VER).tar.gz
-	set -e; cd $(BUILD_TMP)/nettle-$(NETTLE_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/nettle-$(NETTLE_VER); \
 		for i in \
 			nettle-$(NETTLE_VER).patch \
 		; do \
@@ -2560,7 +2560,7 @@ $(D)/gnutls: $(D)/bootstrap $(D)/nettle $(ARCHIVE)/gnutls-$(GNUTLS_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/gnutls-$(GNUTLS_VER)
 	$(UNTAR)/gnutls-$(GNUTLS_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/gnutls-$(GNUTLS_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/gnutls-$(GNUTLS_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
@@ -2596,7 +2596,7 @@ $(D)/glib-networking: $(D)/bootstrap $(D)/gnutls $(D)/glib2 $(ARCHIVE)/glib-netw
 	$(START_BUILD)
 	$(REMOVE)/glib-networking-$(GLIBNETW_VER)
 	$(UNTAR)/glib-networking-$(GLIBNETW_VER).tar.xz
-	set -e; cd $(BUILD_TMP)/glib-networking-$(GLIBNETW_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/glib-networking-$(GLIBNETW_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--datadir=/.remove \

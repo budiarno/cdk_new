@@ -11,10 +11,10 @@ $(D)/bootstrap: $(BOOTSTRAP)
 	$(TOUCH)
 
 $(HOSTPREFIX)/bin/opkg%sh: | directories
-	ln -sf $(SCRIPTS_DIR)/$(shell basename $@) $(HOSTPREFIX)/bin
+	$(SILENT)ln -sf $(SCRIPTS_DIR)/$(shell basename $@) $(HOSTPREFIX)/bin
 
 $(HOSTPREFIX)/bin/unpack-rpm.sh: | directories
-	ln -sf $(SCRIPTS_DIR)/$(shell basename $@) $(HOSTPREFIX)/bin
+	$(SILENT)ln -sf $(SCRIPTS_DIR)/$(shell basename $@) $(HOSTPREFIX)/bin
 
 #
 STM_RELOCATE = /opt/STM/STLinux-2.4
@@ -65,7 +65,7 @@ $(ARCHIVE)/stlinux24-sh4-libgcc-$(LIBGCC_VER).sh4.rpm \
 $(ARCHIVE)/stlinux24-sh4-libstdc++-$(LIBGCC_VER).sh4.rpm \
 $(ARCHIVE)/stlinux24-sh4-libstdc++-dev-$(LIBGCC_VER).sh4.rpm
 	$(START_BUILD)
-	unpack-rpm.sh $(BUILD_TMP) $(STM_RELOCATE)/devkit/sh4 $(CROSS_DIR) \
+	$(SILENT)unpack-rpm.sh $(BUILD_TMP) $(STM_RELOCATE)/devkit/sh4 $(CROSS_DIR) \
 		$^
 	@touch $(D)/$(notdir $@)
 	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
@@ -85,7 +85,7 @@ crosstool-ng: $(ARCHIVE)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
 	fi;
 	$(REMOVE)/crosstool-ng
 	$(UNTAR)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
-	set -e; unset CONFIG_SITE; cd $(BUILD_TMP)/crosstool-ng; \
+	$(SILENT)set -e; unset CONFIG_SITE; cd $(BUILD_TMP)/crosstool-ng; \
 		cp -a $(PATCHES)/crosstool-ng-$(CROSSTOOL_NG_VER).config .config; \
 		NUM_CPUS=$$(expr `getconf _NPROCESSORS_ONLN` \* 2); \
 		MEM_512M=$$(awk '/MemTotal/ {M=int($$2/1024/512); print M==0?1:M}' /proc/meminfo); \
@@ -103,7 +103,7 @@ crossmenuconfig: $(ARCHIVE)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
 	make $(BUILD_TMP)
 	$(REMOVE)/crosstool-ng-$(CROSSTOOL_NG_VER)
 	$(UNTAR)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
-	set -e; unset CONFIG_SITE; cd $(BUILD_TMP)/crosstool-ng; \
+	$(SILENT)set -e; unset CONFIG_SITE; cd $(BUILD_TMP)/crosstool-ng; \
 		cp -a $(PATCHES)/crosstool-ng-$(CROSSTOOL_NG_VER).config .config; \
 		test -f ./configure || ./bootstrap && \
 		./configure --enable-local; MAKELEVEL=0 make; chmod 0755 ct-ng; \
@@ -114,11 +114,11 @@ crosstool: directories driver-symlink \
 $(HOSTPREFIX)/bin/unpack-rpm.sh \
 crosstool-rpminstall
 	$(START_BUILD)
-	set -e; cd $(CROSS_BASE); rm -f sh4-linux/sys-root; ln -s ../target sh4-linux/sys-root; \
-	if [ -e $(CROSS_DIR)/target/usr/lib/libstdc++.la ]; then \
+	$(SILENT)set -e; cd $(CROSS_BASE); rm -f sh4-linux/sys-root; ln -s ../target sh4-linux/sys-root
+	$(SILENT)if [ -e $(CROSS_DIR)/target/usr/lib/libstdc++.la ]; then \
 		sed -i "s,^libdir=.*,libdir='$(CROSS_DIR)/target/usr/lib'," $(CROSS_DIR)/target/usr/lib/lib{std,sup}c++.la; \
 	fi
-	if test -e $(CROSS_DIR)/target/usr/lib/libstdc++.so; then \
+	$(SILENT)if test -e $(CROSS_DIR)/target/usr/lib/libstdc++.so; then \
 		cp -a $(CROSS_DIR)/target/usr/lib/libstdc++.s*[!y] $(TARGETPREFIX)/lib; \
 		cp -a $(CROSS_DIR)/target/usr/lib/libdl.so $(TARGETPREFIX)/usr/lib; \
 		cp -a $(CROSS_DIR)/target/usr/lib/libm.so $(TARGETPREFIX)/usr/lib; \
@@ -129,10 +129,10 @@ crosstool-rpminstall
 		ln -s $(CROSS_DIR)/target/usr/lib/libc.so $(TARGETPREFIX)/usr/lib/libc.so; \
 		ln -s $(CROSS_DIR)/target/usr/lib/libc_nonshared.a $(TARGETPREFIX)/usr/lib/libc_nonshared.a; \
 	fi
-	if test -e $(CROSS_DIR)/target/lib; then \
+	$(SILENT)if test -e $(CROSS_DIR)/target/lib; then \
 		cp -a $(CROSS_DIR)/target/lib/*so* $(TARGETPREFIX)/lib; \
 	fi
-	if test -e $(CROSS_DIR)/target/sbin/ldconfig; then \
+	$(SILENT)if test -e $(CROSS_DIR)/target/sbin/ldconfig; then \
 		cp -a $(CROSS_DIR)/target/sbin/ldconfig $(TARGETPREFIX)/sbin; \
 		cp -a $(CROSS_DIR)/target/etc/ld.so.conf $(TARGETPREFIX)/etc; \
 		cp -a $(CROSS_DIR)/target/etc/host.conf $(TARGETPREFIX)/etc; \
@@ -146,7 +146,7 @@ crosstool-rpminstall
 host_u_boot_tools: \
 $(ARCHIVE)/stlinux24-host-u-boot-tools-1.3.1_stm24-9.i386.rpm
 	$(START_BUILD)
-	unpack-rpm.sh $(BUILD_TMP) $(STM_RELOCATE)/host/bin $(HOSTPREFIX)/bin \
+	$(SILENT)unpack-rpm.sh $(BUILD_TMP) $(STM_RELOCATE)/host/bin $(HOSTPREFIX)/bin \
 		$^
 	@touch $(D)/$(notdir $@)
 	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
@@ -156,28 +156,28 @@ $(ARCHIVE)/stlinux24-host-u-boot-tools-1.3.1_stm24-9.i386.rpm
 #
 directories:
 	$(START_BUILD)
-	test -d $(D) || mkdir $(D)
-	test -d $(ARCHIVE) || mkdir $(ARCHIVE)
-	test -d $(BUILD_TMP) || mkdir $(BUILD_TMP)
-	test -d $(SOURCE_DIR) || mkdir $(SOURCE_DIR)
-	install -d $(TARGETPREFIX)
-	install -d $(CROSS_DIR)
-	install -d $(BOOT_DIR)
-	install -d $(HOSTPREFIX)
-	install -d $(HOSTPREFIX)/{bin,lib,share}
-	install -d $(TARGETPREFIX)/{bin,boot,etc,lib,sbin,usr,var}
-	install -d $(TARGETPREFIX)/etc/{init.d,mdev,network,rc.d}
-	install -d $(TARGETPREFIX)/etc/rc.d/{rc0.d,rc6.d}
-	ln -s ../init.d $(TARGETPREFIX)/etc/rc.d/init.d
-	install -d $(TARGETPREFIX)/lib/{lsb,firmware}
-	install -d $(TARGETPREFIX)/usr/{bin,lib,local,sbin,share}
-	install -d $(TARGETPREFIX)/usr/lib/pkgconfig
-	install -d $(TARGETPREFIX)/usr/include/linux
-	install -d $(TARGETPREFIX)/usr/include/linux/dvb
-	install -d $(TARGETPREFIX)/usr/local/{bin,sbin,share}
-	install -d $(TARGETPREFIX)/var/{etc,lib,run}
-	install -d $(TARGETPREFIX)/var/lib/{misc,nfs}
-	install -d $(TARGETPREFIX)/var/bin
+	$(SILENT)test -d $(D) || mkdir $(D)
+	$(SILENT)test -d $(ARCHIVE) || mkdir $(ARCHIVE)
+	$(SILENT)test -d $(BUILD_TMP) || mkdir $(BUILD_TMP)
+	$(SILENT)test -d $(SOURCE_DIR) || mkdir $(SOURCE_DIR)
+	$(SILENT)install -d $(TARGETPREFIX)
+	$(SILENT)install -d $(CROSS_DIR)
+	$(SILENT)install -d $(BOOT_DIR)
+	$(SILENT)install -d $(HOSTPREFIX)
+	$(SILENT)install -d $(HOSTPREFIX)/{bin,lib,share}
+	$(SILENT)install -d $(TARGETPREFIX)/{bin,boot,etc,lib,sbin,usr,var}
+	$(SILENT)install -d $(TARGETPREFIX)/etc/{init.d,mdev,network,rc.d}
+	$(SILENT)install -d $(TARGETPREFIX)/etc/rc.d/{rc0.d,rc6.d}
+	$(SILENT)ln -s ../init.d $(TARGETPREFIX)/etc/rc.d/init.d
+	$(SILENT)install -d $(TARGETPREFIX)/lib/{lsb,firmware}
+	$(SILENT)install -d $(TARGETPREFIX)/usr/{bin,lib,local,sbin,share}
+	$(SILENT)install -d $(TARGETPREFIX)/usr/lib/pkgconfig
+	$(SILENT)install -d $(TARGETPREFIX)/usr/include/linux
+	$(SILENT)install -d $(TARGETPREFIX)/usr/include/linux/dvb
+	$(SILENT)install -d $(TARGETPREFIX)/usr/local/{bin,sbin,share}
+	$(SILENT)install -d $(TARGETPREFIX)/var/{etc,lib,run}
+	$(SILENT)install -d $(TARGETPREFIX)/var/lib/{misc,nfs}
+	$(SILENT)install -d $(TARGETPREFIX)/var/bin
 	@touch $(D)/$(notdir $@)
 	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
 
@@ -235,7 +235,7 @@ $(D)/uboot_tf7700: $(ARCHIVE)/u-boot-$(U_BOOT_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/u-boot-$(U_BOOT_VER)
 	$(UNTAR)/u-boot-$(U_BOOT_VER).tar.bz2
-	@set -e; cd $(BUILD_TMP)/u-boot-$(U_BOOT_VER); \
+	$(SILENT)set -e; cd $(BUILD_TMP)/u-boot-$(U_BOOT_VER); \
 		for i in \
 			u-boot-$(U_BOOT_VER).patch \
 			u-boot-$(U_BOOT_VER)_tf7700.patch \

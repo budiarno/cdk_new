@@ -126,8 +126,8 @@ MAKEFLAGS +=-j$(CPU_CORES)
 export MAKEFLAGS
 endif
 
-TUXBOX_YAUD_CUSTOMIZE = @[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
-TUXBOX_CUSTOMIZE      = @[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(BOXTYPE) || true
+TUXBOX_YAUD_CUSTOMIZE = $(SILENT)[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
+TUXBOX_CUSTOMIZE      = $(SILENT)[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(BOXTYPE) || true
 
 #
 #

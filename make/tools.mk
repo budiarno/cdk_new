@@ -2,7 +2,7 @@
 # tools
 #
 tools-clean:
-	rm -f $(D)/tools-*
+	$(SILENT)rm -f $(D)/tools-*
 	-$(MAKE) -C $(APPS_DIR)/tools/aio-grab distclean
 	-$(MAKE) -C $(APPS_DIR)/tools/devinit distclean
 	-$(MAKE) -C $(APPS_DIR)/tools/eplayer3 distclean
@@ -28,7 +28,7 @@ tools-clean:
 #
 $(D)/tools-aio-grab: $(D)/bootstrap $(D)/libpng $(D)/libjpeg
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/aio-grab; \
+	$(SILENT)set -e; cd $(APPS_DIR)/tools/aio-grab; \
 		$(CONFIGURE_TOOLS) CPPFLAGS="$(CPPFLAGS) -I$(DRIVER_DIR)/bpamem" \
 			--prefix= \
 		; \
@@ -41,7 +41,7 @@ $(D)/tools-aio-grab: $(D)/bootstrap $(D)/libpng $(D)/libjpeg
 #
 $(D)/tools-devinit: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/devinit; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/devinit; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -54,7 +54,7 @@ $(D)/tools-devinit: $(D)/bootstrap
 #
 $(D)/tools-eplayer3: $(D)/bootstrap $(D)/ffmpeg
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/eplayer3; \
+	$(SILENT)set -e; cd $(APPS_DIR)/tools/eplayer3; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -67,7 +67,7 @@ $(D)/tools-eplayer3: $(D)/bootstrap $(D)/ffmpeg
 #
 $(D)/tools-evremote2: $(D)/bootstrap
 	@$(START_BUILD)
-	set -e; cd $(APPS_DIR)/tools/evremote2; \
+	$(SILENT)set -e; cd $(APPS_DIR)/tools/evremote2; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -80,7 +80,7 @@ $(D)/tools-evremote2: $(D)/bootstrap
 #
 $(D)/tools-fp_control: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/fp_control; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/fp_control; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -93,7 +93,7 @@ $(D)/tools-fp_control: $(D)/bootstrap
 #
 $(D)/tools-hotplug: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/hotplug; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/hotplug; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -106,7 +106,7 @@ $(D)/tools-hotplug: $(D)/bootstrap
 #
 $(D)/tools-ipbox_eeprom: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/ipbox_eeprom; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/ipbox_eeprom; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -119,7 +119,7 @@ $(D)/tools-ipbox_eeprom: $(D)/bootstrap
 #
 $(D)/tools-libeplayer3: $(D)/bootstrap $(D)/ffmpeg
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/libeplayer3; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/libeplayer3; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -132,7 +132,7 @@ $(D)/tools-libeplayer3: $(D)/bootstrap $(D)/ffmpeg
 #
 $(D)/tools-libmme_host: $(D)/bootstrap $(D)/driver
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/libmme_host; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/libmme_host; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 			$(if $(MULTICOM324), --enable-multicom324) \
@@ -147,7 +147,7 @@ $(D)/tools-libmme_host: $(D)/bootstrap $(D)/driver
 #
 $(D)/tools-libmme_image: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/libmme_image; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/libmme_image; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -160,7 +160,7 @@ $(D)/tools-libmme_image: $(D)/bootstrap
 #
 $(D)/tools-showiframe: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/showiframe; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/showiframe; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -173,7 +173,7 @@ $(D)/tools-showiframe: $(D)/bootstrap
 #
 $(D)/tools-spf_tool: $(D)/bootstrap $(D)/libusb
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/spf_tool; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/spf_tool; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -186,7 +186,7 @@ $(D)/tools-spf_tool: $(D)/bootstrap $(D)/libusb
 #
 $(D)/tools-stfbcontrol: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/stfbcontrol; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/stfbcontrol; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -199,7 +199,7 @@ $(D)/tools-stfbcontrol: $(D)/bootstrap
 #
 $(D)/tools-streamproxy: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/streamproxy; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/streamproxy; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -212,7 +212,7 @@ $(D)/tools-streamproxy: $(D)/bootstrap
 #
 $(D)/tools-tfd2mtd: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/tfd2mtd; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/tfd2mtd; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -225,7 +225,7 @@ $(D)/tools-tfd2mtd: $(D)/bootstrap
 #
 $(D)/tools-tffpctl: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/tffpctl; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/tffpctl; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -238,7 +238,7 @@ $(D)/tools-tffpctl: $(D)/bootstrap
 #
 $(D)/tools-ustslave: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/ustslave; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/ustslave; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -255,7 +255,7 @@ endif
 
 $(D)/tools-vfdctl: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/vfdctl; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/vfdctl; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
@@ -268,7 +268,7 @@ $(D)/tools-vfdctl: $(D)/bootstrap
 #
 $(D)/tools-wait4button: $(D)/bootstrap
 	$(START_BUILD)
-	@set -e; cd $(APPS_DIR)/tools/wait4button; \
+	@$(SILENT)set -e; cd $(APPS_DIR)/tools/wait4button; \
 		$(CONFIGURE_TOOLS) \
 			--prefix= \
 		; \
