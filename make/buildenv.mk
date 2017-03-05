@@ -81,25 +81,30 @@ PATH                 := $(HOSTPREFIX)/bin:$(CROSS_DIR)/bin:$(PATH):/sbin:/usr/sb
 PKG_CONFIG            = $(HOSTPREFIX)/bin/$(TARGET)-pkg-config
 PKG_CONFIG_PATH       = $(TARGETPREFIX)/usr/lib/pkgconfig
 
+SILENT                = @
+
 # helper-"functions":
-REWRITE_LIBTOOL       = sed -i "s,^libdir=.*,libdir='$(TARGETPREFIX)/usr/lib'," $(TARGETPREFIX)/usr/lib
-REWRITE_LIBTOOLDEP    = sed -i -e "s,\(^dependency_libs='\| \|-L\|^dependency_libs='\)/usr/lib,\ $(TARGETPREFIX)/usr/lib,g" $(TARGETPREFIX)/usr/lib
-REWRITE_PKGCONF       = sed -i "s,^prefix=.*,prefix='$(TARGETPREFIX)/usr',"
-REWRITE_LIBTOOL_OPT   = sed -i "s,^libdir=.*,libdir='$(TARGETPREFIX)/opt/pkg/lib'," $(TARGETPREFIX)/opt/pkg/lib
-REWRITE_PKGCONF_OPT   = sed -i "s,^prefix=.*,prefix='$(TARGETPREFIX)/opt/pkg',"
+REWRITE_LIBTOOL       = $(SILENT)sed -i "s,^libdir=.*,libdir='$(TARGETPREFIX)/usr/lib'," $(TARGETPREFIX)/usr/lib
+REWRITE_LIBTOOL_NS    = sed -i "s,^libdir=.*,libdir='$(TARGETPREFIX)/usr/lib'," $(TARGETPREFIX)/usr/lib
+REWRITE_LIBTOOLDEP    = $(SILENT)sed -i -e "s,\(^dependency_libs='\| \|-L\|^dependency_libs='\)/usr/lib,\ $(TARGETPREFIX)/usr/lib,g" $(TARGETPREFIX)/usr/lib
+REWRITE_PKGCONF       = $(SILENT)sed -i "s,^prefix=.*,prefix='$(TARGETPREFIX)/usr',"
+RREWRITE_PKGCONF_NS   = sed -i "s,^prefix=.*,prefix='$(TARGETPREFIX)/usr',"
+REWRITE_LIBTOOL_OPT   = $(SILENT)sed -i "s,^libdir=.*,libdir='$(TARGETPREFIX)/opt/pkg/lib'," $(TARGETPREFIX)/opt/pkg/lib
+REWRITE_PKGCONF_OPT   = $(SILENT)sed -i "s,^prefix=.*,prefix='$(TARGETPREFIX)/opt/pkg',"
 
 export RM=$(shell which rm) -f
 
 # unpack tarballs, clean up
-UNTAR                 = @tar -C $(BUILD_TMP) -xf $(ARCHIVE)
-REMOVE                = rm -rf $(BUILD_TMP)
+UNTAR                 = $(SILENT)tar -C $(BUILD_TMP) -xf $(ARCHIVE)
+REMOVE                = $(SILENT)rm -rf $(BUILD_TMP)
 RM_PKGPREFIX          = rm -rf $(PKGPREFIX)
 START_BUILD           = @echo "--------------------------------------------"; echo -e "Start build of \033[01;32m$(subst $(BASE_DIR)/cdk_new/.deps/,,$@)\033[0m."; echo
 #Comment next line if you want to see the names of the files being patched
 SILENT_PATCH          = -s
 PATCH                 = patch -p1 $(SILENT_PATCH) -i $(PATCHES)
 TOUCH                 = @touch $@; echo -e "Build of \033[01;32m$(subst $(BASE_DIR)/cdk_new/.deps/,,$@)\033[0m completed."; echo
-
+MAKEFLAGS            += --silent
+MAKEFLAGS            += --no-print-directory
 #
 #
 #

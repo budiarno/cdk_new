@@ -222,7 +222,6 @@ release_enigma2_spark:
 	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
 	mkdir -p $(RELEASE_DIR)/var/run/lirc
 	cp -f $(SKEL_ROOT)/release/rc_spark.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
-	[ ! -e $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/rc_models.cfg ] && cp -f $(SKEL_ROOT)/release/rc_spark.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/spark/rc.png || true
 	if [ -e $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD/plugin.py ]; then \
 		rm -f $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons/*; \
 		cp -f $(SKEL_ROOT)/release/leddisplay.png $(TARGETPREFIX)/usr/lib/enigma2/python/Plugins/Extensions/sparkVFD; \
@@ -339,6 +338,7 @@ release_enigma2_hs7110:
 	cp $(SKEL_ROOT)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fw
 	cp -f $(SKEL_ROOT)/release/rc_hs7110.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
+	cp -f $(SKEL_ROOT)/root_enigma2/usr/local/share/enigma2/keymap_fortis.xml $(RELEASE_DIR)/usr/local/share/enigma2/keymap.xml
 
 #
 # release_hs7420

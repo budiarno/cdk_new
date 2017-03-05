@@ -452,7 +452,7 @@ $(D)/lua-feedparser: $(D)/bootstrap $(D)/lua $(D)/luasocket $(D)/luaexpat
 	cp -ra $(ARCHIVE)/lua-feedparser.git $(BUILD_TMP)/lua-feedparser
 	set -e; cd $(BUILD_TMP)/lua-feedparser; \
 		sed -i -e "s/^PREFIX.*//" -e "s/^LUA_DIR.*//" Makefile ; \
-		$(BUILDENV) $(MAKE) install  LUA_DIR=$(TARGETPREFIX)/usr/share/lua/$(LUA_VER_SHORT); \
+		$(BUILDENV) $(MAKE) install  LUA_DIR=$(TARGETPREFIX)/usr/share/lua/$(LUA_VER_SHORT)
 	$(REMOVE)/lua-feedparser
 	$(TOUCH)
 
@@ -470,7 +470,7 @@ $(D)/luasoap: $(D)/bootstrap $(D)/lua $(D)/luasocket $(D)/luaexpat $(ARCHIVE)/lu
 	$(UNTAR)/luasoap-$(LUASOAP_VER).tar.gz
 	set -e; cd $(BUILD_TMP)/luasoap-$(LUASOAP_VER); \
 		$(PATCH)/luasoap-$(LUASOAP_VER).patch; \
-		$(MAKE) install LUA_DIR=$(TARGETPREFIX)/usr/share/lua/$(LUA_VER_SHORT); \
+		$(MAKE) install LUA_DIR=$(TARGETPREFIX)/usr/share/lua/$(LUA_VER_SHORT)
 	$(REMOVE)/luasoap-$(LUASOAP_VER)
 	$(TOUCH)
 
@@ -853,7 +853,7 @@ $(D)/libgif: $(D)/bootstrap $(ARCHIVE)/giflib-$(GIFLIB_VER).tar.bz2
 			--bindir=/.remove \
 		; \
 		$(MAKE) all; \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX); \
+		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_LIBTOOL)/libgif.la
 	$(REMOVE)/giflib-$(GIFLIB_VER)
 	$(TOUCH)
@@ -1557,7 +1557,7 @@ $(D)/ffmpeg: $(D)/bootstrap $(D)/openssl $(D)/bzip2 $(D)/libass $(D)/libroxml $(
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libavformat.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libavutil.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libswresample.pc
-	test -e $(PKG_CONFIG_PATH)/libswscale.pc && $(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libswscale.pc || true
+	test -e $(PKG_CONFIG_PATH)/libswscale.pc && $(REWRITE_PKGCONF_NS) $(PKG_CONFIG_PATH)/libswscale.pc || true
 	$(REMOVE)/ffmpeg-$(FFMPEG_VER)
 	$(TOUCH)
 
@@ -2001,7 +2001,6 @@ $(D)/libusb: $(D)/bootstrap $(ARCHIVE)/libusb-$(USB_VER).tar.bz2
 			--disable-log \
 			--disable-debug-log \
 			--disable-examples-build \
-			--disable-udev \
 		; \
 		$(MAKE) ; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
@@ -2074,7 +2073,7 @@ $(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	for i in `cd $(TARGETPREFIX)/usr/lib/alsa/smixer; echo *.la`; do \
-		$(REWRITE_LIBTOOL)/alsa/smixer/$$i; done
+		$(REWRITE_LIBTOOL_NS)/alsa/smixer/$$i; done
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/alsa.pc
 	$(REWRITE_LIBTOOL)/libasound.la
 	$(REMOVE)/alsa-lib-$(ALSA_VER)

@@ -56,6 +56,9 @@ OCTAGON1008_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-usbwait123_stm24.patch \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-i2c-st40-pio_stm24_$(KERNEL_LABEL).patch
+ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
+OCTAGON1008_PATCHES_24 += linux-sh4-octagon100_stm24_$(KERNEL_LABEL).patch
+endif
 
 ATEVIO7500_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch \
@@ -164,6 +167,9 @@ FORTIS_HDBOX_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-i2c-st40-pio_stm24_$(KERNEL_LABEL).patch \
 		$(if $(P0209),linux-sh4-fortis_hdbox_i2c_st40_stm24_$(KERNEL_LABEL).patch)
+ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
+FORTIS_HDBOX_PATCHES_24 += linux-sh4-fortis_hdbox_mtdconcat_stm24_$(KERNEL_LABEL).patch
+endif
 
 ADB_BOX_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-stx7100_fdma_fix_stm24_$(KERNEL_LABEL).patch \
@@ -290,27 +296,32 @@ endif
 		$(PATCH)/$(BUILD_CONFIG)/$$i; \
 	done; \
 	install -m 644 $(PATCHES)/$(BUILD_CONFIG)/$(HOST_KERNEL_CONFIG) $(KERNEL_DIR)/.config
-	sed -i "s#^\(CONFIG_EXTRA_FIRMWARE_DIR=\).*#\1\"$(CDK_DIR)/integrated_firmware\"#" $(KERNEL_DIR)/.config
-	ln -s $(KERNEL_DIR) $(BUILD_TMP)/linux-sh4
-	-rm $(KERNEL_DIR)/localversion*
-	echo "$(KERNEL_STM_LABEL)" > $(KERNEL_DIR)/localversion-stm
+	@sed -i "s#^\(CONFIG_EXTRA_FIRMWARE_DIR=\).*#\1\"$(CDK_DIR)/integrated_firmware\"#" $(KERNEL_DIR)/.config
+	@ln -s $(KERNEL_DIR) $(BUILD_TMP)/linux-sh4
+	@rm $(KERNEL_DIR)/localversion*
+	@echo "$(KERNEL_STM_LABEL)" > $(KERNEL_DIR)/localversion-stm
 ifeq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug))
 	@echo "Using kernel debug"
 	@grep -v "CONFIG_PRINTK" "$(KERNEL_DIR)/.config" > $(KERNEL_DIR)/.config.tmp
-	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
 	@echo "CONFIG_PRINTK=y" >> $(KERNEL_DIR)/.config
-	@echo "CONFIG_PRINTK_TIME=y" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_PRINTK_TIME is not set" >> $(KERNEL_DIR)/.config
+	@grep -v "CONFIG_DYNAMIC_DEBUG" "$(KERNEL_DIR)/.config" > $(KERNEL_DIR)/.config.tmp
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DYNAMIC_DEBUG is not set" >> $(KERNEL_DIR)/.config
 endif
-ifeq ($(IMAGE), $(filter $(IMAGE), enigma2-wlandriver neutrino-wlandriver))
+ifeq ($(IMAGE), $(filter $(IMAGE), enigma2 enigma2-wlandriver neutrino-wlandriver))
 	@echo "Using kernel wireless"
-	@grep -v "CONFIG_WIRELESS" "$(KERNEL_DIR)/.config" > $(KERNEL_DIR)/.config.tmp
-	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@grep -v "CONFIG_WIRELESS" $(KERNEL_DIR)/.config > $(KERNEL_DIR)/.config.tmp
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
 	@echo "CONFIG_WIRELESS=y" >> $(KERNEL_DIR)/.config
 	@echo "# CONFIG_CFG80211 is not set" >> $(KERNEL_DIR)/.config
 	@echo "# CONFIG_WIRELESS_OLD_REGULATORY is not set" >> $(KERNEL_DIR)/.config
 	@echo "CONFIG_WIRELESS_EXT=y" >> $(KERNEL_DIR)/.config
 	@echo "CONFIG_WIRELESS_EXT_SYSFS=y" >> $(KERNEL_DIR)/.config
 	@echo "# CONFIG_LIB80211 is not set" >> $(KERNEL_DIR)/.config
+	@grep -v "CONFIG_WLAN" $(KERNEL_DIR)/.config > $(KERNEL_DIR)/.config.tmp
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
 	@echo "CONFIG_WLAN=y" >> $(KERNEL_DIR)/.config
 	@echo "# CONFIG_WLAN_PRE80211 is not set" >> $(KERNEL_DIR)/.config
 	@echo "CONFIG_WLAN_80211=y" >> $(KERNEL_DIR)/.config
@@ -320,10 +331,10 @@ ifeq ($(IMAGE), $(filter $(IMAGE), enigma2-wlandriver neutrino-wlandriver))
 endif
 ifeq ($(DESTINATION), USB)
 	@echo "Using kernel USB"
-	@grep -v "CONFIG_BLK_DEV_INITRD" "$(KERNEL_DIR)/.config" > $(KERNEL_DIR)/.config.tmp
-	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@grep -v "CONFIG_BLK_DEV_INITRD" $(KERNEL_DIR)/.config > $(KERNEL_DIR)/.config.tmp
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
 	@echo "CONFIG_BLK_DEV_INITRD=y " >> $(KERNEL_DIR)/.config
-	echo "CONFIG_INITRAMFS_SOURCE=\"$(APPS_DIR)/tools/USB_boot/initramfs_no_hdd\"" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_INITRAMFS_SOURCE=\"$(APPS_DIR)/tools/USB_boot/initramfs_no_hdd\"" >> $(KERNEL_DIR)/.config
 	@echo "CONFIG_INITRAMFS_ROOT_UID=0" >> $(KERNEL_DIR)/.config
 	@echo "CONFIG_INITRAMFS_ROOT_GID=0" >> $(KERNEL_DIR)/.config
 	@echo "CONFIG_RD_GZIP=y" >> $(KERNEL_DIR)/.config
@@ -334,16 +345,56 @@ ifeq ($(DESTINATION), USB)
 	@echo "# CONFIG_INITRAMFS_COMPRESSION_BZIP2 is not set" >> $(KERNEL_DIR)/.config
 	@echo "# CONFIG_INITRAMFS_COMPRESSION_LZMA is not set" >> $(KERNEL_DIR)/.config
 	@grep -v "CONFIG_DECOMPRESS_GZIP" "$(KERNEL_DIR)/.config" > $(KERNEL_DIR)/.config.tmp
-	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
 	@echo "CONFIG_DECOMPRESS_GZIP=y" >> $(KERNEL_DIR)/.config
 	@grep -v "CONFIG_DECOMPRESS_BZIP2" $(KERNEL_DIR)/.config > $(KERNEL_DIR)/.config.tmp
-	cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
 	@echo "CONFIG_DECOMPRESS_BZIP2=y" >> $(KERNEL_DIR)/.config
+endif
+ifeq ($(USB_DVBT), Yes)
+	@echo "Using kernel USB_DVB"
+	@grep -v "CONFIG_DVB_CAPTURE_DRIVERS" $(KERNEL_DIR)/.config > $(KERNEL_DIR)/.config.tmp
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@echo "CONFIG_DVB_CAPTURE_DRIVERS=y" >> $(KERNEL_DIR)/.config
+	@grep -v "CONFIG_DVB_USB" $(KERNEL_DIR)/.config > $(KERNEL_DIR)/.config.tmp
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@echo "CONFIG_DVB_USB=y" >> $(KERNEL_DIR)/.config
+	@echo "CONFIG_DVB_USB_DEBUG=y" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_A800 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_DIBUSB_MB is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_DIBUSB_MC is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_DIB0700 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_UMT_010 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_CXUSB is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_M920X is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_GL861 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_AU6610 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_DIGITV is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_VP7045 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_VP702X is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_GP8PSK is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_NOVA_T_USB2 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_TTUSB2 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_DTT200U is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_OPERA1 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_AF9005 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_DW2102 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_CINERGY_T2 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_ANYSEE is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_DTV5100 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_AF9015 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_CE6230 is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_USB_FRIIO is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_SMS_SIANO_MDTV is not set" >> $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_B2C2_FLEXCOP is not set" >> $(KERNEL_DIR)/.config
+	@grep -v "CONFIG_DVB_FE_CUSTOMISE" $(KERNEL_DIR)/.config > $(KERNEL_DIR)/.config.tmp
+	@cp $(KERNEL_DIR)/.config.tmp $(KERNEL_DIR)/.config
+	@echo "# CONFIG_DVB_FE_CUSTOMISE is not set" >> $(KERNEL_DIR)/.config
 endif
 	@touch $@
 
 $(D)/linux-kernel.do_compile: $(D)/linux-kernel.do_prepare
-	set -e; cd $(KERNEL_DIR); \
+	@set -e; cd $(KERNEL_DIR); \
 	$(MAKE) -C $(KERNEL_DIR) ARCH=sh oldconfig
 	$(MAKE) -C $(KERNEL_DIR) ARCH=sh include/asm
 	$(MAKE) -C $(KERNEL_DIR) ARCH=sh include/linux/version.h

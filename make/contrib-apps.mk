@@ -413,7 +413,7 @@ $(D)/e2fsprogs: $(D)/bootstrap $(D)/utillinux $(ARCHIVE)/e2fsprogs-$(E2FSPROGS_V
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX); \
 		$(MAKE) -C lib/uuid  install DESTDIR=$(TARGETPREFIX); \
-		$(MAKE) -C lib/blkid install DESTDIR=$(TARGETPREFIX); \
+		$(MAKE) -C lib/blkid install DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/uuid.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/blkid.pc
 	cd $(TARGETPREFIX) && rm sbin/badblocks sbin/dumpe2fs sbin/logsave \
