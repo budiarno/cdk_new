@@ -13,3 +13,4 @@ tmpfs		/tmp		tmpfs	defaults					0	0
 #/dev/sdd1	/hdd		auto	defaults,noatime,nodiratime			0	2
 #LABEL=RECORD	/hdd		auto	defaults,errors=remount-ro,noatime,nodiratime	0	0
 #LABEL=SWAPPART	none		swap	sw
+

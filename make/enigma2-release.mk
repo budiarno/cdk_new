@@ -140,6 +140,7 @@ release_enigma2_ufs910:
 	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
 	mkdir -p $(RELEASE_DIR)/var/run/lirc
 	rm -f $(RELEASE_DIR)/bin/vdstandby
+	cp -f $(SKEL_ROOT)/release/rc_ufs912.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	cp -f $(SKEL_ROOT)/root_enigma2/usr/local/share/enigma2/keymap_ufs910.xml $(RELEASE_DIR)/usr/local/share/enigma2/keymap.xml
 
 #
@@ -154,6 +155,7 @@ release_enigma2_ufs912:
 	cp $(SKEL_ROOT)/boot/video_7111.elf $(RELEASE_DIR)/boot/video.elf
 	cp $(SKEL_ROOT)/boot/audio_7111.elf $(RELEASE_DIR)/boot/audio.elf
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fw
+	cp -f $(SKEL_ROOT)/release/rc_ufs912.png $(RELEASE_DIR)/usr/local/share/enigma2/skin_default/rc.png
 	cp -f $(SKEL_ROOT)/root_enigma2/usr/local/share/enigma2/keymap_ufs912.xml $(RELEASE_DIR)/usr/local/share/enigma2/keymap.xml
 
 #
@@ -1017,6 +1019,7 @@ endif
 	cp -f $(SKEL_ROOT)/release/rc_hs9510.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs9510.png
 	cp -f $(SKEL_ROOT)/release/rc_hs7110.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/hs7110.png
 	cp -f $(SKEL_ROOT)/release/rc_tf7700.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/tf7700.png
+	cp -f $(SKEL_ROOT)/release/rc_ufs912.png $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/ufs912.png
 # delete mips remote control files
 	rm -rf $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/et4x00.*
 	rm -rf $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/et6x00.*
@@ -1049,6 +1052,10 @@ endif
 	if [[ ! ENABLE_TF7700 ]]; then \
 		rm -rf $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/tf7700/*; \
 		rmdir $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/tf7700; \
+	fi
+	if [[ ! ENABLE_UFS910 && ! ENABLE_UFS912 ]]; then \
+		rm -rf $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/ufs912/*; \
+		rmdir $(RELEASE_DIR)/usr/local/share/enigma2/rc_models/ufs912; \
 	fi
 #
 # Complete the videomode selection picture set
