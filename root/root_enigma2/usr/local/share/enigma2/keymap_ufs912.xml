@@ -82,8 +82,11 @@
 	</map>
 
 	<map context="InfobarEPGActions">
-		<key id="KEY_EPG" mapto="showEventInfo" flags="b" />
-		<key id="KEY_EPG" mapto="showEventInfoPlugin" flags="l" />
+		<key id="KEY_EPG" mapto="showEventInfoSingleEPG" flags="b" />
+		<!--key id="KEY_EPG" mapto="showEventInfo" flags="b" /-->
+		<key id="KEY_EPG" mapto="showEventInfo" flags="l" />
+		<!--key id="KEY_EPG" mapto="showEventInfoPlugin" flags="l" /-->
+		<key id="KEY_HELP" mapto="showSimpleInfo" flags="l"/>
 	</map>
 	
 	<map context="InfobarInstantRecord">
@@ -108,6 +111,7 @@
 		<key id="KEY_REWIND" mapto="historyBack" flags="mr" />
 		<key id="KEY_FASTFORWARD" mapto="historyNext" flags="mr" />
 		<key id="KEY_OK" mapto="openServiceList" flags="m" />
+		<key id="KEY_RED" mapto="showFavourites" flags="l" />
 	</map>
 	
 	<map context="MinuteInputActions">
@@ -192,8 +196,9 @@
 	<map context="InfobarAspectSelectionActions">
 		<key id="KEY_GREEN" mapto="aspectSelection" flags="m" />
 	</map>
+
 	<map context="InfobarSubserviceSelectionActions">
-		<key id="KEY_GREEN" mapto="subserviceSelection" flags="b" />
+		<key id="KEY_GREEN" mapto="subserviceSelection" flags="m" />
 	</map>
 
 	<map context="InfobarSubserviceQuickzapActions">
@@ -313,7 +318,7 @@
 	</map>
 	
 	<map context="InfobarTeletextActions">
-		<key id="KEY_TEXT" mapto="startTeletext" flags="m" />
+		<key id="KEY_TEXT" mapto="startTeletext" flags="b" />
 	</map>
 
 	<map context="TeletextActions">
@@ -499,6 +504,11 @@
 		<key id="KEY_RIGHT" mapto="right" flags="mr" />
 	</map>
 
+	<map context="InfobarPiPActions">
+		<!--key id="KEY_BLUE" mapto="activatePiP" flags="mr" /-->
+		<key id="KEY_GREEN" mapto="activatePiP" flags="l" />
+	</map>
+
 	<map context="PiPSetupActions">
 		<key id="KEY_UP" mapto="up" flags="mr" />
 		<key id="KEY_DOWN" mapto="down" flags="mr" />
@@ -525,4 +535,13 @@
 		<key id="KEY_PAGEDOWN" mapto="prevBouquet" flags="m" />
 		<key id="KEY_TEXT" mapto="subtitles" flags="m" />
 	</map>
+
+	<map context="InfobarRedButtonActions">
+		<key id="KEY_RED" mapto="activateRedButton" flags="b" />
+	</map>
+
+	<map context="InfobarSubtitleSelectionActions">
+		<key id="KEY_TEXT" mapto="subtitleSelection" flags="l" />
+	</map>
+
 </keymap>

@@ -1,5 +1,5 @@
 #!/bin/sh
-#Version 170313.1
+#Version 170315.1
 
 echo "Kathrein UFS912 Enigma2"
 
@@ -63,17 +63,17 @@ fi
 
 echo "[rcS] Load audio firmware (LOAD 8)"
 echo "LOAD 8" > /dev/vfd
-/bin/ustslave /dev/st231-1 /boot/audio.elf
+/bin/ustslave /dev/st231-1 /boot/audio.elf > /dev/null
 
 echo "[rcS] Load video firmware (LOAD 7)"
 echo "LOAD 7" > /dev/vfd
-/bin/ustslave /dev/st231-0 /boot/video.elf
+/bin/ustslave /dev/st231-0 /boot/video.elf > /dev/null
 
 echo "[rcS] Init embx (LOAD 6)"
 echo "LOAD 6" > /dev/vfd
 insmod $MODDIR/embxshell.ko
-insmod $MODDIR/embxmailbox.ko mailbox0=0xfe211000:136:set2 mailbox1=0xfe212000:0 ;
-insmod $MODDIR/embxshm.ko mailbox0=shm:0:7:0x60000000:0:256:256:0:512:0x40000000:0x10000000 ;
+insmod $MODDIR/embxmailbox.ko mailbox0=0xfe211000:136:set2 mailbox1=0xfe212000:0;
+insmod $MODDIR/embxshm.ko mailbox0=shm:0:7:0x60000000:0:256:256:0:512:0x40000000:0x10000000;
 insmod $MODDIR/mme_host.ko transport0=shm
 
 echo "[rcS] Init AVS (LOAD 5)"
@@ -83,13 +83,6 @@ insmod $MODDIR/avs.ko type=stv6417
 player=`cat /proc/stb/player/version`
 echo "[rcS] Init player $player (LOAD 4)"
 echo "LOAD 4" > /dev/vfd
-#if [ $player=='player191' ]; then
-#   echo "init player 191"
-#elif [ $player=='player179' ]; then
-#   echo "init player 179"
-#else
-#   echo "init player 131"
-#fi
 insmod $MODDIR/mmelog.ko
 insmod $MODDIR/ksound.ko
 insmod $MODDIR/p2div64.ko
@@ -100,21 +93,15 @@ echo "[rcS] Init frontends"
 insmod $MODDIR/stv090x.ko
 insmod $MODDIR/ufs912_cic.ko
 echo "[rcS] Init CI & cardreader"
-if [ $player=='player179' ] || [ $player=='player191' ]; then
-   # Full feature pti
-   insmod $MODDIR/pti.ko waitMS=20 videoMem=4096
-   if [ $?=='2' ]; then
-      # Simple pti
-      insmod $MODDIR/pti.ko
-   fi
-   insmod $MODDIR/stm_monitor.ko
-   insmod $MODDIR/stmsysfs.ko
-   insmod $MODDIR/stmdvb.ko
-else
+# Full feature pti
+insmod $MODDIR/pti.ko waitMS=20 videoMem=4096
+if [ $?=='2' ]; then
+   # Simple pti
    insmod $MODDIR/pti.ko
-   insmod $MODDIR/stmdvb.ko
-   insmod $MODDIR/stm_monitor.ko
 fi
+insmod $MODDIR/stm_monitor.ko
+insmod $MODDIR/stmsysfs.ko
+insmod $MODDIR/stmdvb.ko
 
 echo "[rcS] Init player2 (LOAD 3)"
 echo "LOAD 3" > /dev/vfd
@@ -126,7 +113,9 @@ insmod $MODDIR/silencegen.ko
 
 insmod $MODDIR/bpamem.ko
 
-showiframe -p /var/boot/bootlogo.mvi &
+if [ -e /boot/bootlogo.mvi ]; then
+   showiframe -p /boot/bootlogo.mvi &
+fi
 stfbcontrol a 0
 
 if [ -e $MODDIR/exportfs.ko ]; then
@@ -259,20 +248,22 @@ do
    echo "e2 ended <- RTV: " $rtv
    case "$rtv" in
       0) echo "0"
-         echo "E2 ERROR"
+         echo "E2 Error" > /dev/vfd
          init 6;;
       1) echo "1"
-         echo "SHUTDOWN"
+         echo "Shutdown" > /dev/vfd
          init 0;;
       2) echo "2"
-         echo "REBOOT"
+         echo "Reboot" > /dev/vfd
          init 6;;
       3) echo "3"
-         echo "E2 RESTART"
+         echo "E2 Restart" > /dev/vfd
          echo "0" > /proc/progress
-         showiframe -p /var/boot/bootlogo.mvi &;;
+         if [ -e /boot/bootlogo.mvi ]; then
+            showiframe -p /boot/bootlogo.mvi &
+         fi;;
       *) echo "*"
-         echo "ERROR"
+         echo "Error" > /dev/vfd
          init 6;;
    esac
 done 
