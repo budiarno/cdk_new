@@ -100,7 +100,7 @@ $(ARCHIVE)/mtd-utils-$(MTD_UTILS_VER).tar.bz2:
 $(D)/host_mtd_utils: $(ARCHIVE)/mtd-utils-$(MTD_UTILS_VER).tar.bz2
 	$(START_BUILD)
 	$(REMOVE)/mtd-utils-$(MTD_UTILS_VER)
-	$(UNTAR)/mtd-utils-$(MTD_UTILS_VER).tar.bz2; \
+	$(UNTAR)/mtd-utils-$(MTD_UTILS_VER).tar.bz2
 	$(SILENT)set -e; cd $(BUILD_TMP)/mtd-utils-$(MTD_UTILS_VER); \
 		for i in \
 			host-mtd-utils-$(MTD_UTILS_VER).patch \

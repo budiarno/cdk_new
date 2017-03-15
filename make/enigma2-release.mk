@@ -658,6 +658,7 @@ release_enigma2_base:
 	cp $(SKEL_ROOT)/bin/autologin $(RELEASE_DIR)/bin/
 	cp $(SKEL_ROOT)/bin/vdstandby $(RELEASE_DIR)/bin/
 	cp $(SKEL_ROOT)/usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/
+	cp -f $(SKEL_ROOT)/root_enigma2/boot/bootlogo.mvi $(RELEASE_DIR)/boot/
 	ln -sf ../../usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/fw_setenv
 	echo "720p50" > $(RELEASE_DIR)/etc/videomode
 	cp -dp $(TARGETPREFIX)/usr/bin/vsftpd $(RELEASE_DIR)/usr/bin/
@@ -1106,7 +1107,7 @@ endif
 #
 # sh4-linux-strip all
 #
-ifneq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug))
+ifneq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), debug))
 	echo -n "Stripping..." ;
 	find $(RELEASE_DIR)/ -name '*' -exec $(TARGET)-strip --strip-unneeded {} &>/dev/null \;
 	echo -e " done.\n" ;
