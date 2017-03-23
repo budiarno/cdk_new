@@ -482,13 +482,12 @@ $(D)/jfsutils: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/jfsutils-$(JFSUTILS_VER)
 #
 # utillinux
 #
-UTIL_LINUX_MAJOR = 2.25
+UTIL_LINUX_MAJOR = 2.29
 UTIL_LINUX_MINOR = 2
 UTIL_LINUX_VER = $(UTIL_LINUX_MAJOR).$(UTIL_LINUX_MINOR)
 
 $(ARCHIVE)/util-linux-$(UTIL_LINUX_VER).tar.xz:
-	$(WGET) http://ftp.kernel.org/pub/linux/utils/util-linux/v$(UTIL_LINUX_MAJOR)/util-linux-$(UTIL_LINUX_VER).tar.xz
-
+	$(WGET) https://www.kernel.org/pub/linux/utils/util-linux/v$(UTIL_LINUX_MAJOR)/util-linux-$(UTIL_LINUX_VER).tar.xz
 $(D)/utillinux: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/util-linux-$(UTIL_LINUX_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/util-linux-$(UTIL_LINUX_VER)
@@ -555,8 +554,10 @@ $(D)/utillinux: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/util-linux-$(UTIL_LINUX_VER)
 			--disable-use-tty-group \
 			--disable-makeinstall-chown \
 			--disable-makeinstall-setuid \
+			--enable-sfdisk \
 			--without-audit \
 			--without-ncurses \
+			--without-ncursesw \
 			--without-slang \
 			--without-utempter \
 			--disable-wall \
@@ -565,8 +566,8 @@ $(D)/utillinux: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/util-linux-$(UTIL_LINUX_VER)
 			--without-systemdsystemunitdir \
 		; \
 		$(MAKE); \
-		install -D -m 755 sfdisk $(TARGETPREFIX)/sbin/sfdisk; \
 		install -D -m 755 mkfs $(TARGETPREFIX)/sbin/mkfs
+#		install -D -m 755 sfdisk $(TARGETPREFIX)/sbin/sfdisk;
 	$(REMOVE)/util-linux-$(UTIL_LINUX_VER)
 	$(TOUCH)
 
@@ -635,8 +636,7 @@ $(D)/nano: $(D)/bootstrap $(ARCHIVE)/nano-$(NANO_VER).tar.gz
 RSYNC_VER = 3.1.1
 
 $(ARCHIVE)/rsync-$(RSYNC_VER).tar.gz:
-	$(WGET) http://samba.anu.edu.au/ftp/rsync/src/rsync-$(RSYNC_VER).tar.gz
-
+	$(WGET) https://ftp.samba.org/pub/rsync/rsync-$(RSYNC_VERSION).tar.gz
 $(D)/rsync: $(D)/bootstrap $(ARCHIVE)/rsync-$(RSYNC_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/rsync-$(RSYNC_VER)
@@ -1268,7 +1268,7 @@ $(D)/ethtool: $(D)/bootstrap $(ARCHIVE)/ethtool-$(ETHTOOL_VER).tar.gz
 SAMBA_VER = 3.6.25
 
 $(ARCHIVE)/samba-$(SAMBA_VER).tar.gz:
-	$(WGET) http://ftp.samba.org/pub/samba/stable/samba-$(SAMBA_VER).tar.gz
+	$(WGET) https://ftp.samba.org/pub/samba/stable/samba-$(SAMBA_VERSION).tar.gz
 
 $(D)/samba: $(D)/bootstrap $(ARCHIVE)/samba-$(SAMBA_VER).tar.gz
 	$(START_BUILD)
