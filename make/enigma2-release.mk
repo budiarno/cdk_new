@@ -303,6 +303,7 @@ release_enigma2_atevio7500:
 		rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/Extensions/hs8200VFD; \
 	fi
 	cp -f $(SKEL_ROOT)/root_enigma2/usr/local/share/enigma2/keymap_fortis.xml $(RELEASE_DIR)/usr/local/share/enigma2/keymap.xml
+	cp $(TARGETPREFIX)/usr/sbin/parted $(RELEASE_DIR)/sbin/
 
 #
 # release_octagon1008

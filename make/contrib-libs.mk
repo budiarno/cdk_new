@@ -143,6 +143,7 @@ $(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 		./configure $(CONFIGURE_SILENT) \
 			--enable-static=yes \
 			--enable-shared=no \
+			--disable-libmount \
 			--prefix=`pwd`/out \
 		; \
 		$(MAKE) install; \

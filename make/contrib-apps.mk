@@ -198,6 +198,7 @@ $(D)/opkg-host: $(ARCHIVE)/opkg-$(OPKG_VER).tar.gz
 			$(PATCH)/$$i; \
 		done; \
 		autoreconf -v --install; \
+		autoupdate; \
 		./configure $(CONFIGURE_SILENT) \
 			--prefix= \
 			--disable-gpg \
@@ -500,10 +501,7 @@ $(D)/utillinux: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/util-linux-$(UTIL_LINUX_VER)
 			--disable-gtk-doc \
 			--disable-nls \
 			--disable-rpath \
-			--disable-libuuid \
-			--disable-libblkid \
 			--disable-libmount \
-			--disable-libsmartcols \
 			--disable-mount \
 			--disable-partx \
 			--disable-mountpoint \
@@ -553,8 +551,9 @@ $(D)/utillinux: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/util-linux-$(UTIL_LINUX_VER)
 			--disable-pg-bell \
 			--disable-use-tty-group \
 			--disable-makeinstall-chown \
+			--disable-makeinstall-chown \
+			--without-systemdsystemunitdir \
 			--disable-makeinstall-setuid \
-			--enable-sfdisk \
 			--without-audit \
 			--without-ncurses \
 			--without-ncursesw \
@@ -562,12 +561,19 @@ $(D)/utillinux: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/util-linux-$(UTIL_LINUX_VER)
 			--without-utempter \
 			--disable-wall \
 			--without-python \
-			--disable-makeinstall-chown \
-			--without-systemdsystemunitdir \
+			--enable-libsmartcols \
+			--enable-libuuid \
+			--enable-libfdisk \
 		; \
 		$(MAKE); \
 		install -D -m 755 mkfs $(TARGETPREFIX)/sbin/mkfs
-#		install -D -m 755 sfdisk $(TARGETPREFIX)/sbin/sfdisk;
+#		install -D -m 755 $(BUILD_TMP)/util-linux-$(UTIL_LINUX_VER)/.libs/libfdisk.so $(TARGETPREFIX)/lib/libfdisk.so
+#		ln -f $(TARGETPREFIX)/lib/libfdisk.so $(TARGETPREFIX)/lib/libfdisk.so.1
+#		install -D -m 755 $(BUILD_TMP)/util-linux-$(UTIL_LINUX_VER)/.libs/libsmartcols.so $(TARGETPREFIX)/lib/libsmartcols.so
+#		ln -f $(TARGETPREFIX)/lib/libsmartcols.so $(TARGETPREFIX)/lib/libsmartcols.so.1
+#		install -D -m 755 $(BUILD_TMP)/util-linux-$(UTIL_LINUX_VER)/.libs/libuuid.so $(TARGETPREFIX)/lib/libuuid.so
+#		ln -f $(TARGETPREFIX)/lib/libuuid.so $(TARGETPREFIX)/lib/libuuid.so.1
+#		install -D -m 755 $(BUILD_TMP)/util-linux-$(UTIL_LINUX_VER)/.libs/sfdisk $(TARGETPREFIX)/sbin/sfdisk
 	$(REMOVE)/util-linux-$(UTIL_LINUX_VER)
 	$(TOUCH)
 
@@ -1024,7 +1030,7 @@ AVAHI_VER = 0.6.31
 $(ARCHIVE)/avahi-$(AVAHI_VER).tar.gz:
 	$(WGET) http://www.avahi.org/download/avahi-$(AVAHI_VER).tar.gz
 
-$(D)/avahi: $(D)/bootstrap $(D)/libexpat $(D)/libdaemon $(D)/dbus $(ARCHIVE)/avahi-$(AVAHI_VER).tar.gz
+$(D)/avahi: $(D)/bootstrap $(D)/libexpat $(D)/libdaemon $(D)/dbus $(D)/glib2 $(ARCHIVE)/avahi-$(AVAHI_VER).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/avahi-$(AVAHI_VER)
 	$(UNTAR)/avahi-$(AVAHI_VER).tar.gz

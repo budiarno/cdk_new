@@ -12,7 +12,7 @@ ENIGMA2_DEPS  = $(D)/bootstrap $(D)/opkg $(D)/libncurses $(D)/lirc $(D)/libcurl 
 ENIGMA2_DEPS += $(D)/libpng $(D)/libjpeg $(D)/libgif $(D)/libfreetype
 ENIGMA2_DEPS += $(D)/alsa-utils $(D)/ffmpeg
 ENIGMA2_DEPS += $(D)/libfribidi $(D)/libsigc++_e2 $(D)/libexpat $(D)/libdvbsi++ $(D)/libusb
-ENIGMA2_DEPS += $(D)/sdparm $(D)/minidlna $(D)/ethtool
+ENIGMA2_DEPS += $(D)/sdparm $(D)/parted $(D)/minidlna $(D)/ethtool
 ENIGMA2_DEPS += python-all
 ENIGMA2_DEPS += $(D)/libdreamdvd $(D)/tuxtxt32bpp $(D)/hotplug_e2
 ENIGMA2_DEPS += $(LOCAL_ENIGMA2_DEPS)
@@ -33,6 +33,10 @@ endif
 
 ifeq ($(EXTERNAL_LCD), lcd4linux)
 ENIGMA2_DEPS += $(D)/lcd4linux
+endif
+
+ifeq ($(E2_DIFF), 0)
+ENIGMA2_DEPS  += $(D)/avahi
 endif
 
 ifeq ($(E2_DIFF), 5)
@@ -143,7 +147,7 @@ $(D)/enigma2.do_prepare: | $(ENIGMA2_DEPS)
 		[ -d "$(ARCHIVE)/enigma2-pli-nightly.git" ] || \
 		(echo "Cloning remote OpenPLi git..."; git clone -q -b $$HEAD $$REPO_0 $(ARCHIVE)/enigma2-pli-nightly.git;); \
 		echo "Copying local git content to build environment..."; cp -ra $(ARCHIVE)/enigma2-pli-nightly.git $(SOURCE_DIR)/enigma2; \
-		[ "$$REVISION" == "" ] || (cd $(SOURCE_DIR)/enigma2; echo "Checking out revision $$REVISION..."; git checkout -q "$$REVISION"; cd "$(BUILD_TMP)";); \
+		[ "$$REVISION" == "newest" ] || (cd $(SOURCE_DIR)/enigma2; echo "Checking out revision $$REVISION..."; git checkout -q "$$REVISION"; cd "$(BUILD_TMP)";); \
 		cp -ra $(SOURCE_DIR)/enigma2 $(SOURCE_DIR)/enigma2.org; \
 		echo "Applying diff-$$DIFF patch..."; \
 		set -e; cd $(SOURCE_DIR)/enigma2 && patch -p1 < "../../cdk_new/Patches/enigma2-pli-nightly.$$DIFF.diff"; \
@@ -216,6 +220,8 @@ $(D)/enigma2: $(D)/enigma2.do_prepare $(D)/enigma2.do_compile
 		cd $(TARGETPREFIX)/usr/local/share/enigma2; \
 		$(PATCH)/$$i; \
 	done
+	@rm -rf $(TARGETPREFIX)/usr/local/share/enigma2/PLi-FullHD
+	@rm -rf $(TARGETPREFIX)/usr/local/share/enigma2/PLi-FullNightHD
 	$(TOUCH)
 
 enigma2-clean:
