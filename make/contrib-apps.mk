@@ -813,7 +813,7 @@ $(ARCHIVE)/fbshot-$(FBSHOT_VER).tar.gz:
 	$(WGET) http://www.sourcefiles.org/Graphics/Tools/Capture/fbshot-$(FBSHOT_VER).tar.gz
 
 $(D)/fbshot: $(TARGETPREFIX)/bin/fbshot
-	touch $@
+	$(TOUCH)
 
 $(TARGETPREFIX)/bin/fbshot: $(D)/bootstrap $(D)/libpng $(ARCHIVE)/fbshot-$(FBSHOT_VER).tar.gz
 	$(START_BUILD)
@@ -827,7 +827,7 @@ $(TARGETPREFIX)/bin/fbshot: $(D)/bootstrap $(D)/libpng $(ARCHIVE)/fbshot-$(FBSHO
 		done; \
 		$(TARGET)-gcc $(TARGET_CFLAGS) $(TARGET_LDFLAGS) fbshot.c -lpng -lz -o $@
 	$(REMOVE)/fbshot-$(FBSHOT_VER)
-	$(TOUCH)
+	@touch $@
 
 #
 # parted
