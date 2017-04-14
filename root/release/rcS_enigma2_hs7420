@@ -1,5 +1,5 @@
 #!/bin/sh
-#Version 160526.1
+#Version 170414.1
 
 echo "Fortis HS7420 Enigma2"
 
@@ -63,7 +63,7 @@ if [ ! -e /boot/audio.elf ] || [ ! -e /boot/video.elf ]; then
 fi
 
 echo "[rcS] Load audio firmware (LOAD 8)"
-echo "LD 8" > /dev/vfd
+echo "LOAD 8" > /dev/vfd
 dtsdown=`cat /etc/enigma2/settings | grep systemoptions.dtsdownmix | cut -d "=" -f2`
 if [ ! $dtsdown ] && [ -e /boot/audio_dts.elf ]; then
    /bin/ustslave /dev/st231-1 /boot/audio_dts.elf > /dev/null
@@ -72,7 +72,7 @@ else
 fi
 
 echo "[rcS] Load video firmware (LOAD 7)"
-echo "LD 7" > /dev/vfd
+echo "LOAD 7" > /dev/vfd
 /bin/ustslave /dev/st231-0 /boot/video.elf > /dev/null
 
 echo "[rcS] Init embx (LOAD 6)"
@@ -144,12 +144,12 @@ if [ -e $MODDIR/tun.ko ]; then
 fi
 if [ -e $MODDIR/usbserial.ko ]; then
    insmod $MODDIR/usbserial.ko
-fi
-if [ -e $MODDIR/ftdi.ko ]; then
-   insmod $MODDIR/ftdi.ko
-fi
-if [ -e $MODDIR/pl2303.ko ]; then
-   insmod $MODDIR/pl2303.ko
+   if [ -e $MODDIR/ftdi.ko ]; then
+      insmod $MODDIR/ftdi.ko
+   fi
+   if [ -e $MODDIR/pl2303.ko ]; then
+      insmod $MODDIR/pl2303.ko
+   fi
 fi
 
 echo "[rcS] Init remote control (LOAD 2)"
@@ -221,8 +221,6 @@ if [ ! -e /tmp/reference.dat ] && [ -e /var/bin/reference.dat ]; then
    cp /var/bin/reference.dat /tmp
 fi
 
-#timefix e2
-date -s "201605011200"
 # Try and synchronise time
 #inettime=`cat /etc/enigma2/settings | grep systemoptions.inettime | cut -d "=" -f2`
 # if [ ! $inettime ] && [ -e /sbin/ntpdate ]; then
@@ -237,7 +235,7 @@ else
 fi
 
 echo "[rcS] Init portmap & ftp (LOAD 1)"
-echo "LD 1" > /dev/vfd
+echo "LOAD 1" > /dev/vfd
 /etc/init.d/portmap start
 /etc/init.d/vsftpd start
 /usr/sbin/inetd

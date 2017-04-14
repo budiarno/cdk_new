@@ -1,5 +1,5 @@
 #!/bin/sh
-#Version 160526.1
+#Version 170414.1
 
 echo "Fortis HS7429 Enigma2"
 
@@ -63,7 +63,7 @@ if [ ! -e /boot/audio.elf ] || [ ! -e /boot/video.elf ]; then
 fi
 
 echo "[rcS] Load audio firmware (LOAD 8)"
-echo "LD 8" > /dev/vfd
+echo "LOAD 8" > /dev/vfd
 dtsdown=`cat /etc/enigma2/settings | grep systemoptions.dtsdownmix | cut -d "=" -f2`
 if [ ! $dtsdown ] && [ -e /boot/audio_dts.elf ]; then
    /bin/ustslave /dev/st231-1 /boot/audio_dts.elf > /dev/null
@@ -72,7 +72,7 @@ else
 fi
 
 echo "[rcS] Load video firmware (LOAD 7)"
-echo "LD 7" > /dev/vfd
+echo "LOAD 7" > /dev/vfd
 /bin/ustslave /dev/st231-0 /boot/video.elf > /dev/null
 
 echo "[rcS] Init embx (LOAD 6)"
@@ -120,8 +120,8 @@ insmod $MODDIR/silencegen.ko
 insmod $MODDIR/bpamem.ko
 mknod /dev/bpamem c 153 0
 
-echo "[rcS] Init HDMI-CEC"
 if [ -e $MODDIR/cec.ko ];then
+   echo "[rcS] Init HDMI-CEC"
    insmod $MODDIR/cec.ko activemode=1
 fi
 
@@ -131,25 +131,31 @@ fi
 stfbcontrol a 0
 
 if [ -e $MODDIR/exportfs.ko ]; then
+   echo "[rcS] Init exportfs"
    insmod $MODDIR/exportfs.ko
 fi
 if [ -e $MODDIR/cifs.ko ]; then
+   echo "[rcS] Init CIFS support"
    insmod $MODDIR/cifs.ko
 fi
 if [ -e $MODDIR/ntfs.ko ]; then
+   echo "[rcS] Init NTFS support"
    insmod $MODDIR/ntfs.ko
 fi
 if [ -e $MODDIR/tun.ko ]; then
+   echo "[rcS] Init TUN"
    insmod $MODDIR/tun.ko
 fi
 if [ -e $MODDIR/usbserial.ko ]; then
    insmod $MODDIR/usbserial.ko
-fi
-if [ -e $MODDIR/ftdi.ko ]; then
-   insmod $MODDIR/ftdi.ko
-fi
-if [ -e $MODDIR/pl2303.ko ]; then
-   insmod $MODDIR/pl2303.ko
+   if [ -e $MODDIR/ftdi.ko ]; then
+      echo "[rcS] Init FTDI USB serial support"
+      insmod $MODDIR/ftdi.ko
+   fi
+   if [ -e $MODDIR/pl2303.ko ]; then
+      echo "[rcS] Init PL2303 USB serial support"
+      insmod $MODDIR/pl2303.ko
+   fi
 fi
 
 echo "[rcS] Init remote control (LOAD 2)"
@@ -160,7 +166,7 @@ stfbcontrol a 255
 
 NFS=`grep -c nfs /proc/cmdline`
 if [ "$NFS" -eq "1" ]; then
-   echo "[rcS] Booting from nfs, don't set network"
+   echo "[rcS] Booting from NFS, don't set network"
 else
    if [ -e /etc/network/interfaces ]; then
       ip addr flush eth0
@@ -169,6 +175,9 @@ else
       if [ "$DHCP" -eq "1" ]; then
          echo "[rcS] Starting DHCP"
          /etc/init.d/udhcpc start
+      else
+         ip=$(echo `grep address /etc/network/interfaces` | sed 's/address //g')
+         echo "[rcS] Using fixed IP $ip"
       fi
       /etc/init.d/networking start
    fi
@@ -186,7 +195,7 @@ if [ ! $wlan ] || [ ! -e $MODDIR/$wlan.ko ]; then
    echo "None."
 else
    insmod $MODDIR/$wlan.ko
-   echo "[rcS] $wlan WLAN"
+   echo "$wlan"
 #   echo "$wlan WLAN" > /dev/vfd
 #   sleep 3
 fi
@@ -221,8 +230,6 @@ if [ ! -e /tmp/reference.dat ] && [ -e /var/bin/reference.dat ]; then
    cp /var/bin/reference.dat /tmp
 fi
 
-#timefix e2
-date -s "201605011200"
 # Try and synchronise time
 #inettime=`cat /etc/enigma2/settings | grep systemoptions.inettime | cut -d "=" -f2`
 # if [ ! $inettime ] && [ -e /sbin/ntpdate ]; then
@@ -237,7 +244,7 @@ else
 fi
 
 echo "[rcS] Init portmap & ftp (LOAD 1)"
-echo "LD 1" > /dev/vfd
+echo "LOAD 1" > /dev/vfd
 /etc/init.d/portmap start
 /etc/init.d/vsftpd start
 /usr/sbin/inetd

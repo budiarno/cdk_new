@@ -1,5 +1,5 @@
 #!/bin/sh
-#Version 160526.1
+#Version 170411.1
 
 echo "Fortis HS8200 Enigma2"
 
@@ -53,7 +53,7 @@ echo "LOAD 9" > /dev/vfd
 insmod $MODDIR/stmcore-display-sti7105.ko
 
 if grep -q "config.av.videoport=Scart" /etc/enigma2/settings; then
-   insmod $MODDIR/stmfb.ko display0=720x576i-32@50:12m:pal:rgb:rgb; #SCART
+   insmod $MODDIR/stmfb.ko display0=720x576i-32@50:1m:pal:rgb:rgb; #SCART
 else
    insmod $MODDIR/stmfb.ko display0=1280x720-32@50:12m:pal:rgb:rgb #HDMI
 fi
@@ -127,43 +127,54 @@ insmod $MODDIR/stmalloc.ko
 insmod $MODDIR/platform.ko
 insmod $MODDIR/silencegen.ko
 
-echo "[rcS] Init HDMI-CEC"
-if [ -e $MODDIR/cec.ko ];then
-   insmod $MODDIR/cec.ko activemode=1
-fi
-
 insmod $MODDIR/bpamem.ko
 mknod /dev/bpamem c 153 0
 
 if [ -e /boot/bootlogo.mvi ]; then
    showiframe -p /boot/bootlogo.mvi &
 fi
+
 stfbcontrol a 0
 
+if [ -e $MODDIR/cec.ko ];then
+   echo "[rcS] Init HDMI-CEC"
+   insmod $MODDIR/cec.ko activemode=1
+fi
+
 if [ -e $MODDIR/exportfs.ko ]; then
+   echo "[rcS] Init exportfs"
    insmod $MODDIR/exportfs.ko
 fi
+
 if [ -e $MODDIR/cifs.ko ]; then
+echo "[rcS] Init CIFS support"
    insmod $MODDIR/cifs.ko
 fi
+
 if [ -e $MODDIR/ntfs.ko ]; then
+   echo "[rcS] Init NTFS support"
    insmod $MODDIR/ntfs.ko
 fi
+
 if [ -e $MODDIR/tun.ko ]; then
+echo "[rcS] Init tun support"
    insmod $MODDIR/tun.ko
 fi
+
 if [ -e $MODDIR/usbserial.ko ]; then
    insmod $MODDIR/usbserial.ko
-fi
-if [ -e $MODDIR/ftdi.ko ]; then
-   insmod $MODDIR/ftdi.ko
-fi
-if [ -e $MODDIR/pl2303.ko ]; then
-   insmod $MODDIR/pl2303.ko
+   if [ -e $MODDIR/ftdi.ko ]; then
+   echo "[rcS] Init FTDI USB serial support"
+      insmod $MODDIR/ftdi.ko
+   fi
+   if [ -e $MODDIR/pl2303.ko ]; then
+   echo "[rcS] Init PL2303 USB serial support"
+      insmod $MODDIR/pl2303.ko
+   fi
 fi
 
 echo "[rcS] Init remote control (LOAD 2)"
-echo "Load 2" > /dev/vfd
+echo "LOAD 2" > /dev/vfd
 mknod /dev/rc c 147 1
 /bin/evremote2 10 140 &
 
@@ -171,7 +182,7 @@ stfbcontrol a 255
 
 NFS=`grep -c nfs /proc/cmdline`
 if [ "$NFS" -eq "1" ]; then
-   echo "[rcS] Booting from nfs, don't set network"
+   echo "[rcS] Booting from NFS, don't set network"
 else
    if [ -e /etc/network/interfaces ]; then
       ip addr flush eth0
@@ -197,7 +208,7 @@ if [ ! $wlan ] || [ ! -e $MODDIR/$wlan.ko ]; then
    echo "None."
 else
    insmod $MODDIR/$wlan.ko
-   echo "[rcS] $wlan WLAN"
+   echo "$wlan"
 #   echo "$wlan WLAN" > /dev/vfd
 #   sleep 3
 fi
@@ -232,8 +243,6 @@ if [ ! -e /tmp/reference.dat ] && [ -e /var/bin/reference.dat ]; then
    cp /var/bin/reference.dat /tmp
 fi
 
-#timefix e2
-date -s "201605011200"
 # Try and synchronise time
 #inettime=`cat /etc/enigma2/settings | grep systemoptions.inettime | cut -d "=" -f2`
 # if [ ! $inettime ] && [ -e /sbin/ntpdate ]; then
@@ -270,6 +279,7 @@ do
    /usr/local/bin/enigma2
    rtv=$?
    echo "[rcS] e2 ended <- return value: " $rtv
+   fp_control -i 23 0
    case "$rtv" in
       0) echo "E2 ERROR"
          echo "E2 Error" > /dev/vfd
