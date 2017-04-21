@@ -10185,7 +10185,16 @@ diff -Nur '--exclude-from=diff-exclude' enigma2.org/mytest.py enigma2/mytest.py
  		dlg.isTmp = True
  		dlg.callback = None
  		self.execBegin()
-@@ -496,10 +501,10 @@
+@@ -355,7 +359,7 @@
+ 	def doAction(self, selected, longkey=False):
+ 		if self.longkeyPressed:
+ 			self.longkeyPressed = False
+-		elif selected and self.session.infobar:
++		elif selected and self.session.infobar == None:
+ 			if longkey:
+ 				self.longkeyPressed = True
+ 			selected = selected.split("/")
+@@ -496,10 +500,10 @@
  	if wakeupList:
  		from time import strftime
  		startTime = wakeupList[0]
