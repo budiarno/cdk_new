@@ -1,5 +1,5 @@
 #!/bin/sh
-#Version 170411.1
+#Version 170422.1
 
 echo "Fortis HS8200 Enigma2"
 
@@ -27,6 +27,7 @@ fi
 #insmod $MODDIR/sata.ko
 
 # Start automounter with umount timeout of 5 seconds
+echo "[rcS] Starting automounter"
 /etc/init.d/autofs start
 
 echo "[rcS] Starting DEBUG Interface"
@@ -53,7 +54,7 @@ echo "LOAD 9" > /dev/vfd
 insmod $MODDIR/stmcore-display-sti7105.ko
 
 if grep -q "config.av.videoport=Scart" /etc/enigma2/settings; then
-   insmod $MODDIR/stmfb.ko display0=720x576i-32@50:1m:pal:rgb:rgb; #SCART
+   insmod $MODDIR/stmfb.ko display0=720x576i-32@50:1m:pal:rgb:rgb #SCART
 else
    insmod $MODDIR/stmfb.ko display0=1280x720-32@50:12m:pal:rgb:rgb #HDMI
 fi
@@ -113,8 +114,13 @@ insmod $MODDIR/avl2108.ko
 
 echo "[rcS] Init CI & cardreader"
 insmod $MODDIR/starci.ko
-
-insmod $MODDIR/pti.ko
+insmod $MODDIR/pti.ko waitMS=20 videoMem=4096
+if [ $?=='2' ]; then
+   insmod $MODDIR/pti.ko
+   echo "[rcS] Simple pti"
+else
+   echo "[rcS] Full feature pti"
+fi
 insmod $MODDIR/stm_monitor.ko
 insmod $MODDIR/stmsysfs.ko
 insmod $MODDIR/stmdvb.ko

@@ -1,5 +1,5 @@
 #!/bin/sh
-#Version 160617.1
+#Version 170422.1
 
 echo "Fortis FS9000/9200 Enigma2"
 
@@ -97,20 +97,15 @@ insmod $MODDIR/stv090x.ko
 echo "[rcS] Init CI & cardreader"
 insmod $MODDIR/starci.ko
 
-if [ $player=='player179' ] || [ $player=='player191' ]; then
-   # Full feature pti
-#   insmod $MODDIR/pti.ko waitMS=20 videoMem=4096
-#   if [ $?=='2' ]; then
-      # Simple pti
-      insmod $MODDIR/pti.ko
-#   fi
-   insmod $MODDIR/stm_monitor.ko
-   insmod $MODDIR/stmdvb.ko
-else
+insmod $MODDIR/pti.ko waitMS=20 videoMem=4096
+if [ $?=='2' ]; then
    insmod $MODDIR/pti.ko
-   insmod $MODDIR/stmdvb.ko
-   insmod $MODDIR/stm_monitor.ko
+   echo "[rcS] Simple pti"
+else
+   echo "[rcS] Full feature pti"
 fi
+insmod $MODDIR/stm_monitor.ko
+insmod $MODDIR/stmdvb.ko
 
 echo "[rcS] Init player2 (LOAD 3)"
 echo "LOAD 3" > /dev/vfd

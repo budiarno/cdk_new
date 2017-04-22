@@ -1,5 +1,5 @@
 #!/bin/sh
-#Version 170315.1
+#Version 170422.1
 
 echo "Kathrein UFS912 Enigma2"
 
@@ -92,12 +92,13 @@ insmod $MODDIR/pseudocard.ko
 echo "[rcS] Init frontends"
 insmod $MODDIR/stv090x.ko
 insmod $MODDIR/ufs912_cic.ko
-echo "[rcS] Init CI & cardreader"
-# Full feature pti
+
 insmod $MODDIR/pti.ko waitMS=20 videoMem=4096
 if [ $?=='2' ]; then
-   # Simple pti
    insmod $MODDIR/pti.ko
+   echo "[rcS] Simple pti"
+else
+   echo "[rcS] Full feature pti"
 fi
 insmod $MODDIR/stm_monitor.ko
 insmod $MODDIR/stmsysfs.ko
@@ -209,8 +210,6 @@ if [ ! -e /tmp/reference.dat ] && [ -e /var/bin/reference.dat ]; then
    cp /var/bin/reference.dat /tmp
 fi
 
-#timefix e2
-#date -s "201703011200"
 # Try and synchronise time
 #inettime=`cat /etc/enigma2/settings | grep systemoptions.inettime | cut -d "=" -f2`
 # if [ ! $inettime ] && [ -e /sbin/ntpdate ]; then
