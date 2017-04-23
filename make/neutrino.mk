@@ -76,7 +76,7 @@ $(D)/libstb-hal-cst-next-max.do_prepare:
 	cp -ra $(SOURCE_DIR)/libstb-hal-cst-next-max $(SOURCE_DIR)/libstb-hal-cst-next-max.org
 	for i in $(NEUTRINO_MP_LIBSTB_CST_NEXT_MAX_PATCHES); do \
 		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
-		set -e; cd $(SOURCE_DIR)/libstb-hal-cst-next-max && patch -s -p1 -i $$i; \
+		set -e; cd $(SOURCE_DIR)/libstb-hal-cst-next-max && patch -p1 -i $$i; \
 	done;
 	touch $@
 
@@ -147,7 +147,7 @@ $(D)/neutrino-mp-cst-next-max.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst
 	cp -ra $(SOURCE_DIR)/neutrino-mp-cst-next-max $(SOURCE_DIR)/neutrino-mp-cst-next-max.org
 	for i in $(NEUTRINO_MP_CST_NEXT_MAX_PATCHES); do \
 		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
-		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next-max && patch -s -p1 -i $$i; \
+		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next-max && patch -p1 -i $$i; \
 	done;
 	touch $@
 
@@ -236,7 +236,7 @@ $(D)/libstb-hal-cst-next.do_prepare:
 	cp -ra $(SOURCE_DIR)/libstb-hal-cst-next $(SOURCE_DIR)/libstb-hal-cst-next.org
 	for i in $(NEUTRINO_MP_LIBSTB_CST_NEXT_PATCHES); do \
 		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
-		set -e; cd $(SOURCE_DIR)/libstb-hal-cst-next && patch -s -p1 -i $$i; \
+		set -e; cd $(SOURCE_DIR)/libstb-hal-cst-next && patch -p1 -i $$i; \
 	done;
 	touch $@
 
@@ -307,7 +307,7 @@ $(D)/neutrino-mp-cst-next.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-nex
 	cp -ra $(SOURCE_DIR)/neutrino-mp-cst-next $(SOURCE_DIR)/neutrino-mp-cst-next.org
 	for i in $(NEUTRINO_MP_CST_NEXT_PATCHES); do \
 		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
-		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next && patch -s -p1 -i $$i; \
+		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next && patch -p1 -i $$i; \
 	done;
 	touch $@
 
@@ -545,7 +545,7 @@ $(D)/neutrino-hd2.do_prepare: | $(NEUTRINO_DEPS) $(NEUTRINO_DEPS2)
 	cp -ra $(SOURCE_DIR)/neutrino-hd2.git/nhd2-exp $(SOURCE_DIR)/neutrino-hd2.org
 	for i in $(NEUTRINO_HD2_PATCHES); do \
 		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
-		set -e; cd $(SOURCE_DIR)/neutrino-hd2 && patch -s -p1 -i $$i; \
+		set -e; cd $(SOURCE_DIR)/neutrino-hd2 && patch -p1 -i $$i; \
 	done;
 	touch $@
 
@@ -636,7 +636,7 @@ $(D)/neutrino-mp-tangos.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	cp -ra $(SOURCE_DIR)/neutrino-mp-tangos $(SOURCE_DIR)/neutrino-mp-tangos.org
 	for i in $(NEUTRINO_MP_TANGOS_PATCHES); do \
 		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
-		set -e; cd $(SOURCE_DIR)/neutrino-mp-tangos && patch -s -p1 -i $$i; \
+		set -e; cd $(SOURCE_DIR)/neutrino-mp-tangos && patch -p1 -i $$i; \
 	done;
 	touch $@
 
