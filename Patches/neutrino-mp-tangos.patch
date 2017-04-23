@@ -1,24 +1,15 @@
 --- neutrino-mp-tangos.org/acinclude.m4
 +++ neutrino-mp-tangos/acinclude.m4
-@@ -526,7 +526,7 @@
- 	[  --with-boxmodel         valid for coolstream: nevis, apollo
-                           valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025
-                           valid for ipbox: ip200, ip250, ip350, ip400
+@@ -342,7 +342,7 @@
+ AC_ARG_WITH(boxmodel,
+ 	[  --with-boxmodel         valid for coolstream: hd1, hd2
+                           valid for generic: raspi
 -                          valid for duckbox: ufs910, ufs912, ufs913, ufs922, atevio7500, fortis_hdbox, octagon1008, hs7110, hs7810a, hs7119, hs7819, dp7000, cuberevo, cuberevo_mini, cuberevo_mini2, cuberevo_250hd, cuberevo_2000hd, cuberevo_3000hd, ipbox9900, ipbox99, ipbox55, arivalink200, tf7700, hl101
 +                          valid for duckbox: ufs910, ufs912, ufs913, ufs922, atevio7500, fortis_hdbox, octagon1008, hs7110, hs7420, hs7810a, hs7119, hs7429, hs7819, cuberevo, cuberevo_mini, cuberevo_mini2, cuberevo_250hd, cuberevo_2000hd, cuberevo_3000hd, ipbox9900, ipbox99, ipbox55, arivalink200, tf7700, hl101
                            valid for spark: spark, spark7162],
  	[case "${withval}" in
- 		nevis|apollo)
-@@ -550,7 +550,7 @@
- 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
- 			fi
- 			;;
--		ufs910|ufs912|ufs913|ufs922|atevio7500|fortis_hdbox|octagon1008|hs7110|hs7810a|hs7119|hs7819|dp7000|cuberevo|cuberevo_mini|cuberevo_mini2|cuberevo_250hd|cuberevo_2000hd|cuberevo_3000hd|ipbox9900|ipbox99|ipbox55|arivalink200|tf7700|hl101)
-+		ufs910|ufs912|ufs913|ufs922|atevio7500|fortis_hdbox|octagon1008|hs7110|hs7420|hs7810a|hs7119|hs7429|hs7819|cuberevo|cuberevo_mini|cuberevo_mini2|cuberevo_250hd|cuberevo_2000hd|cuberevo_3000hd|ipbox9900|ipbox99|ipbox55|arivalink200|tf7700|hl101)
- 			if test "$BOXTYPE" = "duckbox"; then
- 				BOXMODEL="$withval"
- 			else
-@@ -616,8 +616,10 @@
+ 		hd1|hd2)
+@@ -412,8 +412,10 @@
  AM_CONDITIONAL(BOXMODEL_FORTIS_HDBOX,test "$BOXMODEL" = "fortis_hdbox")
  AM_CONDITIONAL(BOXMODEL_OCTAGON1008,test "$BOXMODEL" = "octagon1008")
  AM_CONDITIONAL(BOXMODEL_HS7110,test "$BOXMODEL" = "hs7110")
@@ -29,7 +20,7 @@
  AM_CONDITIONAL(BOXMODEL_HS7819,test "$BOXMODEL" = "hs7819")
  AM_CONDITIONAL(BOXMODEL_DP7000,test "$BOXMODEL" = "dp7000")
  
-@@ -691,10 +693,14 @@
+@@ -471,10 +473,14 @@
  	AC_DEFINE(BOXMODEL_OCTAGON1008, 1, [octagon1008])
  elif test "$BOXMODEL" = "hs7110"; then
  	AC_DEFINE(BOXMODEL_HS7110, 1, [hs7110])
@@ -46,7 +37,7 @@
  elif test "$BOXMODEL" = "dp7000"; then
 --- neutrino-mp-tangos.org/src/neutrino.cpp
 +++ neutrino-mp-tangos/src/neutrino.cpp
-@@ -4333,6 +4333,9 @@
+@@ -4387,6 +4387,9 @@
  			CVFD::getInstance()->Clear();
  			CVFD::getInstance()->setMode(CVFD::MODE_STANDBY);
  		}
@@ -56,7 +47,7 @@
  		CVFD::getInstance()->setBacklight(g_settings.backlight_standby);
  
  		InfoClock->enableInfoClock(false);
-@@ -4364,6 +4367,9 @@
+@@ -4418,6 +4421,9 @@
  		// Active standby off
  		powerManager->SetStandby(false, false);
  		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
@@ -126,7 +117,7 @@
  static void writeCG (unsigned char adress, unsigned char pixeldata[5])
  {
  	struct vfd_ioctl_data data;
-@@ -435,51 +445,61 @@
+@@ -437,51 +447,61 @@
  #else
  // Brightness
  	struct vfd_ioctl_data data;
@@ -218,7 +209,7 @@
  // Power on/off
  	if (power) {
  		data.start = 0x01;
-@@ -642,10 +662,13 @@
+@@ -644,10 +664,13 @@
  			if(force || ( switch_name_time_cnt == 0 && ((hour != t->tm_hour) || (minute != t->tm_min))) ) {
  				hour = t->tm_hour;
  				minute = t->tm_min;
@@ -234,7 +225,7 @@
  				strftime(timestr, 5, "%H%M", t);
  #else
  				strftime(timestr, 6, "%H:%M", t);
-@@ -752,7 +775,8 @@
+@@ -754,7 +777,8 @@
  		int pp = (int) round((double) vol / (double) 2);
  		if(oldpp != pp)
  		{
@@ -244,7 +235,7 @@
  			int i;
  			unsigned char speaker[5] = {0x1C, 0x1C, 0x1C, 0x3E, 0x7F}; // speaker symbol
  			writeCG(0, speaker);
-@@ -799,15 +823,31 @@
+@@ -801,15 +825,31 @@
  			char vol_chr[64] = "";
  			snprintf(vol_chr, sizeof(vol_chr)-1, "VOL: %d%%", (int)vol);
  			ShowText(vol_chr);
@@ -279,7 +270,7 @@
  			char vol_chr[64] = "";
  			snprintf(vol_chr, sizeof(vol_chr)-1, "Volume: %d%%", (int)vol);
  			ShowText(vol_chr);
-@@ -1083,7 +1123,11 @@
+@@ -1085,7 +1125,11 @@
  int CVFD::getBrightness()
  {
  	//FIXME for old neutrino.conf
@@ -292,7 +283,7 @@
  	if(g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS] > 7)
  		g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS] = 7;
  #else
-@@ -1105,7 +1149,11 @@
+@@ -1107,7 +1151,11 @@
  int CVFD::getBrightnessStandby()
  {
  	//FIXME for old neutrino.conf
@@ -305,7 +296,7 @@
  	if(g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] > 7)
  		g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] = 7;
  #else
-@@ -1126,7 +1174,11 @@
+@@ -1128,7 +1176,11 @@
  int CVFD::getBrightnessDeepStandby()
  {
  	//FIXME for old neutrino.conf
@@ -318,7 +309,7 @@
  	if(g_settings.lcd_setting[SNeutrinoSettings::LCD_DEEPSTANDBY_BRIGHTNESS] > 7)
  		g_settings.lcd_setting[SNeutrinoSettings::LCD_DEEPSTANDBY_BRIGHTNESS] = 7;
  #else
-@@ -1197,13 +1249,22 @@
+@@ -1199,13 +1251,22 @@
  	else
  		text[0] = 0;
  #else
@@ -345,7 +336,7 @@
  	ShowText("              ");
  #elif !defined (BOXMODEL_HS7110)
  	ShowText("                ");
-@@ -1220,7 +1281,13 @@
+@@ -1222,7 +1283,13 @@
  	if(ret < 0)
  		perror(show ? "IOC_FP_SET_ICON" : "IOC_FP_CLEAR_ICON");
  #else
@@ -360,7 +351,7 @@
  	return;
  #endif
  	if (icon == 0)
-@@ -1246,13 +1313,20 @@
+@@ -1248,13 +1315,20 @@
  #ifdef HAVE_DUCKBOX_HARDWARE
  void CVFD::ClearIcons()
  {
@@ -383,15 +374,4 @@
  		if (id != FP_ICON_USB)
  #else
  		if (id != 0x10 && id != 0x12)
-#--- neutrino-mp-tangos/data/icons/Makefile.am.org
-#+++ neutrino-mp-tangos/data/icons/Makefile.am
-#@@ -263,7 +263,7 @@
-# 	shell.png \
-# 	shutdown.jpg \
-# 	softupdate.png \
-#-	star-off \
-#+	star-off.png \
-# 	star-on.png \
-# 	start.jpg \
-# 	streaming.png \
 

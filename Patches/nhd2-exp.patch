@@ -1,6 +1,6 @@
 --- nhd2-exp.org/acinclude.m4
 +++ nhd2-exp/acinclude.m4
-@@ -217,9 +217,9 @@
+@@ -201,9 +201,9 @@
  AC_DEFUN([TUXBOX_BOXTYPE],[
  
  AC_ARG_WITH(boxtype,
@@ -12,7 +12,7 @@
  			BOXTYPE="$withval"
  			;;
  		cu*)
-@@ -240,6 +240,10 @@
+@@ -224,6 +224,10 @@
  			;;
  		spa*)
  			BOXTYPE="fulan"
@@ -23,7 +23,7 @@
  			BOXMODEL="$withval"
  			;;
  		uf*)
-@@ -260,6 +264,10 @@
+@@ -244,6 +248,10 @@
  			;;
  		oct*)
  			BOXTYPE="octagon"
@@ -34,8 +34,8 @@
  			BOXMODEL="$withval"
  			;;
  		vu*)
-@@ -356,11 +364,13 @@
- 				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se
+@@ -340,11 +348,13 @@
+ 				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520
  				valid for xtrend: et4x00,et5x00,et6x00,et7x00, et8000,et8500,et9x00, et10000
  				valid for fulan: spark, spark7162
 +				valid for topfield: tf7700
@@ -48,7 +48,7 @@
  				valid for vuplus: vusolo,vuduo,vuuno,vuultimo,vuduo2,vusolo2,vusolo4k,vusolose,vuzero
  				valid for azbox: azboxhd,azboxme,azboxminime
  				valid for technomate: tmtwin,tm2t,tmsingle,tmnano
-@@ -414,6 +424,13 @@
+@@ -398,6 +408,13 @@
  				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
  			fi
  			;;
@@ -62,7 +62,7 @@
  		ufs910|ufs912|ufs913|ufs922|ufc960)
  			if test "$BOXTYPE" = "kathrein"; then
  				BOXMODEL="$withval"
-@@ -449,6 +466,13 @@
+@@ -433,6 +450,13 @@
  				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
  			fi
  			;;
@@ -73,10 +73,10 @@
 +				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 +			fi
 +			;;
-		vusolo2|vuduo2|vusolo|vuduo|vuuno|vuultimo|vusolose|vusolo4k|vuzero)
+ 		vusolo2|vuduo2|vusolo|vuduo|vuuno|vuultimo|vusolose|vusolo4k|vuzero)
  			if test "$BOXTYPE" = "vuplus"; then
  				BOXMODEL="$withval"
-@@ -614,7 +638,7 @@
+@@ -598,7 +622,7 @@
  			AC_MSG_ERROR([unsupported value $withval for --with-boxmodel])
  			;;
  	esac],
@@ -85,7 +85,7 @@
  		AC_MSG_ERROR([this boxtype $BOXTYPE needs --with-boxmodel])
  	fi])
  
-@@ -630,7 +654,7 @@
+@@ -614,7 +638,7 @@
  AM_CONDITIONAL(BOXTYPE_KATHREIN, test "$BOXTYPE" = "kathrein")
  AM_CONDITIONAL(BOXTYPE_IPBOX, test "$BOXTYPE" = "ipbox")
  AM_CONDITIONAL(BOXTYPE_HL101, test "$BOXTYPE" = "hl101")
@@ -94,7 +94,7 @@
  AM_CONDITIONAL(BOXTYPE_FORTIS_HDBOX, test "$BOXTYPE" = "fortis_hdbox")
  AM_CONDITIONAL(BOXTYPE_OCTAGON, test "$BOXTYPE" = "octagon")
  AM_CONDITIONAL(BOXTYPE_ATEVIO, test "$BOXTYPE" = "atevio")
-@@ -702,6 +726,8 @@
+@@ -687,6 +711,8 @@
  AM_CONDITIONAL(BOXMODEL_SPARK,test "$BOXMODEL" = "spark")
  AM_CONDITIONAL(BOXMODEL_SPARK7162,test "$BOXMODEL" = "spark7162")
  
@@ -103,7 +103,7 @@
  AM_CONDITIONAL(BOXMODEL_UFS910, test "$BOXMODEL" = "ufs910")
  AM_CONDITIONAL(BOXMODEL_UFS912, test "$BOXMODEL" = "ufs912")
  AM_CONDITIONAL(BOXMODEL_UFS913, test "$BOXMODEL" = "ufs913")
-@@ -720,6 +746,13 @@
+@@ -705,6 +731,13 @@
  AM_CONDITIONAL(BOXMODEL_ATEVIO7600, test "$BOXMODEL" = "atevio7600")
  
  AM_CONDITIONAL(BOXMODEL_OCTAGON_1008, test "$BOXMODEL" = "octagon1008")
@@ -117,7 +117,7 @@
  
  AM_CONDITIONAL(BOXMODEL_VUSOLO2, test "$BOXMODEL" = "vusolo2")
  AM_CONDITIONAL(BOXMODEL_VUDUO2, test "$BOXMODEL" = "vuduo2")
-@@ -812,6 +845,8 @@
+@@ -797,6 +830,8 @@
  	AC_DEFINE(PLATFORM_XTREND, 1, [building for xtrend])
  elif test "$BOXTYPE" = "fulan"; then
  	AC_DEFINE(PLATFORM_FULAN, 1, [building for fulan])
@@ -126,7 +126,7 @@
  elif test "$BOXTYPE" = "kathrein"; then
  	AC_DEFINE(PLATFORM_KATHREIN, 1, [building for kathrein])
  elif test "$BOXTYPE" = "ipbox"; then
-@@ -826,6 +861,8 @@
+@@ -811,6 +846,8 @@
  	AC_DEFINE(PLATFORM_OCTAGON, 1, [building for octagon])
  elif test "$BOXTYPE" = "atevio"; then
  	AC_DEFINE(PLATFORM_ATEVIO, 1, [building for atevio])
@@ -135,7 +135,7 @@
  elif test "$BOXTYPE" = "adb_box"; then
  	AC_DEFINE(PLATFORM_ADB_BOX, 1, [building for adb_box])
  elif test "$BOXTYPE" = "whitebox"; then
-@@ -951,6 +988,9 @@
+@@ -938,6 +975,9 @@
  elif test "$BOXMODEL" = "spark7162"; then
  	AC_DEFINE(PLATFORM_SPARK7162, 1, [building for spark 7162])
  
@@ -145,7 +145,7 @@
  elif test "$BOXMODEL" = "ufs910"; then
  	AC_DEFINE(PLATFORM_UFS910, 1, [building for ufs910])
  elif test "$BOXMODEL" = "ufs912"; then
-@@ -983,6 +1023,19 @@
+@@ -970,6 +1010,19 @@
  
  elif test "$BOXMODEL" = "octagon1008"; then
  	AC_DEFINE(BOXMODEL_OCTAGON_1008, 1, [building for octagon1008])
@@ -165,7 +165,7 @@
  
  elif test "$BOXMODEL" = "vusolo2"; then
  	AC_DEFINE(BOXMODEL_VUSOLO2, 1, [vuplus solo2])
-@@ -1126,4 +1179,3 @@
+@@ -1113,4 +1166,3 @@
  fi
  ])
  
@@ -200,9 +200,9 @@
  #endif
 --- nhd2-exp.org/src/neutrino.h
 +++ nhd2-exp/src/neutrino.h
-@@ -202,13 +202,13 @@
- 		void StartSubtitles(bool show = true);
- 		void SelectSubtitles();
+@@ -206,13 +206,13 @@
+ 		void lockPlayBack(void);
+ 		void unlockPlayBack(void);
  		
 -		// 0 - restart 
 -		// 1 - halt
