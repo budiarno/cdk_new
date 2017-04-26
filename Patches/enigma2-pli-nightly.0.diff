@@ -1059,7 +1059,7 @@ diff -Nur '--exclude-from=diff-exclude' enigma2.org/lib/driver/vfd.cpp enigma2/l
 +	//set all blocked icons
 +	for (int id = 0x10; id < 0x20; id++)
 +	{
-+		vfd.vfd_set_icon((id, icon_onoff[id]);
++		vfd.vfd_set_icon(id, icon_onoff[id]);
 +	}
 +#endif
 +	blocked = false;
@@ -7783,7 +7783,7 @@ diff -Nur '--exclude-from=diff-exclude' enigma2.org/lib/service/serviceeplayer3.
 +	return 0;
 +}
 +
-+RESULT eServiceEPlayer3::setTarget(int target)
++RESULT eServiceEPlayer3::setTarget(int target, bool noaudio)
 +{
 +	return -1;
 +}
@@ -8565,7 +8565,7 @@ diff -Nur '--exclude-from=diff-exclude' enigma2.org/lib/service/serviceeplayer3.
 +	RESULT connectEvent(const Slot2<void,iPlayableService*,int> &event, ePtr<eConnection> &connection);
 +	RESULT start();
 +	RESULT stop();
-+	RESULT setTarget(int target);
++	RESULT setTarget(int target, bool noaudio);
 +	
 +	RESULT pause(ePtr<iPauseableService> &ptr);
 +	RESULT setSlowMotion(int ratio);
