@@ -57,7 +57,7 @@ OCTAGON1008_PATCHES_24 = $(COMMON_PATCHES_24) \
 		linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch \
 		linux-sh4-i2c-st40-pio_stm24_$(KERNEL_LABEL).patch
 ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
-OCTAGON1008_PATCHES_24 += linux-sh4-octagon100_stm24_$(KERNEL_LABEL).patch
+OCTAGON1008_PATCHES_24 += linux-sh4-octagon1008_mtdconcat_stm24_$(KERNEL_LABEL).patch
 endif
 
 ATEVIO7500_PATCHES_24 = $(COMMON_PATCHES_24) \
