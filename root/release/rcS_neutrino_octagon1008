@@ -1,5 +1,5 @@
 #!/bin/sh
-#Version 160525.1
+#Version 170603.1
 
 echo "[rcS] Start"
 echo "Fortis HS9510 Neutrino"
@@ -12,7 +12,7 @@ echo "[rcS] Init frontpanel"
 if [ ! -e /dev/vfd ]; then
    mknod -m 0660 /dev/vfd c 147 0
 fi
-insmod $MODDIR/nuvoton.ko
+insmod $MODDIR/nuvoton.ko waitTime=500
 
 if [ -e /var/etc/.firstboot ]; then
    echo "WAIT 1m." > /dev/vfd
@@ -93,7 +93,7 @@ insmod $MODDIR/stmvbi.ko
 
 insmod $MODDIR/pseudocard.ko
 
-echo "[rcS] Init frontends"
+echo "[rcS] Init frontend"
 insmod $MODDIR/avl2108_platform.ko
 insmod $MODDIR/avl2108.ko
 insmod $MODDIR/cimax.ko
@@ -198,6 +198,7 @@ do
    echo "[rcS] Starting neutrino ->"
    /usr/local/bin/neutrino
    rtv=$?
+   fp_control -i 29 0
    echo "[rcS] Neutrino ended <- return value: " $rtv
    case "$rtv" in
       0) echo "SHUTDOWN"
