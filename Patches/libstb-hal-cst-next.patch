@@ -5,7 +5,7 @@
  typedef enum {
  #if defined(BOXMODEL_OCTAGON1008)
 -	ICON_DOLBY = 0x10,
-+	ICON_DOLBY = 0x1,
++	ICON_DOLBY = 1,
  	ICON_DTS,
  	ICON_VIDEO,
  	ICON_AUDIO,
@@ -50,7 +50,7 @@
 +	FP_ICON_MAX = ICON_MAX
 +#elif defined(BOXMODEL_HS7420) \
 + || defined(BOXMODEL_HS7429)
-+	ICON_DOT,
++	ICON_DOT = 1,
 +	ICON_COLON1,
 +	ICON_COLON2,
 +	ICON_COLON3,
@@ -79,8 +79,8 @@
 +	FP_ICON_CAM1 = 0,
 +	FP_ICON_MAX = ICON_MAX
 +#elif defined(BOXMODEL_HS7119)
-+	ICON_COLON,     // 01
-+	FP_ICON_MIN = 01,
++	ICON_COLON = 1,     // 01
++	FP_ICON_MIN = ICON_COLON,
 +	FP_ICON_USB = 0,
 +	FP_ICON_HD = 0,
 +	FP_ICON_HDD = 0,
@@ -102,31 +102,31 @@
 +	FP_ICON_TV = 0,
 +	FP_ICON_DOWNLOAD = 0,
 +	FP_ICON_CAM1 = 0,
-+	FP_ICON_MAX = 01
++	FP_ICON_MAX = ICON_COLON
 +#elif defined(BOXMODEL_ATEVIO7500)
-+	ICON_STANDBY,   // 01
-+	ICON_REC,       // 02
-+	ICON_TIMESHIFT, // 03
-+	ICON_TIMER,     // 04
-+	ICON_HD,        // 05
-+	ICON_USB,       // 06
-+	ICON_SCRAMBLED, // 07
-+	ICON_DOLBY,     // 08
-+	ICON_MUTE,      // 09
-+	ICON_TUNER1,    // 10
-+	ICON_TUNER2,    // 11
-+	ICON_MP3,       // 12
-+	ICON_REPEAT,    // 13
-+	ICON_PLAY,      // 14
-+	ICON_STOP,      // 15
-+	ICON_PAUSE,     // 16
-+	ICON_REWIND,    // 17
-+	ICON_FF,        // 18
-+	ICON_STEP_BACK, // 19
-+	ICON_STEP_FWD,  // 20
-+	ICON_TV,        // 21
-+	ICON_RADIO,     // 22
-+	ICON_MAX,       // 23
++	ICON_STANDBY = 1, // 01
++	ICON_REC,         // 02
++	ICON_TIMESHIFT,   // 03
++	ICON_TIMER,       // 04
++	ICON_HD,          // 05
++	ICON_USB,         // 06
++	ICON_SCRAMBLED,   // 07
++	ICON_DOLBY,       // 08
++	ICON_MUTE,        // 09
++	ICON_TUNER1,      // 10
++	ICON_TUNER2,      // 11
++	ICON_MP3,         // 12
++	ICON_REPEAT,      // 13
++	ICON_PLAY,        // 14
++	ICON_STOP,        // 15
++	ICON_PAUSE,       // 16
++	ICON_REWIND,      // 17
++	ICON_FF,          // 18
++	ICON_STEP_BACK,   // 19
++	ICON_STEP_FWD,    // 20
++	ICON_TV,          // 21
++	ICON_RADIO,       // 22
++	ICON_MAX,         // 23
 +	FP_ICON_MIN = ICON_STANDBY,
 +	FP_ICON_USB = ICON_USB,
 +	FP_ICON_HD = ICON_HD,
@@ -152,12 +152,12 @@
 +	FP_ICON_MAX = ICON_MAX
 +#elif defined(BOXMODEL_HS7810A) \
 + || defined(BOXMODEL_HS7819)
-+	ICON_COLON,     // 01
++	ICON_COLON = 1, // 01
 +	ICON_PERIOD1,   // 02
 +	ICON_PERIOD2,   // 03
 +	ICON_PERIOD3,   // 04
 +	ICON_MAX,       // 05
-+	FP_ICON_MIN = ICON_COLON
++	FP_ICON_MIN = ICON_COLON,
 +	FP_ICON_USB = 0,
 +	FP_ICON_HD = 0,
 +	FP_ICON_HDD = 0,
@@ -183,7 +183,7 @@
  #elif defined(BOXMODEL_FORTIS_HDBOX)
 -	ICON_USB = 0x10,
 -	ICON_STANDBY,
-+	ICON_STANDBY = 0x1,
++	ICON_STANDBY = 1,
  	ICON_SAT,
  	ICON_REC,
  	ICON_TIMESHIFT,

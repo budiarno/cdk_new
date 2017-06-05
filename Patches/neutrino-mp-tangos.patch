@@ -120,24 +120,6 @@
  static void writeCG (unsigned char adress, unsigned char pixeldata[5])
  {
  	struct vfd_ioctl_data data;
-@@ -140,7 +150,7 @@
- {
- 	if (blocked)
- 	{
--		printf("[CVFD] - blocked\n");
-+	printf("[CVFD] - blocked\n");
- 		usleep(SCROLL_TIME);
- 	}
- 
-@@ -227,7 +237,7 @@
- 
- 	if (len > VFDLENGTH)
- 	{
--		printf("CVFD::ThreadScrollText: [%s], length %d\n", str, len);
-+	printf("CVFD::ThreadScrollText: [%s], length %d\n", str, len);
- 		memset(buf, ' ', (len + VFDLENGTH));
- 		memcpy(buf, str, len);
- 
 @@ -429,7 +439,7 @@
  
  	brightness = dimm;
@@ -163,10 +145,24 @@
  	usleep(100000);
  	memset(&data, 0, sizeof(struct vfd_ioctl_data));
 -	data.start = 0;
--	data.length = 5;
++	if (power) {
++		data.start = 0x01; // red led
++	}
++	else
++	{
++		data.start = 0xf2; // cross plus blue led
++	}
++	data.data[3] = 0; // off
++	data.data[0] = 0;
++	data.data[1] = 0;
++	data.data[4] = 0;
+ 	data.length = 5;
++	write_to_vfd(VFDSETLED, &data);
++	usleep(100000);
++	memset(&data, 0, sizeof(struct vfd_ioctl_data));
  	if (power) {
 -		data.data[0] = 0x01; // red led
-+		data.start = 0x01; // red led
++		data.start = 0xf2; // cross plus blue led
  	}
  	else
  	{
@@ -174,21 +170,6 @@
 -	}
 -	data.start = 0;
 -	data.data[4] = 0; // off
-+		data.start = 0xf2; // cross plus blue led
-+	}
-+	data.data[3] = 0; // off
-+	data.data[0] = 0;
-+	data.data[1] = 0;
-+	data.data[4] = 0;
-+	data.length = 5;
-+	write_to_vfd(VFDSETLED, &data);
-+	usleep(100000);
-+	memset(&data, 0, sizeof(struct vfd_ioctl_data));
-+	if (power) {
-+		data.start = 0xf2; // cross plus blue led
-+	}
-+	else
-+	{
 +		data.start = 0x01; // red led
 +	}
 +	data.data[3] = brightness * 2;
@@ -245,7 +226,7 @@
  	servicename = name;
  	service_number = number;
  
-@@ -632,49 +648,70 @@
+@@ -632,49 +648,74 @@
  		ShowIcon(FP_ICON_CAM1, false);
  		return;
  	}
@@ -269,24 +250,27 @@
  				hour = t->tm_hour;
  				minute = t->tm_min;
 -#if !defined (BOXMODEL_HS7810A) && !defined (BOXMODEL_HS7819)
--#if defined (BOXMODEL_OCTAGON1008)
++				second = t->tm_sec;
+ #if defined (BOXMODEL_OCTAGON1008)
 -				ShowIcon(ICON_COLON2, true);
 -#elif defined (BOXMODEL_OCTAGON1008) || defined (BOXMODEL_HS7119) || defined (BOXMODEL_CUBEREVO_250HD)
-+				second = t->tm_sec;
-+#if defined (BOXMODEL_OCTAGON1008) \
-+ || defined (BOXMODEL_HS7420) \
-+ || defined (BOXMODEL_HS7429)
 +
 +				ShowIcon(ICON_COLON2, second % 2 == 0 ? true : false);
  				strftime(timestr, 5, "%H%M", t);
++				ShowText(timestr);
++#elif defined (BOXMODEL_HS7420) \
++ || defined (BOXMODEL_HS7429)
++
++				ShowIcon(ICON_COLON2, second % 2 == 0 ? true : false);
++				strftime(timestr, 5, "%H%M", t);
 +				ShowText(timestr);
 +#elif defined (BOXMODEL_HS7119) \
 + || defined (BOXMODEL_HS7810A) \
 + || defined (BOXMODEL_HS7819)
 +
-+				ShowIcon(ICON_COLON, second % 2 == 0 ? true : false);
 +				strftime(timestr, 5, "%H%M", t);
 +				ShowText(timestr);
++				ShowIcon(ICON_COLON, second % 2 == 0 ? true : false);
 +#elif defined (BOXMODEL_FORTIS_HDBOX)
 +				ShowIcon(ICON_COLON3, second % 2 == 0 ? true : false);
 +				strftime(timestr, 13, "        %H%M", t);
@@ -339,7 +323,7 @@
  	int tmp_recstatus = CNeutrinoApp::getInstance()->recordingstatus;
  	if (tmp_recstatus) {
  		if(clearClock) {
-@@ -754,7 +791,8 @@
+@@ -754,7 +795,8 @@
  		int pp = (int) round((double) vol / (double) 2);
  		if(oldpp != pp)
  		{
@@ -349,7 +333,7 @@
  			int i;
  			unsigned char speaker[5] = {0x1C, 0x1C, 0x1C, 0x3E, 0x7F}; // speaker symbol
  			writeCG(0, speaker);
-@@ -801,15 +839,31 @@
+@@ -801,15 +843,31 @@
  			char vol_chr[64] = "";
  			snprintf(vol_chr, sizeof(vol_chr)-1, "VOL: %d%%", (int)vol);
  			ShowText(vol_chr);
@@ -384,7 +368,7 @@
  			char vol_chr[64] = "";
  			snprintf(vol_chr, sizeof(vol_chr)-1, "Volume: %d%%", (int)vol);
  			ShowText(vol_chr);
-@@ -822,9 +876,11 @@
+@@ -822,9 +880,11 @@
  		if(pp > 8) pp = 8;
  
  		if(force_update || oldpp != pp) {
@@ -397,7 +381,7 @@
  			for(i = 0; i < pp; i++) {
  				ShowIcon((fp_icon) j, true);
  				j /= 2;
-@@ -867,9 +923,11 @@
+@@ -867,9 +927,11 @@
  		if(pp > 8) pp = 8;
  
  		if(pp != ppold) {
@@ -410,7 +394,7 @@
  			for(i = 0; i < pp; i++) {
  				ShowIcon((fp_icon) j, true);
  				j /= 2;
-@@ -899,7 +957,7 @@
+@@ -899,7 +961,7 @@
  	if(fd < 0) return;
  	if (mode != MODE_AUDIO)
  		return;
@@ -419,13 +403,17 @@
  	ShowText(title.c_str());
  	wake_up();
  
-@@ -984,7 +1042,26 @@
+@@ -984,7 +1046,30 @@
  		ShowIcon(FP_ICON_COL2, false);
  	}
  #endif
 -
-+#if defined (BOXMODEL_OCTAGON1008) \
-+ || defined (BOXMODEL_HS7420) \
++#if defined (BOXMODEL_OCTAGON1008)
++	else if (mode == MODE_STANDBY)
++	{
++		ShowIcon(ICON_COLON2, true);
++	}
++#elif defined (BOXMODEL_HS7420) \
 + || defined (BOXMODEL_HS7429)
 +	else if (mode == MODE_STANDBY)
 +	{
@@ -447,7 +435,7 @@
  	if(strlen(title))
  		ShowText(title);
  	mode = m;
-@@ -1085,7 +1162,15 @@
+@@ -1085,7 +1170,15 @@
  int CVFD::getBrightness()
  {
  	//FIXME for old neutrino.conf
@@ -464,7 +452,7 @@
  	if(g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS] > 7)
  		g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS] = 7;
  #else
-@@ -1107,7 +1192,15 @@
+@@ -1107,7 +1200,15 @@
  int CVFD::getBrightnessStandby()
  {
  	//FIXME for old neutrino.conf
@@ -481,7 +469,7 @@
  	if(g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] > 7)
  		g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] = 7;
  #else
-@@ -1128,7 +1221,15 @@
+@@ -1128,7 +1229,15 @@
  int CVFD::getBrightnessDeepStandby()
  {
  	//FIXME for old neutrino.conf
@@ -498,7 +486,7 @@
  	if(g_settings.lcd_setting[SNeutrinoSettings::LCD_DEEPSTANDBY_BRIGHTNESS] > 7)
  		g_settings.lcd_setting[SNeutrinoSettings::LCD_DEEPSTANDBY_BRIGHTNESS] = 7;
  #else
-@@ -1199,13 +1300,22 @@
+@@ -1199,13 +1308,22 @@
  	else
  		text[0] = 0;
  #else
@@ -525,7 +513,7 @@
  	ShowText("              ");
  #elif !defined (BOXMODEL_HS7110)
  	ShowText("                ");
-@@ -1216,25 +1326,35 @@
+@@ -1216,25 +1334,35 @@
  void CVFD::ShowIcon(fp_icon icon, bool show)
  {
  #if !HAVE_DUCKBOX_HARDWARE
@@ -568,7 +556,7 @@
  	memset(&data, 0, sizeof(struct vfd_ioctl_data));
  	data.start = 0x00;
  	data.data[0] = icon;
-@@ -1248,17 +1368,9 @@
+@@ -1248,17 +1376,9 @@
  #ifdef HAVE_DUCKBOX_HARDWARE
  void CVFD::ClearIcons()
  {
@@ -588,7 +576,7 @@
  			ShowIcon((fp_icon)id, false);
  	}
  	return;
-@@ -1664,4 +1776,3 @@
+@@ -1664,4 +1784,3 @@
  /*****************************************************************************************/
  #endif // VFD_UPDATE
  
