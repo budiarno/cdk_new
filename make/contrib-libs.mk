@@ -2223,7 +2223,7 @@ $(D)/libmodplug: $(D)/bootstrap $(ARCHIVE)/libmodplug-$(LIBMODPLUG_VER).tar.gz
 #
 # lzo
 #
-LZO_VER = 2.09
+LZO_VER = 2.10
 
 $(ARCHIVE)/lzo-$(LZO_VER).tar.gz:
 	$(WGET) http://www.oberhumer.com/opensource/lzo/download/lzo-$(LZO_VER).tar.gz
