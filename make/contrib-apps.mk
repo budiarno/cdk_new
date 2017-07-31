@@ -1536,7 +1536,7 @@ $(D)/openvpn: $(D)/bootstrap $(D)/openssl $(D)/lzo $(ARCHIVE)/openvpn-$(OPENVPN_
 #
 # openssh
 #
-OPENSSH_VER = 7.2p2
+OPENSSH_VER = 7.5p1
 
 $(ARCHIVE)/openssh-$(OPENSSH_VER).tar.gz:
 	$(WGET) http://artfiles.org/openbsd/OpenSSH/portable/openssh-$(OPENSSH_VER).tar.gz
