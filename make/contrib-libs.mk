@@ -146,10 +146,6 @@ $(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 			--disable-libmount \
 			--disable-fam \
 			--with-pcre=internal \
-			--disable-gtk-doc \
-			--disable-gtk-doc-html \
-			--disable-gtk-doc-pdf
-			--disable-man \
 			--prefix=`pwd`/out \
 		; \
 		$(MAKE) install; \
@@ -182,10 +178,6 @@ $(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(AR
 			--disable-fam \
 			--with-threads="posix" \
 			--with-pcre=internal \
-			--disable-gtk-doc \
-			--disable-gtk-doc-html \
-			--disable-gtk-doc-pdf
-			--disable-man \
 			--with-html-dir=/.remove \
 			--enable-static \
 		; \
@@ -2191,15 +2183,19 @@ $(D)/librtmpdump: $(D)/bootstrap $(D)/zlib $(D)/openssl
 #
 # libdvbsi++
 #
-$(D)/libdvbsi++: $(D)/bootstrap
+LIBDVBSI++_VER = ff57e58
+LIBDVBSI++_SOURCE = libdvbsi++-$(LIBDVBSI++_VER).tar.bz2
+LIBDVBSI++_URL = git://git.opendreambox.org/git/obi/libdvbsi++.git
+
+$(ARCHIVE)/$(LIBDVBSI++_SOURCE):
+	get-git-archive.sh $(LIBDVBSI++_URL) $(LIBDVBSI++_VER) $(notdir $@) $(ARCHIVE)
+
+$(D)/libdvbsi++: $(D)/bootstrap $(ARCHIVE)/$(LIBDVBSI++_SOURCE)
 	$(START_BUILD)
 	$(REMOVE)/libdvbsi++
-	$(SILENT)set -e; if [ -d $(ARCHIVE)/libdvbsi++.git ]; \
-		then cd $(ARCHIVE)/libdvbsi++.git; git pull; \
-		else cd $(ARCHIVE); git clone git://git.opendreambox.org/git/obi/libdvbsi++.git libdvbsi++.git; \
-		fi
-	$(SILENT)cp -ra $(ARCHIVE)/libdvbsi++.git $(BUILD_TMP)/libdvbsi++
-	$(SILENT)set -e; cd $(BUILD_TMP)/libdvbsi++; \
+	$(REMOVE)/libdvbsi++-$(LIBDVBSI++_VERSION)
+	$(UNTAR)/$(LIBDVBSI++_SOURCE)
+	$(SILENT)set -e; cd $(BUILD_TMP)/libdvbsi++-$(LIBDVBSI++_VER); \
 		for i in \
 			libdvbsi++-git.patch \
 		; do \
@@ -2211,7 +2207,7 @@ $(D)/libdvbsi++: $(D)/bootstrap
 		; \
 		$(MAKE); \
 		$(MAKE) install
-	$(REMOVE)/libdvbsi++
+	$(REMOVE)/libdvbsi++-$(LIBDVBSI++_VER)
 	$(TOUCH)
 
 #
