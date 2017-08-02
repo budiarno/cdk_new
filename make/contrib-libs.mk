@@ -144,6 +144,12 @@ $(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 			--enable-static=yes \
 			--enable-shared=no \
 			--disable-libmount \
+			--disable-fam \
+			--with-pcre=internal \
+			--disable-gtk-doc \
+			--disable-gtk-doc-html \
+			--disable-gtk-doc-pdf
+			--disable-man \
 			--prefix=`pwd`/out \
 		; \
 		$(MAKE) install; \
@@ -154,7 +160,7 @@ $(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 #
 # libglib2
 #
-$(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(D)/libpcre $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
+$(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/glib-$(GLIB_VER)
 	$(UNTAR)/glib-$(GLIB_VER).tar.xz
@@ -173,7 +179,13 @@ $(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(D)
 			--disable-gtk-doc \
 			--disable-gtk-doc-html \
 			--disable-libmount \
+			--disable-fam \
 			--with-threads="posix" \
+			--with-pcre=internal \
+			--disable-gtk-doc \
+			--disable-gtk-doc-html \
+			--disable-gtk-doc-pdf
+			--disable-man \
 			--with-html-dir=/.remove \
 			--enable-static \
 		; \
@@ -1903,15 +1915,20 @@ $(D)/pugixml: $(D)/bootstrap $(ARCHIVE)/pugixml-$(PUGIXML_VER).tar.gz
 #
 # graphlcd
 #
-$(D)/graphlcd: $(D)/bootstrap $(D)/libfreetype $(D)/libusb
+GRAPHLCD_VER = 7958e1b
+GRAPHLCD_SOURCE = graphlcd-$(GRAPHLCD_VER).tar.bz2
+GRAPHLCD_URL = git://projects.vdr-developer.org/graphlcd-base.git
+GRAPHLCD_SOURCE_GIT = $(ARCHIVE)/graphlcd-base.git
+GRAPHLCD_PATCH = graphlcd-base-touchcol.patch
+
+$(ARCHIVE)/$(GRAPHLCD_SOURCE):
+	get-git-archive.sh $(GRAPHLCD_URL) $(GRAPHLCD_VER) $(notdir $@) $(ARCHIVE)
+
+$(D)/graphlcd: $(D)/bootstrap $(D)/libfreetype $(D)/libusb $(ARCHIVE)/$(GRAPHLCD_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/graphlcd
-	$(SILENT)set -e; if [ -d $(ARCHIVE)/graphlcd-base-touchcol.git ]; \
-		then cd $(ARCHIVE)/graphlcd-base-touchcol.git; git pull; \
-		else cd $(ARCHIVE); git clone -b touchcol git://projects.vdr-developer.org/graphlcd-base.git graphlcd-base-touchcol.git; \
-		fi
-	$(SILENT)cp -ra $(ARCHIVE)/graphlcd-base-touchcol.git $(BUILD_TMP)/graphlcd
-	$(SILENT)set -e; cd $(BUILD_TMP)/graphlcd; \
+	$(REMOVE)/graphlcd-$(GRAPHLCD_VERSION)
+	$(UNTAR)/$(GRAPHLCD_SOURCE)
+	$(SILENT)set -e; cd $(BUILD_TMP)/graphlcd-$(GRAPHLCD_VER); \
 		for i in \
 			graphlcd-base-touchcol.patch \
 		; do \
@@ -1922,7 +1939,7 @@ $(D)/graphlcd: $(D)/bootstrap $(D)/libfreetype $(D)/libusb
 		$(BUILDENV) \
 		$(MAKE) DESTDIR=$(TARGETPREFIX); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	$(REMOVE)/graphlcd
+	$(REMOVE)/graphlcd-$(GRAPHLCD_VER)
 	$(TOUCH)
 
 #
