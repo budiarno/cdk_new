@@ -355,7 +355,7 @@
  } fp_icon;
 --- libstb-hal-cst-next.org/libduckbox/hardware_caps.c
 +++ libstb-hal-cst-next/libduckbox/hardware_caps.c
-@@ -114,6 +114,15 @@
+@@ -118,6 +118,15 @@
  			caps.can_cec = 1;
  			caps.has_fan = 0;
  		}
@@ -371,7 +371,7 @@
  		else if (!strncmp(buf, "hs7810a", 7)) {
  			strcpy(caps.boxvendor, "DUCKBOX");
  			strcpy(caps.boxname, buf);
-@@ -124,6 +133,15 @@
+@@ -128,6 +137,15 @@
  			caps.has_fan = 0;
  		}
  		else if (!strncmp(buf, "hs7119", 6)) {
@@ -451,7 +451,7 @@
  #include <aotom_main.h>
  
  #include <hardware_caps.h>
-@@ -41,14 +45,27 @@
+@@ -42,15 +46,29 @@
  	const char *tmp;
  	char buf[1024];
  	int len = -1, ret, val;
@@ -466,6 +466,7 @@
 +		else if (version.DisplayInfo == 1) { /* VFD = 1 */
  			caps.display_type = HW_DISPLAY_LINE_TEXT;
  			caps.display_xres = 8;
+ 			caps.can_set_display_brightness = 1;
 +		}
 +		else if (version.DisplayInfo == 3) { /* DVFD = 3 */
 +			caps.display_type = HW_DISPLAY_LINE_TEXT;
@@ -478,6 +479,7 @@
 +			{
 +				caps.display_xres = 16;
 +			}
++ 			caps.can_set_display_brightness = 1;
  		}
  		close(fd);
  	}
