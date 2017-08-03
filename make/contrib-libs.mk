@@ -354,7 +354,7 @@ $(D)/libbluray: $(D)/bootstrap $(ARCHIVE)/libbluray-$(LIBBLURAY_VER).tar.bz2
 #
 LUA_VER = 5.2.4
 LUA_VER_SHORT = 5.2
-LUAPOSIX_VER = 31
+LUA_POSIX_VER = 31
 LUA_SOURCE = lua-$(LUA_VER).tar.gz
 
 LUA_POSIX_VERSION = 31
@@ -368,7 +368,7 @@ $(ARCHIVE)/$(LUA_SOURCE):
 (ARCHIVE)/$(LUA_POSIX_SOURCE):
 	get-git-archive.sh $(LUA_POSIX_URL) release-v$(LUA_POSIX_VERSION) $(notdir $@) $(ARCHIVE)
 
-+$(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/$(LUA_POSIX_SOURCE) $(ARCHIVE)/$(LUA_SOURCE)
+$(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/$(LUA_POSIX_SOURCE) $(ARCHIVE)/$(LUA_SOURCE)
 	$(START_BUILD)
 	$(REMOVE)/lua-$(LUA_VER)
 	mkdir -p $(TARGETPREFIX)/usr/share/lua/$(LUA_VER_SHORT)
@@ -2070,7 +2070,7 @@ $(D)/libusbcompat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/libusb-compat-$(USBCOMP
 #
 # alsa-lib
 #
-ALSA_VER = 1.1.2
+ALSA_VER = 1.1.4.1
 
 $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2:
 	$(WGET) ftp://ftp.alsa-project.org/pub/lib/alsa-lib-$(ALSA_VER).tar.bz2
@@ -2113,14 +2113,16 @@ $(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
 #
 # alsa-utils
 #
-$(ARCHIVE)/alsa-utils-$(ALSA_VER).tar.bz2:
-	$(WGET) ftp://ftp.alsa-project.org/pub/utils/alsa-utils-$(ALSA_VER).tar.bz2
+ALSA_UTILS_VER = 1.1.4
 
-$(D)/alsa-utils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/alsa-utils-$(ALSA_VER).tar.bz2
+$(ARCHIVE)/alsa-utils-$(ALSA_UTILS_VER).tar.bz2:
+	$(WGET) ftp://ftp.alsa-project.org/pub/utils/alsa-utils-$(ALSA_UTILS_VER).tar.bz2
+
+$(D)/alsa-utils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/alsa-utils-$(ALSA_UTILS_VER).tar.bz2
 	$(START_BUILD)
-	$(REMOVE)/alsa-utils-$(ALSA_VER)
-	$(UNTAR)/alsa-utils-$(ALSA_VER).tar.bz2
-	$(SILENT)set -e; cd $(BUILD_TMP)/alsa-utils-$(ALSA_VER); \
+	$(REMOVE)/alsa-utils-$(ALSA_UTILS_VER)
+	$(UNTAR)/alsa-utils-$(ALSA_UTILS_VER).tar.bz2
+	$(SILENT)set -e; cd $(BUILD_TMP)/alsa-utils-$(ALSA_UTILS_VER); \
 		sed -ir -r "s/(alsamixer|amidi|aplay|iecset|speaker-test|seq|alsactl|alsaucm|topology)//g" Makefile.am ;\
 		autoreconf -fi -I $(TARGETPREFIX)/usr/share/aclocal; \
 		$(CONFIGURE) \
@@ -2137,7 +2139,7 @@ $(D)/alsa-utils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/alsa-utils-$(ALSA_VER).
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	$(REMOVE)/alsa-utils-$(ALSA_VER)
+	$(REMOVE)/alsa-utils-$(ALSA_UTILS_VER)
 	$(SILENT)install -m 755 $(SKEL_ROOT)/etc/init.d/amixer $(TARGETPREFIX)/etc/init.d/amixer
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/amixer.conf $(TARGETPREFIX)/etc/amixer.conf
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/asound.conf $(TARGETPREFIX)/etc/asound.conf
