@@ -887,7 +887,7 @@ $(D)/libgif: $(D)/bootstrap $(ARCHIVE)/giflib-$(GIFLIB_VER).tar.bz2
 #
 # libcurl
 #
-CURL_VER = 7.54.0
+CURL_VER = 7.54.1
 
 $(ARCHIVE)/curl-$(CURL_VER).tar.bz2:
 	$(WGET) https://curl.haxx.se/download/curl-$(CURL_VER).tar.bz2
@@ -2070,19 +2070,21 @@ $(D)/libusbcompat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/libusb-compat-$(USBCOMP
 #
 # alsa-lib
 #
-ALSA_VER = 1.1.4.1
+ALSA_LIB_VER = 1.1.4.1
+ALSA_LIB_SOURCE = alsa-lib-$(ALSA_LIB_VER).tar.bz2
+ALSA_LIB_PATCH  = alsa-lib-$(ALSA_LIB_VER).patch
+ALSA_LIB_PATCH += alsa-lib-$(ALSA_LIB_VER)-link_fix.patch
 
-$(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2:
-	$(WGET) ftp://ftp.alsa-project.org/pub/lib/alsa-lib-$(ALSA_VER).tar.bz2
+$(ARCHIVE)/alsa-lib-$(ALSA_LIB_VER).tar.bz2:
+	$(WGET) ftp://ftp.alsa-project.org/pub/lib/alsa-lib-$(ALSA_LIB_VER).tar.bz2
 
-$(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
+$(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_LIB_VER).tar.bz2
 	$(START_BUILD)
-	$(REMOVE)/alsa-lib-$(ALSA_VER)
-	$(UNTAR)/alsa-lib-$(ALSA_VER).tar.bz2
-	$(SILENT)set -e; cd $(BUILD_TMP)/alsa-lib-$(ALSA_VER); \
+	$(REMOVE)/alsa-lib-$(ALSA_LIB_VER)
+	$(UNTAR)/alsa-lib-$(ALSA_LIB_VER).tar.bz2
+	$(SILENT)set -e; cd $(BUILD_TMP)/alsa-lib-$(ALSA_LIB_VER); \
 		for i in \
-			alsa-lib-$(ALSA_VER).patch \
-			alsa-lib-$(ALSA_VER)-link_fix.patch \
+			$(ALSA_LIB_PATCH) \
 		; do \
 			echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
 			$(PATCH)/$$i; \
@@ -2103,11 +2105,9 @@ $(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	$(SILENT)for i in `cd $(TARGETPREFIX)/usr/lib/alsa/smixer; echo *.la`; do \
-		$(REWRITE_LIBTOOL_NS)/alsa/smixer/$$i; done
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/alsa.pc
 	$(REWRITE_LIBTOOL)/libasound.la
-	$(REMOVE)/alsa-lib-$(ALSA_VER)
+	$(REMOVE)/alsa-lib-$(ALSA_LIB_VER)
 	$(TOUCH)
 
 #
