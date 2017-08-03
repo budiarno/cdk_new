@@ -304,6 +304,8 @@ $(D)/openssl: $(D)/bootstrap $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libcrypto.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libssl.pc
 	cd $(TARGETPREFIX) && rm -rf etc/ssl/man usr/bin/openssl
+	ln -sf libcrypto.so.1.0.0 $(TARGETPREFIX)/usr/lib/libcrypto.so.0.9.8
+	ln -sf libssl.so.1.0.0 $(TARGETPREFIX)/usr/lib/libssl.so.0.9.8
 	$(REMOVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER)
 	$(TOUCH)
 
@@ -387,20 +389,23 @@ $(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/lua-$(LUA_VER).tar.gz
 #
 # luacurl
 #
-$(D)/luacurl: $(D)/bootstrap $(D)/libcurl $(D)/lua
+LUA_CURL_VER = 9ac72c7
+LUA_CURL_SOURCE = luacurl-$(LUA_CURL_VER).tar.bz2
+LUA_CURL_URL = git://github.com/Lua-cURL/Lua-cURLv3.git
+
+$(ARCHIVE)/$(LUA_CURL_SOURCE):
+	get-git-archive.sh $(LUA_CURL_URL) $(LUA_CURL_VER) $(notdir $@) $(ARCHIVE)
+
+$(D)/luacurl: $(D)/bootstrap $(D)/libcurl $(D)/lua $(ARCHIVE)/$(LUA_CURL_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/luacurl
-	$(SILENT)set -e; if [ -d $(ARCHIVE)/luacurl.git ]; \
-		then cd $(ARCHIVE)/luacurl.git; git pull; \
-		else cd $(ARCHIVE); git clone git://github.com/Lua-cURL/Lua-cURLv3.git luacurl.git; \
-		fi
-	cp -ra $(ARCHIVE)/luacurl.git $(BUILD_TMP)/luacurl
-	$(SILENT)set -e; cd $(BUILD_TMP)/luacurl; \
+	$(REMOVE)/luacurl-$(LUA_CURL_VER)
+	$(UNTAR)/$(LUA_CURL_SOURCE)
+	$(SILENT)set -e; cd $(BUILD_TMP)/luacurl-$(LUA_CURL_VER); \
 		$(MAKE) CC=$(TARGET)-gcc LDFLAGS="-L$(TARGETPREFIX)/usr/lib" \
 			LIBDIR=$(TARGETPREFIX)/usr/lib \
 			LUA_INC=$(TARGETPREFIX)/usr/include; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX) LUA_CMOD=/usr/lib/lua/$(LUA_VER_SHORT) LUA_LMOD=/usr/share/lua/$(LUA_VER_SHORT)
-	$(REMOVE)/luacurl
+	$(REMOVE)/luacurl-$(LUA_CURL_VER)
 	$(TOUCH)
 
 #
