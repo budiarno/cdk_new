@@ -935,6 +935,8 @@ $(D)/libcurl: $(D)/bootstrap $(D)/openssl $(D)/zlib $(ARCHIVE)/curl-$(CURL_VER).
 # libfribidi
 #
 FRIBIDI_VER = 0.19.7
+FRIBIDI_SOURCE = fribidi-$(FRIBIDI_VER).tar.bz2
+FRIBIDI_PATCH = fribidi-$(FRIBIDI_VER).patch
 
 $(ARCHIVE)/fribidi-$(FRIBIDI_VER).tar.bz2:
 	$(WGET) http://fribidi.org/download/fribidi-$(FRIBIDI_VER).tar.bz2
@@ -944,6 +946,12 @@ $(D)/libfribidi: $(D)/bootstrap $(ARCHIVE)/fribidi-$(FRIBIDI_VER).tar.bz2
 	$(REMOVE)/fribidi-$(FRIBIDI_VER)
 	$(UNTAR)/fribidi-$(FRIBIDI_VER).tar.bz2
 	$(SILENT)set -e; cd $(BUILD_TMP)/fribidi-$(FRIBIDI_VER); \
+		for i in \
+			$(FRIBIDI_PATCH) \
+		; do \
+			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
+			$(PATCH)/$$i; \
+		done; \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
