@@ -420,9 +420,9 @@ $(D)/e2fsprogs: $(D)/bootstrap $(D)/utillinux $(ARCHIVE)/e2fsprogs-$(E2FSPROGS_V
 		$(MAKE) -C lib/blkid install DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/uuid.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/blkid.pc
-	$(SILENT)cd $(TARGETPREFIX) && rm sbin/badblocks sbin/dumpe2fs sbin/logsave \
-				 sbin/e2undo usr/sbin/filefrag usr/sbin/e2freefrag \
-				 usr/bin/chattr usr/bin/lsattr usr/bin/uuidgen
+	rm -f $(addprefix $(TARGETPREFIX)/sbin/,badblocks dumpe2fs logsave e2undo)
+	rm -f $(addprefix $(TARGETPREFIX)/usr/sbin/,filefrag e2freefrag mklost+found uuidd)
+	rm -f $(addprefix $(TARGETPREFIX)/usr/bin/,chattr lsattr uuidgen)
 	$(REMOVE)/e2fsprogs-$(E2FSPROGS_VER)
 	$(TOUCH)
 
