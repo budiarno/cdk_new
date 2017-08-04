@@ -721,7 +721,7 @@ $(D)/curlftpfs: $(D)/bootstrap $(D)/libcurl $(D)/fuse $(D)/glib2 $(ARCHIVE)/curl
 #
 # sdparm
 #
-SDPARM_VER = 1.09
+SDPARM_VER = 1.10
 
 $(ARCHIVE)/sdparm-$(SDPARM_VER).tgz:
 	$(WGET) http://sg.danny.cz/sg/p/sdparm-$(SDPARM_VER).tgz
