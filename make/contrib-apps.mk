@@ -1062,7 +1062,7 @@ $(D)/avahi: $(D)/bootstrap $(D)/libexpat $(D)/libdaemon $(D)/dbus $(D)/glib2 $(A
 #
 # wget
 #
-WGET_VER = 1.18
+WGET_VER = 1.19.1
 
 $(ARCHIVE)/wget-$(WGET_VER).tar.xz:
 	$(WGET) http://ftp.gnu.org/gnu/wget/wget-$(WGET_VER).tar.xz
