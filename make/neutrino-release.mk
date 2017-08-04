@@ -650,6 +650,7 @@ endif
 #
 # wlan
 #
+	[ -e $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/mt7601u/mt7601Usta.ko ] && cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/mt7601u/mt7601Usta.ko $(RELEASE_DIR)/lib/modules/ || true
 	[ -e $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rt2870sta/rt2870sta.ko ] && cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rt2870sta/rt2870sta.ko $(RELEASE_DIR)/lib/modules/ || true
 	[ -e $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rt3070sta/rt3070sta.ko ] && cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rt3070sta/rt3070sta.ko $(RELEASE_DIR)/lib/modules/ || true
 	[ -e $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rt5370sta/rt5370sta.ko ] && cp $(TARGETPREFIX)/lib/modules/$(KERNEL_VERSION)/extra/wireless/rt5370sta/rt5370sta.ko $(RELEASE_DIR)/lib/modules/ || true
