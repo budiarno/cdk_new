@@ -927,7 +927,7 @@ $(D)/libcurl: $(D)/bootstrap $(D)/openssl $(D)/zlib $(ARCHIVE)/curl-$(CURL_VER).
 		rm -f $(TARGETPREFIX)/usr/bin/curl-config
 	$(REWRITE_LIBTOOL)/libcurl.la
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libcurl.pc
-	$(SILENT)cd $(TARGETPREFIX) && rm usr/bin/curl
+	rm -f $(addprefix $(TARGETPREFIX)/usr/bin/,curl)
 	$(REMOVE)/curl-$(CURL_VER)
 	$(TOUCH)
 
