@@ -736,12 +736,12 @@ $(D)/libjpeg_old: $(D)/bootstrap $(ARCHIVE)/jpegsrc.v$(JPEG_VER).tar.gz
 		done; \
 		$(CONFIGURE) \
 			--prefix=/usr \
-			--bindir=/.remove \
 			--mandir=/.remove \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_LIBTOOL)/libjpeg.la
+	rm -f $(addprefix $(TARGETPREFIX)/usr/bin/,cjpeg djpeg jpegtran rdjpgcom wrjpgcom)
 	$(REMOVE)/jpeg-$(JPEG_VER)
 	$(TOUCH)
 
