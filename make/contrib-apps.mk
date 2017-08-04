@@ -1,26 +1,28 @@
 #
 # busybox
 #
-BUSYBOX_VER = 1.25.1
+BUSYBOX_VER = 1.27.1
+BUSYBOX_SOURCE = busybox-$(BUSYBOX_VER).tar.bz2
+BUSYBOX_PATCH  = busybox-$(BUSYBOX_VER)-nandwrite.patch
+BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-unicode.patch
+BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-extra.patch
 
 $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2:
-	$(WGET) http://busybox.net/downloads/busybox-$(BUSYBOX_VER).tar.bz2
+	$(WGET) http://busybox.net/downloads/$(BUSYBOX_SOURCE).tar.bz2
 
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), spark spark7162 ufs912 ufs913))
-BUSYBOX_CONFIG = busybox.config_nandwrite
+BUSYBOX_CONFIG = busybox-$(BUSYBOX_VER).config_nandwrite
 else
-BUSYBOX_CONFIG = busybox.config
+BUSYBOX_CONFIG = busybox-$(BUSYBOX_VER).config
 endif
 
 $(D)/busybox: $(D)/bootstrap $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2 $(PATCHES)/$(BUSYBOX_CONFIG)
 	$(START_BUILD)
-	@rm -fr $(BUILD_TMP)/busybox-$(BUSYBOX_VER)
+	$(SILENT)rm -fr $(BUILD_TMP)/busybox-$(BUSYBOX_VER)
 	$(UNTAR)/busybox-$(BUSYBOX_VER).tar.bz2
 	$(SILENT)set -e; cd $(BUILD_TMP)/busybox-$(BUSYBOX_VER); \
 		for i in \
-			busybox-$(BUSYBOX_VER)-nandwrite.patch \
-			busybox-$(BUSYBOX_VER)-unicode.patch \
-			busybox-$(BUSYBOX_VER)-extra.patch \
+			$(BUSYBOX_PATCH) \
 		; do \
 			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
 			$(PATCH)/$$i; \
@@ -36,11 +38,14 @@ $(D)/busybox: $(D)/bootstrap $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2 $(PATCHES
 # busybox_usb
 #
 BUSYBOX_USB_VER = $(BUSYBOX_VER)
+BUSYBOX_USB_PATCH  = busybox-$(BUSYBOX_USB_VER)-nandwrite.patch
+BUSYBOX_USB_PATCH += busybox-$(BUSYBOX_USB_VER)-unicode.patch
+BUSYBOX_USB_PATCH += busybox-$(BUSYBOX_USB_VER)-extra.patch
 
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), spark spark7162 ufs912 ufs913))
-BUSYBOX_USB_CONFIG = busybox_usb.config_nandwrite
+BUSYBOX_USB_CONFIG = busybox-$(BUSYBOX_USB_VER).config_nandwrite
 else
-BUSYBOX_USB_CONFIG = busybox_usb.config
+BUSYBOX_USB_CONFIG = busybox-$(BUSYBOX_USB_VER).config
 endif
 
 $(D)/busybox_usb: $(D)/bootstrap $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2 $(PATCHES)/$(BUSYBOX_USB_CONFIG)
@@ -50,9 +55,7 @@ $(D)/busybox_usb: $(D)/bootstrap $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2 $(PAT
 	$(SILENT)tar -C $(BUILD_TMP)/busybox_usb-$(BUSYBOX_USB_VER) -xf $(ARCHIVE)/busybox-$(BUSYBOX_USB_VER).tar.bz2 --strip-components=1
 	$(SILENT)set -e; cd $(BUILD_TMP)/busybox_usb-$(BUSYBOX_USB_VER); \
 		for i in \
-			busybox-$(BUSYBOX_USB_VER)-nandwrite.patch \
-			busybox-$(BUSYBOX_USB_VER)-unicode.patch \
-			busybox-$(BUSYBOX_USB_VER)-extra.patch \
+			$(BUSYBOX_USB_PATCH) \
 		; do \
 			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
 			$(PATCH)/$$i; \
