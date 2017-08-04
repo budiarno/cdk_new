@@ -119,10 +119,7 @@ OPKG_SH = $(OPKG_SH_ENV) opkg.sh
 # wget tarballs into archive directory
 WGET = wget --progress=bar:force --no-check-certificate -t6 -T20 -c -P $(ARCHIVE)
 
-#enable parallel makes
-CPU_CORES ?= $(shell getconf _NPROCESSORS_ONLN || echo 1)
 ifneq ($(KERNEL), 1)
-MAKEFLAGS +=-j$(CPU_CORES)
 export MAKEFLAGS
 endif
 

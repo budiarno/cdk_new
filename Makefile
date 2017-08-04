@@ -8,6 +8,9 @@ warn:
 	@echo "Aborting the build. Goodbye."
 else
 
+PARALLEL_JOBS := $(shell echo $$((1 + `getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1`)))
+override MAKE = make $(if $(findstring j,$(filter-out --%,$(MAKEFLAGS))),,-j$(PARALLEL_JOBS))
+
 include make/buildenv.mk
 
 ############################################################################
@@ -48,6 +51,7 @@ ifeq ($(TARGET), $(filter $(TARGET), hs7110 hs7119 hs7420 hs7429 hs7810a hs7819)
 	@echo "DESTINATION      : $(DESTINATION)"
 endif
 	@echo "IMAGE            : $(IMAGE)"
+	@echo "PARALLEL_JOBS    : $(PARALLEL_JOBS)"
 	@echo '================================================================================'
 ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
 	@echo "NEUTRINO_VARIANT             : $(NEUTRINO_VARIANT)"
