@@ -837,30 +837,6 @@ $(D)/png++: $(D)/bootstrap $(D)/libpng $(ARCHIVE)/png++-$(PNGPP_VER).tar.gz
 	$(TOUCH)
 
 #
-# libungif
-#
-UNGIF_VER = 4.1.4
-
-$(ARCHIVE)/libungif-$(UNGIF_VER).tar.bz2:
-	$(WGET) http://sourceforge.net/projects/giflib/files/libungif-4.x/libungif-$(UNGIF_VER)/libungif-$(UNGIF_VER).tar.bz2
-
-$(D)/libungif: $(D)/bootstrap $(ARCHIVE)/libungif-$(UNGIF_VER).tar.bz2
-	$(START_BUILD)
-	$(RM_PKGPREFIX)
-	$(UNTAR)/libungif-$(UNGIF_VER).tar.bz2
-	$(SILENT)set -e; cd $(BUILD_TMP)/libungif-$(UNGIF_VER); \
-		$(CONFIGURE) \
-			--prefix=/usr \
-			--bindir=/.remove \
-			--without-x \
-		; \
-		$(MAKE) all; \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX); \
-	$(REWRITE_LIBTOOL)/libungif.la
-	$(REMOVE)/libungif-$(UNGIF_VER)
-	$(TOUCH)
-
-#
 # libgif
 #
 GIFLIB_VER = 5.1.4
