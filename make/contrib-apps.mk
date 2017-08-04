@@ -1178,8 +1178,8 @@ $(D)/nfs_utils: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/nfs-utils-$(NFSUTILS_VE
 	$(SILENT)install -m 755 $(SKEL_ROOT)/etc/init.d/nfs-common $(TARGETPREFIX)/etc/init.d/
 	$(SILENT)install -m 755 $(SKEL_ROOT)/etc/init.d/nfs-kernel-server $(TARGETPREFIX)/etc/init.d/
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/exports $(TARGETPREFIX)/etc/
-	$(SILENT)cd $(TARGETPREFIX) && rm -f sbin/mount.nfs sbin/mount.nfs4 sbin/umount.nfs sbin/umount.nfs4 \
-				 sbin/osd_login
+	rm -f $(addprefix $(TARGETPREFIX)/sbin/,mount.nfs mount.nfs4 umount.nfs umount.nfs4 osd_login)
+	rm -f $(addprefix $(TARGETPREFIX)/usr/sbin/,mountstats nfsiostat nfsstat rpcdebug showmount sm-notify start-statd)
 	$(REMOVE)/nfs-utils-$(NFSUTILS_VER)
 	$(TOUCH)
 
