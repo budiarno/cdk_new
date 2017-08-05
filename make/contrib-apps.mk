@@ -485,6 +485,43 @@ $(D)/jfsutils: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/jfsutils-$(JFSUTILS_VER)
 	$(TOUCH)
 
 #
+# ntfs-3g
+#
+NTFS_3G_VER = 2017.3.23
+NTFS_3G_SOURCE = ntfs-3g_ntfsprogs-$(NTFS_3G_VER).tgz
+
+$(ARCHIVE)/$(NTFS_3G_SOURCE):
+	$(WGET) http://tuxera.com/opensource/$(NTFS_3G_SOURCE)
+
+$(D)/ntfs-3g: $(D)/bootstrap $(ARCHIVE)/$(NTFS_3G_SOURCE)
+	$(START_BUILD)
+	$(REMOVE)/ntfs-3g_ntfsprogs-$(NTFS_3G_VER)
+	$(UNTAR)/$(NTFS_3G_SOURCE)
+	$(SILENT)set -e; cd $(BUILD_TMP)/ntfs-3g_ntfsprogs-$(NTFS_3G_VER); \
+		CFLAGS="-pipe -O2 -g" $(CONFIGURE) \
+			--build=$(BUILD) \
+			--host=$(TARGET) \
+			--prefix=/usr \
+			--exec-prefix=/usr \
+			--bindir=/usr/bin \
+			--mandir=/.remove \
+			--docdir=/.remove \
+			--disable-ldconfig \
+			--disable-ntfsprogs \
+			--disable-static \
+			--with-fuse=internal \
+			--enable-silent-rules \
+		; \
+		$(MAKE); \
+		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libntfs-3g.pc
+	$(REWRITE_LIBTOOL)/libntfs-3g.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,lowntfs-3g ntfs-3g.probe)
+	rm -f $(addprefix $(TARGET_DIR)/sbin/,mount.lowntfs-3g)
+	$(REMOVE)/ntfs-3g_ntfsprogs-$(NTFS_3G_VER)
+	$(TOUCH)
+
+#
 # utillinux
 #
 UTIL_LINUX_MAJOR = 2.29
