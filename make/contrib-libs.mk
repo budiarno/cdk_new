@@ -2417,22 +2417,24 @@ $(D)/rarfs: $(D)/bootstrap $(D)/fuse $(ARCHIVE)/rarfs-$(RARFS_VER).tar.gz
 #
 # sshfs
 #
-SSHFS_VER = 2.5
+SSHFS_VER = 2.9
+SSHFS_SOURCE = sshfs-$(SSHFS_VER).tar.gz
 
 $(ARCHIVE)/sshfs-fuse-$(SSHFS_VER).tar.gz:
-	$(WGET) https://fossies.org/linux/misc/sshfs-fuse-$(SSHFS_VER).tar.gz
+	$(WGET) https://github.com/libfuse/sshfs/releases/download/sshfs-$(SSHFS_VER)/$(SSHFS_SOURCE)
 
 $(D)/sshfs: $(D)/bootstrap $(D)/glib2 $(D)/fuse $(ARCHIVE)/sshfs-fuse-$(SSHFS_VER).tar.gz
 	$(START_BUILD)
-	$(REMOVE)/sshfs-fuse-$(SSHFS_VER)
-	$(UNTAR)/sshfs-fuse-$(SSHFS_VER).tar.gz
-	$(SILENT)set -e; cd $(BUILD_TMP)/sshfs-fuse-$(SSHFS_VER); \
+	$(REMOVE)/sshfs-$(SSHFS_VER)
+	$(UNTAR)/sshfs-$(SSHFS_VER).tar.gz
+	$(SILENT)set -e; cd $(BUILD_TMP)/sshfs-$(SSHFS_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
+		--mandir=/.remove \
 		; \
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	$(REMOVE)/sshfs-fuse-$(SSHFS_VER)
+	$(REMOVE)/sshfs-$(SSHFS_VER)
 	$(TOUCH)
 
 #
