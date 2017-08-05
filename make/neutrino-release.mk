@@ -528,7 +528,6 @@ release_neutrino_base:
 	touch $(RELEASE_DIR)/var/etc/.firstboot
 	cp -a $(TARGETPREFIX)/bin/* $(RELEASE_DIR)/bin/
 	cp -a $(TARGETPREFIX)/sbin/* $(RELEASE_DIR)/sbin/
-	ln -sf /bin/showiframe $(RELEASE_DIR)/usr/bin/showiframe
 	cp -dp $(TARGETPREFIX)/var/etc/.version $(RELEASE_DIR)/
 	ln -sf /.version $(RELEASE_DIR)/var/etc/.version
 	cp $(TARGETPREFIX)/boot/uImage $(RELEASE_DIR)/boot/
@@ -542,13 +541,13 @@ release_neutrino_base:
 	cp $(SKEL_ROOT)/bin/autologin $(RELEASE_DIR)/bin/
 	cp $(SKEL_ROOT)/bin/vdstandby $(RELEASE_DIR)/bin/
 	cp $(SKEL_ROOT)/usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/
-	ln -sf ../../usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/fw_setenv
 	cp -dp $(TARGETPREFIX)/usr/bin/vsftpd $(RELEASE_DIR)/usr/bin/
 	cp -p $(TARGETPREFIX)/usr/bin/ffmpeg $(RELEASE_DIR)/usr/bin/
 	cp -aR $(TARGETPREFIX)/etc/init.d/* $(RELEASE_DIR)/etc/init.d/
 	cp -aR $(TARGETPREFIX)/etc/* $(RELEASE_DIR)/etc/
 	ln -sf ../../bin/busybox $(RELEASE_DIR)/usr/bin/ether-wake
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), atevio7500 fortis_hdbox octagon1008 ufs910 ufs912 ufs913 ufs922 ufs960 spark spark7162 ipbox55 ipbox99 ipbox9900 cuberevo cuberevo_mini cuberevo_mini2 cuberevo_250 hd cuberevo_2000hd cuberevo_3000hd adb_box tf7700 vitamin_hd5000))
+	ln -sf ../../bin/showiframe $(RELEASE_DIR)/usr/bin/showiframe
++	ln -sf ../../usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/fw_setenvifeq ($(BOXTYPE), $(filter $(BOXTYPE), atevio7500 fortis_hdbox octagon1008 ufs910 ufs912 ufs913 ufs922 ufs960 spark spark7162 ipbox55 ipbox99 ipbox9900 cuberevo cuberevo_mini cuberevo_mini2 cuberevo_250 hd cuberevo_2000hd cuberevo_3000hd adb_box tf7700 vitamin_hd5000))
 	cp $(SKEL_ROOT)/release/fw_env.config_$(BOXTYPE) $(RELEASE_DIR)/etc/fw_env.config
 endif
 	install -m 0755 $(SKEL_ROOT)/release/rcS_neutrino_$(BOXTYPE) $(RELEASE_DIR)/etc/init.d/rcS
@@ -763,34 +762,14 @@ endif
 		cp -f $(TARGETPREFIX)/usr/sbin/automount $(RELEASE_DIR)/usr/sbin/; \
 		ln -s /usr/sbin/automount $(RELEASE_DIR)/sbin/automount; \
 	fi
-#
-# graphlcd
-#
-	if [ -e $(RELEASE_DIR)/usr/lib/libglcddrivers.so ]; then \
-		cp -f $(TARGETPREFIX)/etc/graphlcd.conf $(RELEASE_DIR)/etc/; \
-		rm -f $(RELEASE_DIR)/usr/lib/libglcdskin.so*; \
-	fi
-#
-# lcd4linux
-#
-	if [ -e $(TARGETPREFIX)/usr/bin/lcd4linux ]; then \
-		cp -f $(TARGETPREFIX)/usr/bin/lcd4linux $(RELEASE_DIR)/usr/bin/; \
-		cp -f $(TARGETPREFIX)/etc/init.d/lcd4linux $(RELEASE_DIR)/etc/init.d/; \
-		cp -a $(TARGETPREFIX)/etc/lcd4linux.conf $(RELEASE_DIR)/etc/; \
-	fi
+
 #
 # minidlna
 #
 	if [ -e $(TARGETPREFIX)/usr/sbin/minidlnad ]; then \
 		cp -f $(TARGETPREFIX)/usr/sbin/minidlnad $(RELEASE_DIR)/usr/sbin/; \
 	fi
-#
-# openvpn
-#
-	if [ -e $(TARGETPREFIX)/usr/sbin/openvpn ]; then \
-		cp -f $(TARGETPREFIX)/usr/sbin/openvpn $(RELEASE_DIR)/usr/sbin; \
-		install -d $(RELEASE_DIR)/etc/openvpn; \
-	fi
+
 #
 # udpxy
 #
@@ -865,6 +844,7 @@ endif
 	rm -f $(RELEASE_DIR)/usr/lib/libc.so
 	rm -rf $(RELEASE_DIR)/usr/lib/glib-2.0
 	rm -rf $(RELEASE_DIR)/usr/lib/cmake
+	rm -f $(RELEASE_DIR)/usr/lib/libglcdskin.so*
 	rm -f $(RELEASE_DIR)/usr/lib/xml2Conf.sh
 	rm -f $(RELEASE_DIR)/usr/lib/libfontconfig*
 	rm -f $(RELEASE_DIR)/usr/lib/libtermcap*
