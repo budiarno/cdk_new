@@ -920,6 +920,7 @@ $(D)/autofs: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/autofs-$(AUTOFS_VER).tar.g
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/auto.master $(TARGETPREFIX)/etc/
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/auto.misc $(TARGETPREFIX)/etc/
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/auto.network $(TARGETPREFIX)/etc/
+	ln -s /usr/sbin/automount $(TARGET_DIR)/sbin/automount
 	$(REMOVE)/autofs-$(AUTOFS_VER)
 	$(TOUCH)
 
