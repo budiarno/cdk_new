@@ -667,8 +667,11 @@ $(D)/libfreetype: $(D)/bootstrap $(D)/zlib $(D)/bzip2 $(D)/libpng $(ARCHIVE)/fre
 # lirc
 #
 LIRC_VER = 0.9.0
+LIRC_SOURCE = lirc-$(LIRC_VER).tar.bz2
+LIRC_PATCH = lirc-$(LIRC_VER).patch
+LIRC = $(D)/lirc
 
-$(ARCHIVE)/lirc-$(LIRC_VER).tar.bz2:
+$(ARCHIVE)/$(LIRC_SOURCE):
 	$(WGET) http://sourceforge.net/projects/lirc/files/LIRC/$(LIRC_VER)/lirc-$(LIRC_VER).tar.bz2
 
 ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
@@ -681,10 +684,11 @@ else
 LIRC_OPTS = -D__KERNEL_STRICT_NAMES
 endif
 
-$(D)/lirc: $(D)/bootstrap $(ARCHIVE)/lirc-$(LIRC_VER).tar.bz2
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE),adb_box arivalink200 ipbox55 ipbox99 ipbox9900 cuberevo cuberevo_mini cuberevo_mini2 cuberevo_250hd cuberevo_2000hd cuberevo_3000hd hl101 sagemcom88 spark spark7162 ufs910 vitamin_hd5000))
+$(D)/lirc: $(D)/bootstrap $(ARCHIVE)/$(LIRC_SOURCE)
 	$(START_BUILD)
 	$(REMOVE)/lirc-$(LIRC_VER)
-	$(UNTAR)/lirc-$(LIRC_VER).tar.bz2
+	$(UNTAR)/$(LIRC_SOURCE)
 	$(SILENT)set -e; cd $(BUILD_TMP)/lirc-$(LIRC_VER); \
 		for i in \
 			lirc-$(LIRC_VER).patch \
@@ -698,6 +702,7 @@ $(D)/lirc: $(D)/bootstrap $(ARCHIVE)/lirc-$(LIRC_VER).tar.bz2
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			--prefix=/usr \
+			--sbindir=/usr/bin \
 			--mandir=/.remove \
 			--with-kerneldir=$(KERNEL_DIR) \
 			--without-x \
@@ -712,8 +717,10 @@ $(D)/lirc: $(D)/bootstrap $(ARCHIVE)/lirc-$(LIRC_VER).tar.bz2
 		$(MAKE) -j1 all; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_LIBTOOL)/liblirc_client.la
+	rm -f $(addprefix $(TARGETPREFIX)/usr/bin/,lircmd ircat irpty irrecord irsend irw lircrcd mode2 pronto2lirc)
 	$(REMOVE)/lirc-$(LIRC_VER)
 	$(TOUCH)
+endif
 
 #
 # libjpeg
