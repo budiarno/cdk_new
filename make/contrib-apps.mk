@@ -498,7 +498,7 @@ $(D)/ntfs-3g: $(D)/bootstrap $(ARCHIVE)/$(NTFS_3G_SOURCE)
 	$(REMOVE)/ntfs-3g_ntfsprogs-$(NTFS_3G_VER)
 	$(UNTAR)/$(NTFS_3G_SOURCE)
 	$(SILENT)set -e; cd $(BUILD_TMP)/ntfs-3g_ntfsprogs-$(NTFS_3G_VER); \
-		CFLAGS="-pipe -Os -g" $(CONFIGURE) \
+		CFLAGS="-pipe -Os" $(CONFIGURE) \
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			--prefix=/usr \
