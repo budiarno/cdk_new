@@ -1538,6 +1538,7 @@ $(D)/openvpn: $(D)/bootstrap $(D)/openssl $(D)/lzo $(ARCHIVE)/openvpn-$(OPENVPN_
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(SILENT)install -m 755 $(SKEL_ROOT)/etc/init.d/openvpn $(TARGETPREFIX)/etc/init.d/
+	install -d $(TARGET_DIR)/etc/openvpn
 	$(REMOVE)/openvpn-$(OPENVPN_VER)
 	$(TOUCH)
 
