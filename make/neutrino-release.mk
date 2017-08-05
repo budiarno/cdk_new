@@ -84,7 +84,7 @@ release_neutrino_common_ipbox:
 	cp $(SKEL_ROOT)/firmware/as102_data1_st.hex $(RELEASE_DIR)/lib/firmware/
 	cp $(SKEL_ROOT)/firmware/as102_data2_st.hex $(RELEASE_DIR)/lib/firmware/
 	cp -dp $(SKEL_ROOT)/release/lircd_ipbox.conf $(RELEASE_DIR)/etc/lircd.conf
-	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
+	cp -p $(TARGETPREFIX)/usr/bin/lircd $(RELEASE_DIR)/usr/bin/
 	rm -f $(RELEASE_DIR)/lib/firmware/*
 	rm -f $(RELEASE_DIR)/lib/modules/boxtype.ko
 	rm -f $(RELEASE_DIR)/lib/modules/ramzswap.ko
@@ -132,7 +132,7 @@ release_neutrino_ufs910:
 	cp $(SKEL_ROOT)/boot/audio_7100.elf $(RELEASE_DIR)/lib/firmware/audio.elf
 	cp $(SKEL_ROOT)/firmware/dvb-fe-cx21143.fw $(RELEASE_DIR)/lib/firmware/dvb-fe-cx24116.fw
 	cp -dp $(SKEL_ROOT)/release/lircd_ufs910.conf $(RELEASE_DIR)/etc/lircd.conf
-	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
+	cp -p $(TARGETPREFIX)/usr/bin/lircd $(RELEASE_DIR)/usr/bin/
 	rm -f $(RELEASE_DIR)/bin/vdstandby
 
 #
@@ -208,7 +208,7 @@ release_neutrino_spark:
 	cp $(SKEL_ROOT)/firmware/component_7111_mb618.fw $(RELEASE_DIR)/lib/firmware/component.fw
 	rm -f $(RELEASE_DIR)/bin/vdstandby
 	cp -dp $(SKEL_ROOT)/release/lircd_spark.conf $(RELEASE_DIR)/etc/lircd.conf
-	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
+	cp -p $(TARGETPREFIX)/usr/bin/lircd $(RELEASE_DIR)/usr/bin/
 
 #
 # release_spark7162
@@ -225,7 +225,7 @@ release_neutrino_spark7162:
 	cp $(SKEL_ROOT)/firmware/component_7105_pdk7105.fw $(RELEASE_DIR)/lib/firmware/component.fw
 	rm -f $(RELEASE_DIR)/bin/vdstandby
 	cp -dp $(SKEL_ROOT)/release/lircd_spark7162.conf $(RELEASE_DIR)/etc/lircd.conf
-	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
+	cp -p $(TARGETPREFIX)/usr/bin/lircd $(RELEASE_DIR)/usr/bin/
 
 #
 # release_fortis_hdbox
@@ -400,7 +400,7 @@ release_neutrino_hl101:
 	cp $(SKEL_ROOT)/firmware/as102_data1_st.hex $(RELEASE_DIR)/lib/firmware/
 	cp $(SKEL_ROOT)/firmware/as102_data2_st.hex $(RELEASE_DIR)/lib/firmware/
 	cp -dp $(SKEL_ROOT)/release/lircd_hl101.conf $(RELEASE_DIR)/etc/lircd.conf
-	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
+	cp -p $(TARGETPREFIX)/usr/bin/lircd $(RELEASE_DIR)/usr/bin/
 
 #
 # release_adb_box
@@ -422,7 +422,7 @@ release_neutrino_adb_box:
 	cp $(SKEL_ROOT)/firmware/dvb-fe-avl6222.fw $(RELEASE_DIR)/lib/firmware/
 	cp -f $(SKEL_ROOT)/release/fstab_adb_box $(RELEASE_DIR)/etc/fstab
 	cp -dp $(SKEL_ROOT)/release/lircd_adb_box.conf $(RELEASE_DIR)/etc/lircd.conf
-	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/lircd
+	cp -p $(TARGETPREFIX)/usr/bin/lircd $(RELEASE_DIR)/usr/bin/lircd
 
 #
 # release_tf7700
@@ -467,12 +467,7 @@ release_neutrino_sagemcom88:
 	cp $(SKEL_ROOT)/boot/audio_7105.elf $(RELEASE_DIR)/lib/firmware/audio.elf
 	cp $(SKEL_ROOT)/firmware/dvb-fe-avl6222.fw $(RELEASE_DIR)/lib/firmware/
 	cp $(SKEL_ROOT)/firmware/component_7105_pdk7105.fw $(RELEASE_DIR)/lib/firmware/component.fw
-	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/sbin/lircmd $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/bin/irexec $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/bin/irrecord $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/bin/irsend $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/bin/irw $(RELEASE_DIR)/usr/bin/
+	cp -p $(TARGETPREFIX)/usr/bin/lircd $(RELEASE_DIR)/usr/bin/
 	cp -dp $(SKEL_ROOT)/release/lircd_sagemcom88.conf $(RELEASE_DIR)/etc/lircd.conf
 
 #
@@ -487,12 +482,7 @@ release_neutrino_arivalink200:
 	cp $(SKEL_ROOT)/boot/audio_7109.elf $(RELEASE_DIR)/lib/firmware/audio.elf
 	cp $(SKEL_ROOT)/firmware/dvb-fe-avl6222.fw $(RELEASE_DIR)/lib/firmware/
 	cp $(SKEL_ROOT)/firmware/dvb-fe-cx24116.fw $(RELEASE_DIR)/lib/firmware/
-	cp -p $(TARGETPREFIX)/usr/sbin/lircd $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/sbin/lircmd $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/bin/irexec $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/bin/irrecord $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/bin/irsend $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGETPREFIX)/usr/bin/irw $(RELEASE_DIR)/usr/bin/
+	cp -p $(TARGETPREFIX)/usr/bin/lircd $(RELEASE_DIR)/usr/bin/
 	cp -dp $(SKEL_ROOT)/release/lircd_arivalink200.conf $(RELEASE_DIR)/etc/lircd.conf
 
 #
@@ -554,7 +544,6 @@ release_neutrino_base:
 	cp $(SKEL_ROOT)/usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/
 	ln -sf ../../usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/fw_setenv
 	cp -dp $(TARGETPREFIX)/usr/bin/vsftpd $(RELEASE_DIR)/usr/bin/
-	cp -dp $(TARGETPREFIX)/usr/bin/irexec $(RELEASE_DIR)/usr/bin/
 	cp -p $(TARGETPREFIX)/usr/bin/ffmpeg $(RELEASE_DIR)/usr/bin/
 	cp -aR $(TARGETPREFIX)/etc/init.d/* $(RELEASE_DIR)/etc/init.d/
 	cp -aR $(TARGETPREFIX)/etc/* $(RELEASE_DIR)/etc/
