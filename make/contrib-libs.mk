@@ -303,7 +303,7 @@ $(D)/openssl: $(D)/bootstrap $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/openssl.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libcrypto.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libssl.pc
-	cd $(TARGETPREFIX) && rm -rf etc/ssl/man usr/bin/openssl
+	cd $(TARGETPREFIX) && rm -rf etc/ssl/man usr/bin/openssl usr/lib/engines
 	ln -sf libcrypto.so.1.0.0 $(TARGETPREFIX)/usr/lib/libcrypto.so.0.9.8
 	ln -sf libssl.so.1.0.0 $(TARGETPREFIX)/usr/lib/libssl.so.0.9.8
 	$(REMOVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER)
