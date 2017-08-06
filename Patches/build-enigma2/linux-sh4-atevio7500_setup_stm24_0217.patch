@@ -1,5 +1,5 @@
-*** a/arch/sh/kernel/setup.c
---- b/arch/sh/kernel/setup.c
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
 @@ -389,6 +389,34 @@
  #endif
  #endif
@@ -43,8 +43,8 @@
  	if (c->cut_major == -1)
  		seq_printf(m, "cut\t\t: unknown\n");
  	else if (c->cut_minor == -1)
---- linux-sh4/arch/sh/boards/mach-mb680/setup.c.orig	2012-03-12 06:26:12.000000000 -0700
-+++ linux-sh4/arch/sh/boards/mach-mb680/setup.c	2012-03-24 01:32:14.571136001 -0700
+--- a/arch/sh/boards/mach-mb680/setup.c
++++ b/arch/sh/boards/mach-mb680/setup.c
 @@ -26,11 +26,12 @@
  #include <linux/mtd/mtd.h>
  #include <linux/mtd/physmap.h>
