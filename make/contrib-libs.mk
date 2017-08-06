@@ -2197,6 +2197,7 @@ $(ARCHIVE)/$(LIBRTMPDUMP_SOURCE):
 		$(MAKE) CROSS_COMPILE=$(TARGET)- ; \
 		$(MAKE) install prefix=/usr DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/librtmp.pc
+	rm -f $(addprefix $(TARGETPREFIX)/usr/sbin/,rtmpgw rtmpsrv rtmpsuck)
 	$(REMOVE)/librtmpdump-$(LIBRTMPDUMP_VER)
 	$(TOUCH)
 
