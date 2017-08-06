@@ -452,6 +452,7 @@ $(D)/orc: $(D)/bootstrap $(ARCHIVE)/orc-$(ORC_VER).tar.xz
 	$(REWRITE_LIBTOOL)/liborc-0.4.la
 	$(REWRITE_LIBTOOL)/liborc-test-0.4.la
 	$(REWRITE_LIBTOOLDEP)/liborc-test-0.4.la
+	rm -f $(addprefix $(TARGETPREFIX)/usr/bin/,orc-bugreport orcc)
 	$(REMOVE)/orc-$(ORC_VER)
 	$(TOUCH)
 
