@@ -1176,7 +1176,7 @@ $(D)/libiconv: $(D)/bootstrap $(ARCHIVE)/libiconv-$(ICONV_VER).tar.gz
 # libexpat
 #
 EXPAT_VER = 2.2.0
-EXPAT_SOURCE = expat-$(EXPAT_VERSION).tar.bz2
+EXPAT_SOURCE = expat-$(EXPAT_VER).tar.bz2
 
 $(ARCHIVE)/expat-$(EXPAT_VER).tar.bz2:
 	$(WGET) http://sourceforge.net/projects/expat/files/expat/$(EXPAT_VER)/$(EXPAT_SOURCE)
