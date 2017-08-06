@@ -1780,6 +1780,7 @@ $(D)/libxml2_e2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_E2_VER).t
 		sed -e "/^XML2_LIBDIR/ s,/usr/lib,$(TARGETPREFIX)/usr/lib,g" -i $(TARGETPREFIX)/usr/lib/xml2Conf.sh; \
 		sed -e "/^XML2_INCLUDEDIR/ s,/usr/include,$(TARGETPREFIX)/usr/include,g" -i $(TARGETPREFIX)/usr/lib/xml2Conf.sh
 	$(REWRITE_LIBTOOL)/libxml2.la
+	rm -f $(addprefix $(TARGETPREFIX)/usr/bin/,xmlcatalog xmllint)
 	$(REMOVE)/libxml2-$(LIBXML2_E2_VER)
 	$(TOUCH)
 
