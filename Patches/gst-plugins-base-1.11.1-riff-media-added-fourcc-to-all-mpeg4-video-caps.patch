@@ -11,4 +11,3 @@
        if (codec_name)
          *codec_name = g_strdup ("MPEG-4");
        break;
-
