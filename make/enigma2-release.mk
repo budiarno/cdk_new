@@ -618,12 +618,8 @@ release_enigma2_base:
 	ln -sf /etc $(RELEASE_DIR)/usr/local/etc
 	install -d $(RELEASE_DIR)/usr/local/share/{enigma2,keymaps}
 	ln -s /usr/local/share/keymaps $(RELEASE_DIR)/usr/share/keymaps
-	install -d $(RELEASE_DIR)/usr/share/{fonts,zoneinfo,udhcpc}
+	install -d $(RELEASE_DIR)/usr/share/{fonts,udhcpc,zoneinfo}
 	install -d $(RELEASE_DIR)/var/{etc,opkg}
-	export CROSS_COMPILE=$(TARGET)- && $(MAKE) install -C $(BUILD_TMP)/busybox-$(BUSYBOX_VER) CONFIG_PREFIX=$(RELEASE_DIR)
-#	remove the slink to busybox
-	rm -f $(RELEASE_DIR)/sbin/halt
-	cp -f $(TARGETPREFIX)/sbin/halt $(RELEASE_DIR)/sbin/
 	ln -fs halt $(RELEASE_DIR)/sbin/reboot
 	ln -fs halt $(RELEASE_DIR)/sbin/poweroff
 	mkdir -p $(RELEASE_DIR)/etc/rc.d/rc0.d
@@ -657,7 +653,7 @@ release_enigma2_base:
 	cp -p $(TARGETPREFIX)/usr/bin/ffmpeg $(RELEASE_DIR)/sbin/
 	cp -aR $(TARGETPREFIX)/etc/init.d/* $(RELEASE_DIR)/etc/init.d/
 	cp -aR $(TARGETPREFIX)/etc/* $(RELEASE_DIR)/etc/
-	ln -sf /bin/grab $(RELEASE_DIR)/usr/bin/grab
+	ln -sf ../../bin/grab $(RELEASE_DIR)/usr/bin/grab
 	cp -dp $(TARGETPREFIX)/usr/bin/sdparm $(RELEASE_DIR)/sbin/
 	cp -p $(TARGETPREFIX)/usr/bin/opkg-cl $(RELEASE_DIR)/usr/bin/opkg
 	cp -dp $(TARGETPREFIX)/usr/bin/python* $(RELEASE_DIR)/usr/bin/
@@ -958,6 +954,11 @@ ifeq ($(BOXTYPE), $(filter $(BOXTYPE), ufs910 ufs922))
 	rm -f $(RELEASE_DIR)/sbin/mkfs.jfs
 	rm -f $(RELEASE_DIR)/sbin/jfs_tune
 endif
+	rm -f $(RELEASE_DIR)/usr/bin/avahi-*
+	rm -f $(RELEASE_DIR)/usr/bin/easy_install*
+	rm -f $(RELEASE_DIR)/usr/bin/glib-*
+	rm -f $(RELEASE_DIR)/usr/bin/nettle-*
+	rm -f $(RELEASE_DIR)/usr/bin/pil*
 	rm -rf $(RELEASE_DIR)/lib/autofs
 	rm -rf $(RELEASE_DIR)/usr/lib/m4-nofpu/
 	rm -rf $(RELEASE_DIR)/lib/modules/$(KERNEL_VERSION)

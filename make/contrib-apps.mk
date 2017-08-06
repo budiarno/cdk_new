@@ -31,7 +31,7 @@ $(D)/busybox: $(D)/bootstrap $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2 $(PATCHES
 		sed -i -e 's#^CONFIG_PREFIX.*#CONFIG_PREFIX="$(TARGETPREFIX)"#' .config; \
 		$(BUILDENV) $(MAKE) busybox CROSS_COMPILE=$(TARGET)- CFLAGS_EXTRA="$(TARGET_CFLAGS)"; \
 		$(MAKE) install CROSS_COMPILE=$(TARGET)- CFLAGS_EXTRA="$(TARGET_CFLAGS)" CONFIG_PREFIX=$(TARGETPREFIX)
-#	$(REMOVE)/busybox-$(BUSYBOX_VER)
+	$(REMOVE)/busybox-$(BUSYBOX_VER)
 	$(TOUCH)
 
 #
