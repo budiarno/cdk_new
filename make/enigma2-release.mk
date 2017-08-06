@@ -864,8 +864,9 @@ endif
 #
 	if [ -d $(RELEASE_DIR)/usr/lib/autofs ]; then \
 		cp -f $(TARGETPREFIX)/usr/sbin/automount $(RELEASE_DIR)/usr/sbin/; \
-		ln -s /usr/sbin/automount $(RELEASE_DIR)/sbin/automount; \
+		ln -sf /usr/sbin/automount $(RELEASE_DIR)/sbin/automount; \
 	fi
+
 #
 # gstreamer
 #

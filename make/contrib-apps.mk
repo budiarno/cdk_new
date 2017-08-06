@@ -258,7 +258,7 @@ $(D)/sysvinit: $(D)/bootstrap $(ARCHIVE)/sysvinit_$(SYSVINIT_VER).orig.tar.gz
 		$(MAKE) -C src SULOGINLIBS=-lcrypt; \
 		$(MAKE) install ROOT=$(TARGETPREFIX) MANDIR=/.remove
 	rm -f $(addprefix $(TARGETPREFIX)/sbin/,fstab-decode runlevel telinit)
-	rm -f $(addprefix $(TARGETPREFIX)/usr/bin/,lastb
+	rm -f $(addprefix $(TARGETPREFIX)/usr/bin/,lastb)
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), fortis_hdbox octagon1008 cuberevo cuberevo_mini2 cuberevo_2000hd))
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/inittab_ttyAS1 $(TARGETPREFIX)/etc/inittab
 else
@@ -957,7 +957,7 @@ $(D)/autofs: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/autofs-$(AUTOFS_VER).tar.g
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/auto.master $(TARGETPREFIX)/etc/
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/auto.misc $(TARGETPREFIX)/etc/
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/auto.network $(TARGETPREFIX)/etc/
-	ln -s /usr/sbin/automount $(TARGET_DIR)/sbin/automount
+	ln -s /usr/sbin/automount $(TARGETPREFIX)/sbin/automount
 	$(REMOVE)/autofs-$(AUTOFS_VER)
 	$(TOUCH)
 
