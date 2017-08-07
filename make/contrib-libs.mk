@@ -744,6 +744,7 @@ $(D)/libjpeg_old: $(D)/bootstrap $(ARCHIVE)/jpegsrc.v$(JPEG_VER).tar.gz
 		done; \
 		$(CONFIGURE) \
 			--prefix=/usr \
+			--bindir=/.remove \
 			--mandir=/.remove \
 		; \
 		$(MAKE); \
@@ -761,6 +762,10 @@ JPEG_TURBO_VER = 1.5.0
 $(ARCHIVE)/libjpeg-turbo-$(JPEG_TURBO_VER).tar.gz:
 	$(WGET) http://sourceforge.net/projects/libjpeg-turbo/files/$(JPEG_TURBO_VER)/libjpeg-turbo-$(JPEG_TURBO_VER).tar.gz
 
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), ufs910))
+$(D)/libjpeg: $(D)/libjpeg_old
+	@touch $@
+else
 $(D)/libjpeg: $(D)/libjpeg_turbo
 	$(TOUCH)
 
@@ -1320,6 +1325,8 @@ $(D)/libdvdread: $(D)/bootstrap $(ARCHIVE)/libdvdread-$(LIBDVDREAD_VER).tar.xz
 #
 # libdreamdvd
 #
+LIBDREAMDVD_PATCH = libdreamdvd-1.0-sh4-support.patch
+
 $(D)/libdreamdvd: $(D)/bootstrap $(D)/libdvdnav
 	$(START_BUILD)
 	$(REMOVE)/libdreamdvd
@@ -1330,7 +1337,7 @@ $(D)/libdreamdvd: $(D)/bootstrap $(D)/libdvdnav
 	$(SILENT)cp -ra $(ARCHIVE)/libdreamdvd.git $(BUILD_TMP)/libdreamdvd
 	$(SILENT)set -e; cd $(BUILD_TMP)/libdreamdvd; \
 		for i in \
-			libdreamdvd-1.0-sh4-support.patch \
+			$(LIBDREAMDVD_PATCH) \
 		; do \
 			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
 			$(PATCH)/$$i; \
@@ -1567,6 +1574,10 @@ $(D)/ffmpeg: $(D)/bootstrap $(D)/openssl $(D)/bzip2 $(D)/libass $(D)/libroxml $(
 			--target-os=linux \
 			--arch=sh4 \
 			--prefix=/usr \
+			--bindir=/sbin \
+			--mandir=/.remove \
+			--datadir=/.remove \
+			--docdir=/.remove \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
