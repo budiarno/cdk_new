@@ -768,6 +768,7 @@ $(D)/libjpeg: $(D)/libjpeg_old
 else
 $(D)/libjpeg: $(D)/libjpeg_turbo
 	$(TOUCH)
+endif
 
 $(D)/libjpeg_turbo: $(D)/bootstrap $(ARCHIVE)/libjpeg-turbo-$(JPEG_TURBO_VER).tar.gz
 	$(START_BUILD)
