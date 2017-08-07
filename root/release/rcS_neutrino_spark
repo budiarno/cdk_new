@@ -64,8 +64,6 @@ insmod $MODDIR/mmelog.ko
 insmod $MODDIR/ksound.ko
 insmod $MODDIR/p2div64.ko
 insmod $MODDIR/stm_v4l2.ko
-insmod $MODDIR/stmvout.ko
-insmod $MODDIR/stmvbi.ko
 insmod $MODDIR/pseudocard.ko
 insmod $MODDIR/stv090x.ko
 insmod $MODDIR/pti.ko

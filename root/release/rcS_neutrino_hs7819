@@ -46,7 +46,7 @@ echo "[rcS] Starting telnetd"
 echo "[rcS] Init stmfb (LOAD 9)"
 echo "LD 9" > /dev/vfd
 insmod $MODDIR/stmcore-display-sti7111.ko
-insmod $MODDIR/stmfb.ko display0=1280x720-32@50:12m:pal:rgb:rgb;# display1=720x576-16@50:1m:pal:cvbs;
+insmod $MODDIR/stmfb.ko display0=1280x720-32@50:12m:pal:rgb:rgb;# display1=720x576-16@50:1m:pal:cvbs
 
 echo "[rcS] Loading modules"
 
