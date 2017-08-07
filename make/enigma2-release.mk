@@ -959,7 +959,7 @@ endif
 	rm -f $(RELEASE_DIR)/usr/bin/glib-*
 	rm -f $(addprefix $(RELEASE_DIR)/usr/bin/,dvdnav-config gio-querymodules gobject-query gtester gtester-report)
 	rm -f $(addprefix $(RELEASE_DIR)/usr/bin/,livestreamer mailmail manhole opkg-check-config opkg-cl)
- 	rm -rf $(RELEASE_DIR)/lib/autofs
+	rm -rf $(RELEASE_DIR)/lib/autofs
 	rm -rf $(RELEASE_DIR)/usr/lib/m4-nofpu/
 	rm -rf $(RELEASE_DIR)/lib/modules/$(KERNEL_VERSION)
 	rm -rf $(RELEASE_DIR)/usr/lib/gcc

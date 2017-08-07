@@ -129,17 +129,26 @@ GLIB_MAJOR=2
 GLIB_MINOR=51
 GLIB_MICRO=0
 GLIB_VER=$(GLIB_MAJOR).$(GLIB_MINOR).$(GLIB_MICRO)
+GLIB_SOURCE = glib-$(GLIB_VER).tar.xz
+#GLIB_HOST_PATCH = libglib2-host-$(GLIB_VER)-gdate-suppress-string-format-literal-warning.patch
+GLIB_PATCH = libglib2-$(GLIB_VER)-disable-tests.patch
 
 $(ARCHIVE)/glib-$(GLIB_VER).tar.xz:
 	$(WGET) http://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB_MAJOR).$(GLIB_MINOR)/$(lastword $(subst /, ,$@))
 
-$(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
+$(D)/host_glib2_genmarshal: $(D)/bootstrap $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/glib-$(GLIB_VER)
-	$(UNTAR)/glib-$(GLIB_VER).tar.xz
+	$(UNTAR)/$(GLIB_SOURCE)
 	$(SILENT)export PKG_CONFIG=/usr/bin/pkg-config
 	$(SILENT)export PKG_CONFIG_PATH=$(HOST_DIR)/lib/pkgconfig
 	$(SILENT)set -e; cd $(BUILD_TMP)/glib-$(GLIB_VER); \
+		for i in \
+			$(GLIB_HOST_PATCH) \
+		; do \
+			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
+			$(PATCH)/$$i; \
+		done; \
 		./configure $(CONFIGURE_SILENT) \
 			--enable-static=yes \
 			--enable-shared=no \
@@ -159,7 +168,7 @@ $(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 $(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 	$(START_BUILD)
 	$(REMOVE)/glib-$(GLIB_VER)
-	$(UNTAR)/glib-$(GLIB_VER).tar.xz
+	$(UNTAR)/$(GLIB_SOURCE)
 	$(SILENT)set -e; cd $(BUILD_TMP)/glib-$(GLIB_VER); \
 		echo "glib_cv_va_copy=no" > config.cache; \
 		echo "glib_cv___va_copy=yes" >> config.cache; \
@@ -168,6 +177,12 @@ $(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(AR
 		echo "ac_cv_func_posix_getgrgid_r=yes" >> config.cache; \
 		echo "glib_cv_stack_grows=no" >> config.cache; \
 		echo "glib_cv_uscore=no" >> config.cache; \
+		for i in \
+			$(GLIB_PATCH) \
+		; do \
+			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
+			$(PATCH)/$$i; \
+		done; \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
