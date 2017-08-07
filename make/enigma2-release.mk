@@ -654,7 +654,7 @@ release_enigma2_base:
 	cp -aR $(TARGET_DIR)/etc/init.d/* $(RELEASE_DIR)/etc/init.d/
 	cp -aR $(TARGET_DIR)/etc/* $(RELEASE_DIR)/etc/
 	ln -sf ../../bin/grab $(RELEASE_DIR)/usr/bin/grab
-	cp -dp $(TARGET_DIR)/usr/bin/sdparm $(RELEASE_DIR)/sbin/
+	cp -dp $(TARGET_DIR)/sbin/sdparm $(RELEASE_DIR)/sbin/
 	cp -p $(TARGET_DIR)/usr/bin/opkg-cl $(RELEASE_DIR)/usr/bin/opkg
 	cp -dp $(TARGET_DIR)/usr/bin/python* $(RELEASE_DIR)/usr/bin/
 	cp -p $(TARGET_DIR)/usr/sbin/ethtool $(RELEASE_DIR)/usr/sbin/

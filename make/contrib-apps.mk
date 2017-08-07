@@ -774,10 +774,12 @@ $(D)/sdparm: $(D)/bootstrap $(ARCHIVE)/sdparm-$(SDPARM_VER).tgz
 		$(CONFIGURE) \
 			--prefix= \
 			--exec-prefix=/usr \
+			--bindir=/sbin \
 			--mandir=/.remove \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
+	rm -f $(addprefix $(TARGET_DIR)/sbin/,sas_disk_blink scsi_ch_swp)
 	$(REMOVE)/sdparm-$(SDPARM_VER)
 	$(TOUCH)
 
