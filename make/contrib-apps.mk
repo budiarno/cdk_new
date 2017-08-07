@@ -1062,6 +1062,7 @@ $(D)/dbus: $(D)/bootstrap $(D)/libexpat $(ARCHIVE)/dbus-$(DBUS_VER).tar.gz
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/dbus-1.pc
 	$(REWRITE_LIBTOOL)/libdbus-1.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,dbus-cleanup-sockets dbus-daemon dbus-launch dbus-monitor)
 	$(REMOVE)/dbus-$(DBUS_VER)
 	$(TOUCH)
 
