@@ -1566,6 +1566,7 @@ $(D)/openvpn: $(D)/bootstrap $(D)/openssl $(D)/lzo $(ARCHIVE)/openvpn-$(OPENVPN_
 			--prefix=/usr \
 			--mandir=/.remove \
 			--docdir=/.remove \
+			--disable-lz4 \
 			--disable-selinux \
 			--disable-systemd \
 			--disable-plugins \
@@ -1573,6 +1574,10 @@ $(D)/openvpn: $(D)/bootstrap $(D)/openssl $(D)/lzo $(ARCHIVE)/openvpn-$(OPENVPN_
 			--disable-pkcs11 \
 			--enable-password-save \
 			--enable-small \
+			NETSTAT="/bin/netstat" \
+			IFCONFIG="/sbin/ifconfig" \
+			IPROUTE="/sbin/ip" \
+			ROUTE="/sbin/route" \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
