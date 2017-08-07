@@ -153,6 +153,7 @@ $(D)/python_setuptools: $(D)/bootstrap $(D)/python $(ARCHIVE)/setuptools-$(PYTHO
 	$(REMOVE)/setuptools-$(PYTHON_SETUPTOOLS_VER)
 	$(UNTAR)/setuptools-$(PYTHON_SETUPTOOLS_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/setuptools-$(PYTHON_SETUPTOOLS_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/setuptools-$(PYTHON_SETUPTOOLS_VER)
 	$(TOUCH)
@@ -215,6 +216,7 @@ $(D)/python_twisted: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE
 	$(REMOVE)/Twisted-$(PYTHON_TWISTED_VER)
 	$(UNTAR)/Twisted-$(PYTHON_TWISTED_VER).tar.bz2
 	$(SILENT)set -e; cd $(BUILD_TMP)/Twisted-$(PYTHON_TWISTED_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/Twisted-$(PYTHON_TWISTED_VER)
 	$(TOUCH)
@@ -240,6 +242,7 @@ $(D)/python_imaging: $(D)/bootstrap $(D)/libjpeg $(D)/libfreetype $(D)/python $(
 		done; \
 		sed -ie "s|"darwin"|"darwinNot"|g" "setup.py"; \
 		sed -ie "s|ZLIB_ROOT = None|ZLIB_ROOT = libinclude(\"${TARGET_DIR}/usr\")|" "setup.py"; \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/Imaging-$(PYTHON_IMAGING_VER)
 	$(TOUCH)
@@ -267,6 +270,7 @@ $(D)/python_pycrypto: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIV
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/pycrypto-$(PYTHON_PYCRYPTO_VER)
 	$(TOUCH)
@@ -284,6 +288,7 @@ $(D)/python_pyusb: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/
 	$(REMOVE)/pyusb-$(PYTHON_PYUSB_VER)
 	$(UNTAR)/pyusb-$(PYTHON_PYUSB_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/pyusb-$(PYTHON_PYUSB_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/pyusb-$(PYTHON_PYUSB_VER)
 	$(TOUCH)
@@ -301,6 +306,7 @@ $(D)/python_six: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/si
 	$(REMOVE)/six-$(PYTHON_SIX_VER)
 	$(UNTAR)/six-$(PYTHON_SIX_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/six-$(PYTHON_SIX_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/six-$(PYTHON_SIX_VER)
 	$(TOUCH)
@@ -318,6 +324,7 @@ $(D)/python_cffi: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/c
 	$(REMOVE)/cffi-$(PYTHON_CFFI_VER)
 	$(UNTAR)/cffi-$(PYTHON_CFFI_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/cffi-$(PYTHON_CFFI_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/cffi-$(PYTHON_CFFI_VER)
 	$(TOUCH)
@@ -335,6 +342,7 @@ $(D)/python_enum34: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)
 	$(REMOVE)/enum34-$(PYTHON_ENUM34_VER)
 	$(UNTAR)/enum34-$(PYTHON_ENUM34_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/enum34-$(PYTHON_ENUM34_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/enum34-$(PYTHON_ENUM34_VER)
 	$(TOUCH)
@@ -352,6 +360,7 @@ $(D)/python_pyasn1_modules: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(
 	$(REMOVE)/pyasn1-modules-$(PYTHON_PYASN1_MODULES_VER)
 	$(UNTAR)/pyasn1-modules-$(PYTHON_PYASN1_MODULES_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/pyasn1-modules-$(PYTHON_PYASN1_MODULES_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/pyasn1-modules-$(PYTHON_PYASN1_MODULES_VER)
 	$(TOUCH)
@@ -369,6 +378,7 @@ $(D)/python_pyasn1: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(D)/pytho
 	$(REMOVE)/pyasn1-$(PYTHON_PYASN1_VER)
 	$(UNTAR)/pyasn1-$(PYTHON_PYASN1_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/pyasn1-$(PYTHON_PYASN1_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/pyasn1-$(PYTHON_PYASN1_VER)
 	$(TOUCH)
@@ -386,6 +396,7 @@ $(D)/python_pycparser: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(D)/py
 	$(REMOVE)/pycparser-$(PYTHON_PYCPARSER_VER)
 	$(UNTAR)/pycparser-$(PYTHON_PYCPARSER_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/pycparser-$(PYTHON_PYCPARSER_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/pycparser-$(PYTHON_PYCPARSER_VER)
 	$(TOUCH)
@@ -403,6 +414,7 @@ $(D)/python_cryptography: $(D)/bootstrap $(D)/libffi $(D)/python $(D)/python_set
 	$(REMOVE)/cryptography-$(PYTHON_CRYPTOGRAPHY_VER)
 	$(UNTAR)/cryptography-$(PYTHON_CRYPTOGRAPHY_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/cryptography-$(PYTHON_CRYPTOGRAPHY_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/cryptography-$(PYTHON_CRYPTOGRAPHY_VER)
 	$(TOUCH)
@@ -421,6 +433,7 @@ $(D)/python_pyopenssl: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHI
 	$(UNTAR)/pyOpenSSL-$(PYTHON_PYOPENSSL_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/pyOpenSSL-$(PYTHON_PYOPENSSL_VER); \
 		$(PATCH)/python-pyopenssl-$(PYTHON_PYOPENSSL_VER).patch; \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/pyOpenSSL-$(PYTHON_PYOPENSSL_VER)
 	$(TOUCH)
@@ -438,6 +451,7 @@ $(D)/python_elementtree: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARC
 	$(REMOVE)/elementtree-$(PYTHON_ELEMENTTREE_VER)
 	$(UNTAR)/elementtree-$(PYTHON_ELEMENTTREE_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/elementtree-$(PYTHON_ELEMENTTREE_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/elementtree-$(PYTHON_ELEMENTTREE_VER)
 	$(TOUCH)
@@ -455,6 +469,7 @@ $(D)/python_wifi: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/p
 	$(REMOVE)/pythonwifi-$(PYTHON_WIFI_VER)
 	$(UNTAR)/pythonwifi-$(PYTHON_WIFI_VER).tar.bz2
 	$(SILENT)set -e; cd $(BUILD_TMP)/pythonwifi-$(PYTHON_WIFI_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/pythonwifi-$(PYTHON_WIFI_VER)
 	$(TOUCH)
@@ -472,6 +487,7 @@ $(D)/python_cheetah: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE
 	$(REMOVE)/Cheetah-$(PYTHON_CHEETAH_VER)
 	$(UNTAR)/Cheetah-$(PYTHON_CHEETAH_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/Cheetah-$(PYTHON_CHEETAH_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/Cheetah-$(PYTHON_CHEETAH_VER)
 	$(TOUCH)
@@ -489,6 +505,7 @@ $(D)/python_mechanize: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHI
 	$(REMOVE)/mechanize-$(PYTHON_MECHANIZE_VER)
 	$(UNTAR)/mechanize-$(PYTHON_MECHANIZE_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/mechanize-$(PYTHON_MECHANIZE_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/mechanize-$(PYTHON_MECHANIZE_VER)
 	$(TOUCH)
@@ -506,6 +523,7 @@ $(D)/python_gdata: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/
 	$(REMOVE)/gdata-$(PYTHON_GDATA_VER)
 	$(UNTAR)/gdata-$(PYTHON_GDATA_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/gdata-$(PYTHON_GDATA_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/gdata-$(PYTHON_GDATA_VER)
 	$(TOUCH)
@@ -523,6 +541,7 @@ $(D)/python_zope_interface: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(
 	$(REMOVE)/zope.interface-$(PYTHON_ZOPE_INTERFACE_VER)
 	$(UNTAR)/zope.interface-$(PYTHON_ZOPE_INTERFACE_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/zope.interface-$(PYTHON_ZOPE_INTERFACE_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/zope.interface-$(PYTHON_ZOPE_INTERFACE_VER)
 	$(TOUCH)
@@ -540,6 +559,7 @@ $(D)/python_requests: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIV
 	$(REMOVE)/requests-$(PYTHON_REQUESTS_VER)
 	$(UNTAR)/requests-$(PYTHON_REQUESTS_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/requests-$(PYTHON_REQUESTS_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/requests-$(PYTHON_REQUESTS_VER)
 	$(TOUCH)
@@ -557,6 +577,7 @@ $(D)/python_futures: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE
 	$(REMOVE)/futures-$(PYTHON_FUTURES_VER)
 	$(UNTAR)/futures-$(PYTHON_FUTURES_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/futures-$(PYTHON_FUTURES_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/futures-$(PYTHON_FUTURES_VER)
 	$(TOUCH)
@@ -574,6 +595,7 @@ $(D)/python_singledispatch: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(
 	$(REMOVE)/singledispatch-$(PYTHON_SINGLEDISPATCH_VER)
 	$(UNTAR)/singledispatch-$(PYTHON_SINGLEDISPATCH_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/singledispatch-$(PYTHON_SINGLEDISPATCH_VER); \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/singledispatch-$(PYTHON_SINGLEDISPATCH_VER)
 	$(TOUCH)
@@ -590,6 +612,7 @@ $(D)/python_livestreamer: $(D)/bootstrap $(D)/python $(D)/python_setuptools
 		fi
 	cp -ra $(ARCHIVE)/livestreamer.git $(BUILD_TMP)/livestreamer
 	$(SILENT)set -e; cd $(BUILD_TMP)/livestreamer; \
+		$(PYTHON_BUILD); \
 		$(PYTHON_INSTALL)
 	$(REMOVE)/livestreamer
 	$(TOUCH)
