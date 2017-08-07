@@ -82,7 +82,7 @@ $(D)/host_pkgconfig: $(ARCHIVE)/pkg-config-$(PKGCONFIG_VER).tar.gz
 	$(UNTAR)/pkg-config-$(PKGCONFIG_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/pkg-config-$(PKGCONFIG_VER); \
 		./configure $(CONFIGURE_SILENT) \
-			--prefix=$(HOSTPREFIX) \
+			--prefix=$(HOST_DIR) \
 			--program-prefix=$(TARGET)- \
 			--disable-host-tool \
 			--with-pc_path=$(PKG_CONFIG_PATH) \
@@ -111,8 +111,8 @@ $(D)/host_mtd_utils: $(ARCHIVE)/mtd-utils-$(MTD_UTILS_VER).tar.bz2
 			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
 			$(PATCH)/$$i; \
 		done; \
-		$(MAKE) `pwd`/mkfs.jffs2 `pwd`/sumtool BUILDDIR=`pwd` WITHOUT_XATTR=1 DESTDIR=$(HOSTPREFIX); \
-		$(MAKE) install DESTDIR=$(HOSTPREFIX)/bin
+		$(MAKE) `pwd`/mkfs.jffs2 `pwd`/sumtool BUILDDIR=`pwd` WITHOUT_XATTR=1 DESTDIR=$(HOST_DIR); \
+		$(MAKE) install DESTDIR=$(HOST_DIR)/bin
 	$(REMOVE)/mtd-utils-$(MTD_UTILS_VER)
 	$(TOUCH)
 
@@ -145,7 +145,7 @@ $(D)/gdb-remote: $(ARCHIVE)/gdb-$(GDB_VER).tar.xz | $(TARGETPREFIX)
 	$(SILENT)set -e; cd $(BUILD_TMP)/gdb-$(GDB_VER); \
 		./configure $(CONFIGURE_SILENT) \
 			--nfp --disable-werror \
-			--prefix=$(HOSTPREFIX) \
+			--prefix=$(HOST_DIR) \
 			--build=$(BUILD) \
 			--host=$(BUILD) \
 			--target=$(TARGET) \
@@ -208,7 +208,7 @@ $(D)/opkg-host: $(ARCHIVE)/opkg-$(OPKG_VER).tar.gz
 			--disable-shared \
 		; \
 		$(MAKE) all; \
-		cp -a src/opkg-cl $(HOSTPREFIX)/bin
+		cp -a src/opkg-cl $(HOST_DIR)/bin
 	$(REMOVE)/opkg-$(OPKG_VER)
 	$(TOUCH)
 
@@ -288,8 +288,8 @@ $(D)/host_module_init_tools: $(ARCHIVE)/module-init-tools-$(MODULE_INIT_TOOLS_VE
 		done; \
 		autoreconf -fi; \
 		./configure $(CONFIGURE_SILENT) \
-			--prefix=$(HOSTPREFIX) \
-			--sbindir=$(HOSTPREFIX)/bin \
+			--prefix=$(HOST_DIR) \
+			--sbindir=$(HOST_DIR)/bin \
 		; \
 		$(MAKE); \
 		$(MAKE) install

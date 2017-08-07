@@ -34,7 +34,7 @@ printenv:
 	@echo "CROSS_DIR        : $(CROSS_DIR)"
 	@echo "CROSS_BASE       : $(CROSS_BASE)"
 	@echo "RELEASE_DIR      : $(RELEASE_DIR)"
-	@echo "HOSTPREFIX       : $(HOSTPREFIX)"
+	@echo "HOST_DIR         : $(HOST_DIR)"
 	@echo "TARGETPREFIX     : $(TARGETPREFIX)"
 	@echo "PATH             : `type -p fmt>/dev/null&&echo $(PATH)|sed 's/:/ /g' |fmt -65|sed 's/ /:/g; 2,$$s/^/                 : /;'||echo $(PATH)`"
 	@echo "CPU_CORES        : $(CPU_CORES)"

@@ -1,4 +1,4 @@
-DEPMOD = $(HOSTPREFIX)/bin/depmod
+DEPMOD = $(HOST_DIR)/bin/depmod
 
 #
 # Patches Kernel 24

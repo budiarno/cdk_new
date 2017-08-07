@@ -38,9 +38,9 @@ $(D)/libncurses: $(D)/bootstrap $(ARCHIVE)/ncurses-$(NCURSES_VER).tar.gz
 			HOSTCCFLAGS="$(CFLAGS) -DHAVE_CONFIG_H -I../ncurses -DNDEBUG -D_GNU_SOURCE -I../include" \
 			HOSTLDFLAGS="$(LDFLAGS)"; \
 		$(MAKE) install.libs DESTDIR=$(TARGETPREFIX); \
-		install -D -m 0755 misc/ncurses-config $(HOSTPREFIX)/bin/ncurses5-config; \
+		install -D -m 0755 misc/ncurses-config $(HOST_DIR)/bin/ncurses5-config; \
 		rm -f $(TARGETPREFIX)/usr/bin/ncurses5-config
-	$(REWRITE_PKGCONF) $(HOSTPREFIX)/bin/ncurses5-config
+	$(REWRITE_PKGCONF) $(HOST_DIR)/bin/ncurses5-config
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/form.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/menu.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/ncurses.pc
@@ -86,7 +86,7 @@ $(D)/host_libffi: $(ARCHIVE)/libffi-$(LIBFFI_VER).tar.gz
 	$(UNTAR)/libffi-$(LIBFFI_VER).tar.gz
 	$(SILENT)set -e; cd $(BUILD_TMP)/libffi-$(LIBFFI_VER); \
 		./configure $(CONFIGURE_SILENT) \
-			--prefix=$(HOSTPREFIX) \
+			--prefix=$(HOST_DIR) \
 			--disable-static \
 		; \
 		$(MAKE); \
@@ -138,7 +138,7 @@ $(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 	$(REMOVE)/glib-$(GLIB_VER)
 	$(UNTAR)/glib-$(GLIB_VER).tar.xz
 	$(SILENT)export PKG_CONFIG=/usr/bin/pkg-config
-	$(SILENT)export PKG_CONFIG_PATH=$(HOSTPREFIX)/lib/pkgconfig
+	$(SILENT)export PKG_CONFIG_PATH=$(HOST_DIR)/lib/pkgconfig
 	$(SILENT)set -e; cd $(BUILD_TMP)/glib-$(GLIB_VER); \
 		./configure $(CONFIGURE_SILENT) \
 			--enable-static=yes \
@@ -149,7 +149,7 @@ $(D)/host_glib2_genmarshal: $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 			--prefix=`pwd`/out \
 		; \
 		$(MAKE) install; \
-		cp -a out/bin/glib-* $(HOSTPREFIX)/bin
+		cp -a out/bin/glib-* $(HOST_DIR)/bin
 	$(REMOVE)/glib-$(GLIB_VER)
 	$(TOUCH)
 
@@ -657,7 +657,7 @@ $(D)/libfreetype: $(D)/bootstrap $(D)/zlib $(D)/bzip2 $(D)/libpng $(ARCHIVE)/fre
 		if [ ! -e $(TARGETPREFIX)/usr/include/freetype ] ; then \
 			ln -sf freetype2 $(TARGETPREFIX)/usr/include/freetype; \
 		fi; \
-		mv $(TARGETPREFIX)/usr/bin/freetype-config $(HOSTPREFIX)/bin/freetype-config
+		mv $(TARGETPREFIX)/usr/bin/freetype-config $(HOST_DIR)/bin/freetype-config
 	$(REWRITE_LIBTOOL)/libfreetype.la
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/freetype2.pc
 	$(REMOVE)/freetype-$(FREETYPE_VER)
@@ -825,7 +825,7 @@ $(D)/libpng: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libpng-$(PNG_VER).tar.xz
 		$(CONFIGURE) \
 			--prefix=$(TARGETPREFIX)/usr \
 			--mandir=$(TARGETPREFIX)/.remove \
-			--bindir=$(HOSTPREFIX)/bin \
+			--bindir=$(HOST_DIR)/bin \
 		; \
 		ECHO=echo $(MAKE) all; \
 		$(MAKE) install
@@ -910,8 +910,8 @@ $(D)/libcurl: $(D)/bootstrap $(D)/openssl $(D)/zlib $(ARCHIVE)/curl-$(CURL_VER).
 			--with-ssl=$(TARGETPREFIX) \
 		; \
 		$(MAKE) all; \
-		sed -e "s,^prefix=,prefix=$(TARGETPREFIX)," < curl-config > $(HOSTPREFIX)/bin/curl-config; \
-		chmod 755 $(HOSTPREFIX)/bin/curl-config; \
+		sed -e "s,^prefix=,prefix=$(TARGETPREFIX)," < curl-config > $(HOST_DIR)/bin/curl-config; \
+		chmod 755 $(HOST_DIR)/bin/curl-config; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 		rm -f $(TARGETPREFIX)/usr/bin/curl-config
 	$(REWRITE_LIBTOOL)/libcurl.la
@@ -1171,7 +1171,7 @@ $(D)/libiconv: $(D)/bootstrap $(ARCHIVE)/libiconv-$(ICONV_VER).tar.gz
 			--disable-shared \
 		; \
 		$(MAKE); \
-		cp ./srcm4/* $(HOSTPREFIX)/share/aclocal/ ; \
+		cp ./srcm4/* $(HOST_DIR)/share/aclocal/ ; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 	$(REWRITE_LIBTOOL)/libiconv.la
 	$(REMOVE)/libiconv-$(ICONV_VER)
@@ -1774,7 +1774,7 @@ $(D)/libxml2_e2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_E2_VER).t
 			--enable-shared \
 			--disable-static \
 			--datarootdir=/.remove \
-			--with-python=$(HOSTPREFIX) \
+			--with-python=$(HOST_DIR) \
 			--without-c14n \
 			--without-debug \
 			--without-docbook \
@@ -1782,8 +1782,8 @@ $(D)/libxml2_e2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_E2_VER).t
 		; \
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX);
-		mv $(TARGETPREFIX)/usr/bin/xml2-config $(HOSTPREFIX)/bin
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libxml-2.0.pc $(HOSTPREFIX)/bin/xml2-config
+		mv $(TARGETPREFIX)/usr/bin/xml2-config $(HOST_DIR)/bin
+	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libxml-2.0.pc $(HOST_DIR)/bin/xml2-config
 	$(SILENT)sed -i 's/^\(Libs:.*\)/\1 -lz/' $(PKG_CONFIG_PATH)/libxml-2.0.pc
 		if [ -e "$(TARGETPREFIX)$(PYTHON_DIR)/site-packages/libxml2mod.la" ]; then \
 			sed -e "/^dependency_libs/ s,/usr/lib/libxml2.la,$(TARGETPREFIX)/usr/lib/libxml2.la,g" -i $(TARGETPREFIX)$(PYTHON_DIR)/site-packages/libxml2mod.la; \
@@ -1812,17 +1812,17 @@ $(D)/libxslt: $(D)/bootstrap $(D)/libxml2_e2 $(ARCHIVE)/libxslt-$(LIBXSLT_VER).t
 		$(CONFIGURE) \
 			CPPFLAGS="$(CPPFLAGS) -I$(TARGETPREFIX)/usr/include/libxml2" \
 			--prefix=/usr \
-			--with-libxml-prefix="$(HOSTPREFIX)" \
+			--with-libxml-prefix="$(HOST_DIR)" \
 			--with-libxml-include-prefix="$(TARGETPREFIX)/usr/include" \
 			--with-libxml-libs-prefix="$(TARGETPREFIX)/usr/lib" \
-			--with-python=$(HOSTPREFIX) \
+			--with-python=$(HOST_DIR) \
 			--without-crypto \
 			--without-debug \
 			--without-mem-debug \
 		; \
 		$(MAKE) all; \
-		sed -e "s,^prefix=,prefix=$(TARGETPREFIX)," < xslt-config > $(HOSTPREFIX)/bin/xslt-config; \
-		chmod 755 $(HOSTPREFIX)/bin/xslt-config; \
+		sed -e "s,^prefix=,prefix=$(TARGETPREFIX)," < xslt-config > $(HOST_DIR)/bin/xslt-config; \
+		chmod 755 $(HOST_DIR)/bin/xslt-config; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
 		if [ -e "$(TARGETPREFIX)$(PYTHON_DIR)/site-packages/libxsltmod.la" ]; then \
 			sed -e "/^dependency_libs/ s,/usr/lib/libexslt.la,$(TARGETPREFIX)/usr/lib/libexslt.la,g" -i $(TARGETPREFIX)$(PYTHON_DIR)/site-packages/libxsltmod.la; \
@@ -1831,7 +1831,7 @@ $(D)/libxslt: $(D)/bootstrap $(D)/libxml2_e2 $(ARCHIVE)/libxslt-$(LIBXSLT_VER).t
 		fi; \
 		sed -e "/^XSLT_LIBDIR/ s,/usr/lib,$(TARGETPREFIX)/usr/lib,g" -i $(TARGETPREFIX)/usr/lib/xsltConf.sh; \
 		sed -e "/^XSLT_INCLUDEDIR/ s,/usr/include,$(TARGETPREFIX)/usr/include,g" -i $(TARGETPREFIX)/usr/lib/xsltConf.sh
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libexslt.pc $(HOSTPREFIX)/bin/xslt-config
+	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libexslt.pc $(HOST_DIR)/bin/xslt-config
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libxslt.pc
 	$(REWRITE_LIBTOOL)/libexslt.la
 	$(REWRITE_LIBTOOL)/libxslt.la
@@ -1868,8 +1868,8 @@ $(D)/libxml2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_VER).tar.gz
 		; \
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX);
-		mv $(TARGETPREFIX)/usr/bin/xml2-config $(HOSTPREFIX)/bin
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libxml-2.0.pc $(HOSTPREFIX)/bin/xml2-config
+		mv $(TARGETPREFIX)/usr/bin/xml2-config $(HOST_DIR)/bin
+	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libxml-2.0.pc $(HOST_DIR)/bin/xml2-config
 	$(SILENT)sed -i 's/^\(Libs:.*\)/\1 -lz/' $(PKG_CONFIG_PATH)/libxml-2.0.pc
 	$(SILENT)sed -e "/^XML2_LIBDIR/ s,/usr/lib,$(TARGETPREFIX)/usr/lib,g" -i $(TARGETPREFIX)/usr/lib/xml2Conf.sh
 	$(SILENT)sed -e "/^XML2_INCLUDEDIR/ s,/usr/include,$(TARGETPREFIX)/usr/include,g" -i $(TARGETPREFIX)/usr/lib/xml2Conf.sh
