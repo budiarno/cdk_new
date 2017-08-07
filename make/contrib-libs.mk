@@ -2631,6 +2631,7 @@ $(D)/gnutls: $(D)/bootstrap $(D)/nettle $(ARCHIVE)/gnutls-$(GNUTLS_VER).tar.xz
 	$(REWRITE_LIBTOOL)/libgnutls.la
 	$(REWRITE_LIBTOOL)/libgnutlsxx.la
 	$(REWRITE_LIBTOOLDEP)/libgnutlsxx.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,psktool gnutls-cli-debug certtool srptool ocsptool gnutls-serv gnutls-cli)
 	$(REMOVE)/gnutls-$(GNUTLS_VER)
 	$(TOUCH)
 
