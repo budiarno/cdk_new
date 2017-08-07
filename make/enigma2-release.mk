@@ -650,7 +650,7 @@ release_enigma2_base:
 	ln -sf ../../usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/fw_setenv
 	echo "720p50" > $(RELEASE_DIR)/etc/videomode
 	cp -dp $(TARGET_DIR)/usr/bin/vsftpd $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGET_DIR)/usr/bin/ffmpeg $(RELEASE_DIR)/sbin/
+	cp -p $(TARGET_DIR)/sbin/ffmpeg $(RELEASE_DIR)/sbin/
 	cp -aR $(TARGET_DIR)/etc/init.d/* $(RELEASE_DIR)/etc/init.d/
 	cp -aR $(TARGET_DIR)/etc/* $(RELEASE_DIR)/etc/
 	ln -sf ../../bin/grab $(RELEASE_DIR)/usr/bin/grab

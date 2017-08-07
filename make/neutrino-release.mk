@@ -536,7 +536,7 @@ release_neutrino_base:
 	cp $(SKEL_ROOT)/bin/vdstandby $(RELEASE_DIR)/bin/
 	cp $(SKEL_ROOT)/usr/sbin/fw_printenv $(RELEASE_DIR)/usr/sbin/
 	cp -dp $(TARGET_DIR)/usr/bin/vsftpd $(RELEASE_DIR)/usr/bin/
-	cp -p $(TARGET_DIR)/usr/bin/ffmpeg $(RELEASE_DIR)/usr/bin/
+	cp -p $(TARGET_DIR)/sbin/ffmpeg $(RELEASE_DIR)/usr/bin/
 	cp -aR $(TARGET_DIR)/etc/init.d/* $(RELEASE_DIR)/etc/init.d/
 	cp -aR $(TARGET_DIR)/etc/* $(RELEASE_DIR)/etc/
 	ln -sf ../../bin/busybox $(RELEASE_DIR)/usr/bin/ether-wake
