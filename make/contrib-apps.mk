@@ -16,7 +16,7 @@ else
 BUSYBOX_CONFIG = busybox-$(BUSYBOX_VER).config
 endif
 
-$(D)/busybox: $(D)/bootstrap $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2 $(PATCHES)/$(BUSYBOX_CONFIG)
+$(D)/busybox: $(D)/bootstrap $(D)/module_init_tools $(ARCHIVE)/busybox-$(BUSYBOX_VER).tar.bz2 $(PATCHES)/$(BUSYBOX_CONFIG)
 	$(START_BUILD)
 	$(SILENT)rm -fr $(BUILD_TMP)/busybox-$(BUSYBOX_VER)
 	$(UNTAR)/busybox-$(BUSYBOX_VER).tar.bz2
