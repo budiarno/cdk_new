@@ -1646,6 +1646,7 @@ $(D)/sqlite: $(D)/bootstrap $(ARCHIVE)/sqlite-autoconf-$(SQLITE_VER).tar.gz
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/sqlite3.pc
 	$(REWRITE_LIBTOOL)/libsqlite3.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,sqlite3)
 	$(REMOVE)/sqlite-autoconf-$(SQLITE_VER)
 	$(TOUCH)
 
