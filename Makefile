@@ -35,7 +35,7 @@ printenv:
 	@echo "CROSS_BASE       : $(CROSS_BASE)"
 	@echo "RELEASE_DIR      : $(RELEASE_DIR)"
 	@echo "HOST_DIR         : $(HOST_DIR)"
-	@echo "TARGETPREFIX     : $(TARGETPREFIX)"
+	@echo "TARGET_DIR       : $(TARGET_DIR)"
 	@echo "PATH             : `type -p fmt>/dev/null&&echo $(PATH)|sed 's/:/ /g' |fmt -65|sed 's/ /:/g; 2,$$s/^/                 : /;'||echo $(PATH)`"
 	@echo "CPU_CORES        : $(CPU_CORES)"
 	@echo "BOXARCH          : $(BOXARCH)"
@@ -76,7 +76,7 @@ ifeq ($(MAINTAINER),)
 	@echo
 endif
 #	@LC_ALL=C make -n preqs|grep -q "Nothing to be done" && P=false || P=true; \
-#	test -d $(TARGETPREFIX) && T=false || T=true; \
+#	test -d $(TARGET_DIR) && T=false || T=true; \
 #	type -p $(TARGET)-pkg-config >/dev/null 2>&1 || T=true; \
 #	PATH=$(PATH):$(CROSS_DIR)/bin; \
 #	type -p $(TARGET)-gcc >/dev/null 2>&1 && C=false || C=true; \

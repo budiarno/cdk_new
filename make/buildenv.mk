@@ -35,7 +35,7 @@ HOST_DIR              = $(BASE_DIR)/tufsbox/host
 PACKAGE_DIR           = $(BASE_DIR)/pkgs/opkg
 RELEASE_DIR           = $(BASE_DIR)/tufsbox/release
 PKGPREFIX             = $(BUILD_TMP)/pkg
-TARGETPREFIX          = $(BASE_DIR)/tufsbox/cdkroot
+TARGET_DIR          = $(BASE_DIR)/tufsbox/cdkroot
 
 CUSTOM_DIR            = $(CDK_DIR)/custom
 SCRIPTS_DIR           = $(CDK_DIR)/scripts
@@ -68,10 +68,10 @@ ifeq ($(OPTIMIZATIONS), debug)
 TARGET_CFLAGS        += -O0 -g
 endif
 
-TARGET_CFLAGS        += -I$(TARGETPREFIX)/usr/include
+TARGET_CFLAGS        += -I$(TARGET_DIR)/usr/include
 TARGET_CPPFLAGS       = $(TARGET_CFLAGS)
 TARGET_CXXFLAGS       = $(TARGET_CFLAGS)
-TARGET_LDFLAGS        = -Wl,-rpath -Wl,/usr/lib -Wl,-rpath-link -Wl,$(TARGETPREFIX)/usr/lib -L$(TARGETPREFIX)/usr/lib -L$(TARGETPREFIX)/lib
+TARGET_LDFLAGS        = -Wl,-rpath -Wl,/usr/lib -Wl,-rpath-link -Wl,$(TARGET_DIR)/usr/lib -L$(TARGET_DIR)/usr/lib -L$(TARGET_DIR)/lib
 LD_FLAGS              = $(TARGET_LDFLAGS)
 
 VPATH                 = $(D)
@@ -79,18 +79,18 @@ VPATH                 = $(D)
 PATH                 := $(HOST_DIR)/bin:$(CROSS_DIR)/bin:$(PATH):/sbin:/usr/sbin:/usr/local/sbin
 
 PKG_CONFIG            = $(HOST_DIR)/bin/$(TARGET)-pkg-config
-PKG_CONFIG_PATH       = $(TARGETPREFIX)/usr/lib/pkgconfig
+PKG_CONFIG_PATH       = $(TARGET_DIR)/usr/lib/pkgconfig
 
 SILENT                = @
 
 # helper-"functions":
-REWRITE_LIBTOOL       = $(SILENT)sed -i "s,^libdir=.*,libdir='$(TARGETPREFIX)/usr/lib'," $(TARGETPREFIX)/usr/lib
-REWRITE_LIBTOOL_NS    = sed -i "s,^libdir=.*,libdir='$(TARGETPREFIX)/usr/lib'," $(TARGETPREFIX)/usr/lib
-REWRITE_LIBTOOLDEP    = $(SILENT)sed -i -e "s,\(^dependency_libs='\| \|-L\|^dependency_libs='\)/usr/lib,\ $(TARGETPREFIX)/usr/lib,g" $(TARGETPREFIX)/usr/lib
-REWRITE_PKGCONF       = $(SILENT)sed -i "s,^prefix=.*,prefix='$(TARGETPREFIX)/usr',"
-RREWRITE_PKGCONF_NS   = sed -i "s,^prefix=.*,prefix='$(TARGETPREFIX)/usr',"
-REWRITE_LIBTOOL_OPT   = $(SILENT)sed -i "s,^libdir=.*,libdir='$(TARGETPREFIX)/opt/pkg/lib'," $(TARGETPREFIX)/opt/pkg/lib
-REWRITE_PKGCONF_OPT   = $(SILENT)sed -i "s,^prefix=.*,prefix='$(TARGETPREFIX)/opt/pkg',"
+REWRITE_LIBTOOL       = $(SILENT)sed -i "s,^libdir=.*,libdir='$(TARGET_DIR)/usr/lib'," $(TARGET_DIR)/usr/lib
+REWRITE_LIBTOOL_NS    = sed -i "s,^libdir=.*,libdir='$(TARGET_DIR)/usr/lib'," $(TARGET_DIR)/usr/lib
+REWRITE_LIBTOOLDEP    = $(SILENT)sed -i -e "s,\(^dependency_libs='\| \|-L\|^dependency_libs='\)/usr/lib,\ $(TARGET_DIR)/usr/lib,g" $(TARGET_DIR)/usr/lib
+REWRITE_PKGCONF       = $(SILENT)sed -i "s,^prefix=.*,prefix='$(TARGET_DIR)/usr',"
+RREWRITE_PKGCONF_NS   = sed -i "s,^prefix=.*,prefix='$(TARGET_DIR)/usr',"
+REWRITE_LIBTOOL_OPT   = $(SILENT)sed -i "s,^libdir=.*,libdir='$(TARGET_DIR)/opt/pkg/lib'," $(TARGET_DIR)/opt/pkg/lib
+REWRITE_PKGCONF_OPT   = $(SILENT)sed -i "s,^prefix=.*,prefix='$(TARGET_DIR)/opt/pkg',"
 
 export RM=$(shell which rm) -f
 
@@ -123,8 +123,8 @@ ifneq ($(KERNEL), 1)
 export MAKEFLAGS
 endif
 
-TUXBOX_YAUD_CUSTOMIZE = $(SILENT)[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
-TUXBOX_CUSTOMIZE      = $(SILENT)[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGETPREFIX) $(CDK_DIR) $(BOXTYPE) || true
+TUXBOX_YAUD_CUSTOMIZE = $(SILENT)[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(CDK_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
+TUXBOX_CUSTOMIZE      = $(SILENT)[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(CDK_DIR) $(BOXTYPE) || true
 
 #
 #

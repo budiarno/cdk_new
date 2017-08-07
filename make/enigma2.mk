@@ -2,7 +2,7 @@
 # enigma2
 #
 E_CPPFLAGS    = -I$(DRIVER_DIR)/include
-E_CPPFLAGS   += -I$(TARGETPREFIX)/usr/include
+E_CPPFLAGS   += -I$(TARGET_DIR)/usr/include
 E_CPPFLAGS   += -I$(KERNEL_DIR)/include
 E_CPPFLAGS   += -I$(APPS_DIR)/tools/libeplayer3/include
 E_CPPFLAGS   += -I$(APPS_DIR)/tools
@@ -158,7 +158,7 @@ $(D)/enigma2.do_prepare: | $(ENIGMA2_DEPS)
 		cd $(SOURCE_DIR)/enigma2; \
 		echo "Building VFD-drivers..."; \
 		patch -p1 -s -i "../../cdk_new/Patches/vfd-drivers.patch"; \
-		rm -rf $(TARGETPREFIX)/usr/local/share/enigma2/rc_models; \
+		rm -rf $(TARGET_DIR)/usr/local/share/enigma2/rc_models; \
 		echo; \
 		echo "Patching remote control files..."; \
 		patch -p1 -s -i "../../cdk_new/Patches/rc-models.patch"; \
@@ -188,7 +188,7 @@ $(SOURCE_DIR)/enigma2/config.status:
 			--with-boxtype=none \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			PY_PATH=$(TARGETPREFIX)/usr \
+			PY_PATH=$(TARGET_DIR)/usr \
 			$(PLATFORM_CPPFLAGS)
 
 $(D)/enigma2.do_compile: $(SOURCE_DIR)/enigma2/config.status
@@ -197,12 +197,12 @@ $(D)/enigma2.do_compile: $(SOURCE_DIR)/enigma2/config.status
 	@touch $@
 
 $(D)/enigma2: $(D)/enigma2.do_prepare $(D)/enigma2.do_compile
-	$(MAKE) -C $(SOURCE_DIR)/enigma2 install DESTDIR=$(TARGETPREFIX)
-	if [ -e $(TARGETPREFIX)/usr/bin/enigma2 ]; then \
-		$(TARGET)-strip $(TARGETPREFIX)/usr/bin/enigma2; \
+	$(MAKE) -C $(SOURCE_DIR)/enigma2 install DESTDIR=$(TARGET_DIR)
+	if [ -e $(TARGET_DIR)/usr/bin/enigma2 ]; then \
+		$(TARGET)-strip $(TARGET_DIR)/usr/bin/enigma2; \
 	fi
-	if [ -e $(TARGETPREFIX)/usr/local/bin/enigma2 ]; then \
-		$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/enigma2; \
+	if [ -e $(TARGET_DIR)/usr/local/bin/enigma2 ]; then \
+		$(TARGET)-strip $(TARGET_DIR)/usr/local/bin/enigma2; \
 	fi
 	@echo; \
 	echo "Adding PLi-HD skin"; \
@@ -212,16 +212,16 @@ $(D)/enigma2: $(D)/enigma2.do_prepare $(D)/enigma2.do_compile
 		(echo -n "Pulling archived PLi-HD skin git..."; cd $(ARCHIVE)/PLi-HD_skin.git; git pull -q; git checkout -q $$HEAD; cd "$(BUILD_TMP)"; echo " done.";); \
 	[ -d $(ARCHIVE)/PLi-HD_skin.git ] || \
 		(echo -n "Cloning PLi-HD skin git..."; git clone -q -b $$HEAD $$REPO $(ARCHIVE)/PLi-HD_skin.git; echo " done.";);
-	@cp -ra $(ARCHIVE)/PLi-HD_skin.git/usr/share/enigma2/* $(TARGETPREFIX)/usr/local/share/enigma2; \
+	@cp -ra $(ARCHIVE)/PLi-HD_skin.git/usr/share/enigma2/* $(TARGET_DIR)/usr/local/share/enigma2; \
 	for i in \
 		PLi-HD_skin.patch \
 	; do \
 		echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
-		cd $(TARGETPREFIX)/usr/local/share/enigma2; \
+		cd $(TARGET_DIR)/usr/local/share/enigma2; \
 		$(PATCH)/$$i; \
 	done
-	@rm -rf $(TARGETPREFIX)/usr/local/share/enigma2/PLi-FullHD
-	@rm -rf $(TARGETPREFIX)/usr/local/share/enigma2/PLi-FullNightHD
+	@rm -rf $(TARGET_DIR)/usr/local/share/enigma2/PLi-FullHD
+	@rm -rf $(TARGET_DIR)/usr/local/share/enigma2/PLi-FullNightHD
 	$(TOUCH)
 
 enigma2-clean:

@@ -33,7 +33,7 @@ $(D)/tools-aio-grab: $(D)/bootstrap $(D)/libpng $(D)/libjpeg
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -46,7 +46,7 @@ $(D)/tools-devinit: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -59,7 +59,7 @@ $(D)/tools-eplayer3: $(D)/bootstrap $(D)/ffmpeg
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -72,7 +72,7 @@ $(D)/tools-evremote2: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -85,7 +85,7 @@ $(D)/tools-fp_control: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	@$(TOUCH)
 
 #
@@ -98,7 +98,7 @@ $(D)/tools-hotplug: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -111,7 +111,7 @@ $(D)/tools-ipbox_eeprom: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -124,7 +124,7 @@ $(D)/tools-libeplayer3: $(D)/bootstrap $(D)/ffmpeg
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -139,7 +139,7 @@ $(D)/tools-libmme_host: $(D)/bootstrap $(D)/driver
 			$(if $(MULTICOM406), --enable-multicom406) \
 		; \
 		$(MAKE) DRIVER_TOPDIR=$(DRIVER_DIR); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX) DRIVER_TOPDIR=$(DRIVER_DIR)
+		$(MAKE) install DESTDIR=$(TARGET_DIR) DRIVER_TOPDIR=$(DRIVER_DIR)
 	$(TOUCH)
 
 #
@@ -152,7 +152,7 @@ $(D)/tools-libmme_image: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE) DRIVER_TOPDIR=$(DRIVER_DIR); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX) DRIVER_TOPDIR=$(DRIVER_DIR)
+		$(MAKE) install DESTDIR=$(TARGET_DIR) DRIVER_TOPDIR=$(DRIVER_DIR)
 	$(TOUCH)
 
 #
@@ -165,7 +165,7 @@ $(D)/tools-showiframe: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -178,7 +178,7 @@ $(D)/tools-spf_tool: $(D)/bootstrap $(D)/libusb
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -191,7 +191,7 @@ $(D)/tools-stfbcontrol: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -204,7 +204,7 @@ $(D)/tools-streamproxy: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -217,7 +217,7 @@ $(D)/tools-tfd2mtd: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -230,7 +230,7 @@ $(D)/tools-tffpctl: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -243,7 +243,7 @@ $(D)/tools-ustslave: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -260,7 +260,7 @@ $(D)/tools-vfdctl: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE) CPPFLAGS="$(EXTRA_CPPFLAGS)"; \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 #
@@ -273,7 +273,7 @@ $(D)/tools-wait4button: $(D)/bootstrap
 			--prefix= \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 TOOLS  = $(D)/tools-aio-grab

@@ -119,23 +119,23 @@ crosstool-rpminstall
 		sed -i "s,^libdir=.*,libdir='$(CROSS_DIR)/target/usr/lib'," $(CROSS_DIR)/target/usr/lib/lib{std,sup}c++.la; \
 	fi
 	$(SILENT)if test -e $(CROSS_DIR)/target/usr/lib/libstdc++.so; then \
-		cp -a $(CROSS_DIR)/target/usr/lib/libstdc++.s*[!y] $(TARGETPREFIX)/lib; \
-		cp -a $(CROSS_DIR)/target/usr/lib/libdl.so $(TARGETPREFIX)/usr/lib; \
-		cp -a $(CROSS_DIR)/target/usr/lib/libm.so $(TARGETPREFIX)/usr/lib; \
-		cp -a $(CROSS_DIR)/target/usr/lib/librt.so $(TARGETPREFIX)/usr/lib; \
-		cp -a $(CROSS_DIR)/target/usr/lib/libutil.so $(TARGETPREFIX)/usr/lib; \
-		cp -a $(CROSS_DIR)/target/usr/lib/libpthread.so $(TARGETPREFIX)/usr/lib; \
-		cp -a $(CROSS_DIR)/target/usr/lib/libresolv.so $(TARGETPREFIX)/usr/lib; \
-		ln -s $(CROSS_DIR)/target/usr/lib/libc.so $(TARGETPREFIX)/usr/lib/libc.so; \
-		ln -s $(CROSS_DIR)/target/usr/lib/libc_nonshared.a $(TARGETPREFIX)/usr/lib/libc_nonshared.a; \
+		cp -a $(CROSS_DIR)/target/usr/lib/libstdc++.s*[!y] $(TARGET_DIR)/lib; \
+		cp -a $(CROSS_DIR)/target/usr/lib/libdl.so $(TARGET_DIR)/usr/lib; \
+		cp -a $(CROSS_DIR)/target/usr/lib/libm.so $(TARGET_DIR)/usr/lib; \
+		cp -a $(CROSS_DIR)/target/usr/lib/librt.so $(TARGET_DIR)/usr/lib; \
+		cp -a $(CROSS_DIR)/target/usr/lib/libutil.so $(TARGET_DIR)/usr/lib; \
+		cp -a $(CROSS_DIR)/target/usr/lib/libpthread.so $(TARGET_DIR)/usr/lib; \
+		cp -a $(CROSS_DIR)/target/usr/lib/libresolv.so $(TARGET_DIR)/usr/lib; \
+		ln -s $(CROSS_DIR)/target/usr/lib/libc.so $(TARGET_DIR)/usr/lib/libc.so; \
+		ln -s $(CROSS_DIR)/target/usr/lib/libc_nonshared.a $(TARGET_DIR)/usr/lib/libc_nonshared.a; \
 	fi
 	$(SILENT)if test -e $(CROSS_DIR)/target/lib; then \
-		cp -a $(CROSS_DIR)/target/lib/*so* $(TARGETPREFIX)/lib; \
+		cp -a $(CROSS_DIR)/target/lib/*so* $(TARGET_DIR)/lib; \
 	fi
 	$(SILENT)if test -e $(CROSS_DIR)/target/sbin/ldconfig; then \
-		cp -a $(CROSS_DIR)/target/sbin/ldconfig $(TARGETPREFIX)/sbin; \
-		cp -a $(CROSS_DIR)/target/etc/ld.so.conf $(TARGETPREFIX)/etc; \
-		cp -a $(CROSS_DIR)/target/etc/host.conf $(TARGETPREFIX)/etc; \
+		cp -a $(CROSS_DIR)/target/sbin/ldconfig $(TARGET_DIR)/sbin; \
+		cp -a $(CROSS_DIR)/target/etc/ld.so.conf $(TARGET_DIR)/etc; \
+		cp -a $(CROSS_DIR)/target/etc/host.conf $(TARGET_DIR)/etc; \
 	fi
 	@touch $(D)/$(notdir $@)
 	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
@@ -160,24 +160,24 @@ directories:
 	$(SILENT)test -d $(ARCHIVE) || mkdir $(ARCHIVE)
 	$(SILENT)test -d $(BUILD_TMP) || mkdir $(BUILD_TMP)
 	$(SILENT)test -d $(SOURCE_DIR) || mkdir $(SOURCE_DIR)
-	$(SILENT)install -d $(TARGETPREFIX)
+	$(SILENT)install -d $(TARGET_DIR)
 	$(SILENT)install -d $(CROSS_DIR)
 	$(SILENT)install -d $(BOOT_DIR)
 	$(SILENT)install -d $(HOST_DIR)
 	$(SILENT)install -d $(HOST_DIR)/{bin,lib,share}
-	$(SILENT)install -d $(TARGETPREFIX)/{bin,boot,etc,lib,sbin,usr,var}
-	$(SILENT)install -d $(TARGETPREFIX)/etc/{init.d,mdev,network,rc.d}
-	$(SILENT)install -d $(TARGETPREFIX)/etc/rc.d/{rc0.d,rc6.d}
-	$(SILENT)ln -s ../init.d $(TARGETPREFIX)/etc/rc.d/init.d
-	$(SILENT)install -d $(TARGETPREFIX)/lib/{lsb,firmware}
-	$(SILENT)install -d $(TARGETPREFIX)/usr/{bin,lib,local,sbin,share}
-	$(SILENT)install -d $(TARGETPREFIX)/usr/lib/pkgconfig
-	$(SILENT)install -d $(TARGETPREFIX)/usr/include/linux
-	$(SILENT)install -d $(TARGETPREFIX)/usr/include/linux/dvb
-	$(SILENT)install -d $(TARGETPREFIX)/usr/local/{bin,sbin,share}
-	$(SILENT)install -d $(TARGETPREFIX)/var/{etc,lib,run}
-	$(SILENT)install -d $(TARGETPREFIX)/var/lib/{misc,nfs}
-	$(SILENT)install -d $(TARGETPREFIX)/var/bin
+	$(SILENT)install -d $(TARGET_DIR)/{bin,boot,etc,lib,sbin,usr,var}
+	$(SILENT)install -d $(TARGET_DIR)/etc/{init.d,mdev,network,rc.d}
+	$(SILENT)install -d $(TARGET_DIR)/etc/rc.d/{rc0.d,rc6.d}
+	$(SILENT)ln -s ../init.d $(TARGET_DIR)/etc/rc.d/init.d
+	$(SILENT)install -d $(TARGET_DIR)/lib/{lsb,firmware}
+	$(SILENT)install -d $(TARGET_DIR)/usr/{bin,lib,local,sbin,share}
+	$(SILENT)install -d $(TARGET_DIR)/usr/lib/pkgconfig
+	$(SILENT)install -d $(TARGET_DIR)/usr/include/linux
+	$(SILENT)install -d $(TARGET_DIR)/usr/include/linux/dvb
+	$(SILENT)install -d $(TARGET_DIR)/usr/local/{bin,sbin,share}
+	$(SILENT)install -d $(TARGET_DIR)/var/{etc,lib,run}
+	$(SILENT)install -d $(TARGET_DIR)/var/lib/{misc,nfs}
+	$(SILENT)install -d $(TARGET_DIR)/var/bin
 	@touch $(D)/$(notdir $@)
 	@echo -e "Build of \033[01;32m$@\033[0m completed."; echo
 
