@@ -280,23 +280,25 @@ $(D)/libreadline: $(D)/bootstrap $(ARCHIVE)/readline-$(READLINE_VER).tar.gz
 #
 # openssl
 #
-OPENSSL_VER = 1.0.2
-OPENSSL_SUBVER = j
+OPENSSL_MAJOR = 1.0.2
+OPENSSL_MINOR = k
+OPENSSL_VER = $(OPENSSL_MAJOR)$(OPENSSL_MINOR)
+OPENSSL_SOURCE = openssl-$(OPENSSL_VER).tar.gz
+OPENSSL_PATCH  = openssl-$(OPENSSL_VER)-optimize-for-size.patch
+OPENSSL_PATCH += openssl-$(OPENSSL_VER)-makefile-dirs.patch
+OPENSSL_PATCH += openssl-$(OPENSSL_VER)-disable_doc_tests.patch
+OPENSSL_PATCH += openssl-$(OPENSSL_VER)-fix-parallel-building.patch
 
-$(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz:
-	$(WGET) https://www.openssl.org/source/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz
+$(ARCHIVE)/$(OPENSSL_SOURCE):
+	$(WGET) http://www.openssl.org/source/$(OPENSSL_SOURCE)
 
-$(D)/openssl: $(D)/bootstrap $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz
+$(D)/openssl: $(D)/bootstrap $(ARCHIVE)/$(OPENSSL_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER)
-	$(UNTAR)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz
-	$(SILENT)set -e; cd $(BUILD_TMP)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER); \
+	$(REMOVE)/openssl-$(OPENSSL_VER)
+	$(UNTAR)/$(OPENSSL_SOURCE)
+	$(SET) -e; cd $(BUILD_TMP)/openssl-$(OPENSSL_VER); \
 		for i in \
-			openssl-$(OPENSSL_VER)-optimize-for-size.patch \
-			openssl-$(OPENSSL_VER)-makefile-dirs.patch \
-			openssl-$(OPENSSL_VER)-disable_doc_tests.patch \
-			openssl-$(OPENSSL_VER)-remove_timestamp_check.patch \
-			openssl-$(OPENSSL_VER)-parallel_build.patch \
+			$(OPENSSL_PATCH) \
 		; do \
 			echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
 			$(PATCH)/$$i; \
@@ -321,9 +323,8 @@ $(D)/openssl: $(D)/bootstrap $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).
 	cd $(TARGET_DIR) && rm -rf etc/ssl/man usr/bin/openssl usr/lib/engines
 	ln -sf libcrypto.so.1.0.0 $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.8
 	ln -sf libssl.so.1.0.0 $(TARGET_DIR)/usr/lib/libssl.so.0.9.8
-	$(REMOVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER)
+	$(REMOVE)/openssl-$(OPENSSL_VER)
 	$(TOUCH)
-
 #
 # libbluray
 #
