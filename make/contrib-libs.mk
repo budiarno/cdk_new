@@ -845,12 +845,17 @@ $(D)/libpng: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libpng-$(PNG_VER).tar.xz
 			$(PATCH)/$$i; \
 		done; \
 		$(CONFIGURE) \
-			--prefix=$(TARGET_DIR)/usr \
-			--mandir=$(TARGET_DIR)/.remove \
+			--prefix=/usr \
 			--bindir=$(HOST_DIR)/bin \
+			--disable-powerpc-vsx \
+			--mandir=/.remove \
 		; \
-		ECHO=echo $(MAKE) all; \
-		$(MAKE) install
+		$(MAKE) all; \
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
+	sed -e 's:^prefix=.*:prefix="$(TARGET_DIR)/usr":' -i $(TARGET_DIR)/usr/bin/libpng$(PNG_VER_X)-config; \
+		mv $(TARGET_DIR)/usr/bin/libpng*-config $(HOST_DIR)/bin/
+	$(REWRITE_LIBTOOL)/libpng16.la
+	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libpng$(PNG_VER_X).pc
 	$(REMOVE)/libpng-$(PNG_VER)
 	$(TOUCH)
 
