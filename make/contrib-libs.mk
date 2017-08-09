@@ -2253,10 +2253,10 @@ $(D)/libdvbsi++: $(D)/bootstrap $(ARCHIVE)/$(LIBDVBSI++_SOURCE)
 			$(PATCH)/$$i; \
 		done; \
 		$(CONFIGURE) \
-			--prefix=$(TARGET_DIR)/usr \
+			--prefix=/usr \
 		; \
 		$(MAKE); \
-		$(MAKE) install
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REMOVE)/libdvbsi++-$(LIBDVBSI++_VER)
 	$(TOUCH)
 
