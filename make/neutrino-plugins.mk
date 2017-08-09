@@ -8,7 +8,7 @@
 LINKS-VER = 2.7
 
 $(ARCHIVE)/links-$(LINKS-VER).tar.bz2:
-	$(WGET) http://links.twibright.com/download/links-$(LINKS-VER).tar.bz2
+	$(WGET) https://links.twibright.com/download/links-$(LINKS-VER).tar.bz2
 
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), spark spark7162))
 BOXEVENT = $(PATCH)/links-2.7-spark-input.patch;

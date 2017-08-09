@@ -4,7 +4,7 @@
 NCURSES_VER = 5.9
 
 $(ARCHIVE)/ncurses-$(NCURSES_VER).tar.gz:
-	$(WGET) http://ftp.gnu.org/pub/gnu/ncurses/ncurses-$(NCURSES_VER).tar.gz
+	$(WGET) https://ftp.gnu.org/pub/gnu/ncurses/ncurses-$(NCURSES_VER).tar.gz
 
 $(D)/libncurses: $(D)/bootstrap $(ARCHIVE)/ncurses-$(NCURSES_VER).tar.gz
 	$(START_BUILD)
@@ -134,7 +134,7 @@ GLIB_SOURCE = glib-$(GLIB_VER).tar.xz
 GLIB_PATCH = libglib2-$(GLIB_VER)-disable-tests.patch
 
 $(ARCHIVE)/glib-$(GLIB_VER).tar.xz:
-	$(WGET) http://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB_MAJOR).$(GLIB_MINOR)/$(lastword $(subst /, ,$@))
+	$(WGET) https://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB_MAJOR).$(GLIB_MINOR)/$(lastword $(subst /, ,$@))
 
 $(D)/host_glib2_genmarshal: $(D)/bootstrap $(D)/host_libffi $(ARCHIVE)/glib-$(GLIB_VER).tar.xz
 	$(START_BUILD)
@@ -225,7 +225,7 @@ $(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(AR
 LIBARCHIVE_VER = 3.1.2
 
 $(ARCHIVE)/libarchive-$(LIBARCHIVE_VER).tar.gz:
-	$(WGET) http://www.libarchive.org/downloads/libarchive-$(LIBARCHIVE_VER).tar.gz
+	$(WGET) https://www.libarchive.org/downloads/libarchive-$(LIBARCHIVE_VER).tar.gz
 
 $(D)/libarchive: $(D)/bootstrap $(ARCHIVE)/libarchive-$(LIBARCHIVE_VER).tar.gz
 	$(START_BUILD)
@@ -257,7 +257,7 @@ $(D)/libarchive: $(D)/bootstrap $(ARCHIVE)/libarchive-$(LIBARCHIVE_VER).tar.gz
 READLINE_VER = 6.2
 
 $(ARCHIVE)/readline-$(READLINE_VER).tar.gz:
-	$(WGET) http://ftp.gnu.org/gnu/readline/readline-$(READLINE_VER).tar.gz
+	$(WGET) https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VER).tar.gz
 
 $(D)/libreadline: $(D)/bootstrap $(ARCHIVE)/readline-$(READLINE_VER).tar.gz
 	$(START_BUILD)
@@ -284,7 +284,7 @@ OPENSSL_VER = 1.0.2
 OPENSSL_SUBVER = j
 
 $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz:
-	$(WGET) http://www.openssl.org/source/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz
+	$(WGET) https://www.openssl.org/source/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz
 
 $(D)/openssl: $(D)/bootstrap $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz
 	$(START_BUILD)
@@ -330,7 +330,7 @@ $(D)/openssl: $(D)/bootstrap $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).
 LIBBLURAY_VER = 0.5.0
 
 $(ARCHIVE)/libbluray-$(LIBBLURAY_VER).tar.bz2:
-	$(WGET) http://ftp.videolan.org/pub/videolan/libbluray/$(LIBBLURAY_VER)/libbluray-$(LIBBLURAY_VER).tar.bz2
+	$(WGET) https://ftp.videolan.org/pub/videolan/libbluray/$(LIBBLURAY_VER)/libbluray-$(LIBBLURAY_VER).tar.bz2
 
 $(D)/libbluray: $(D)/bootstrap $(ARCHIVE)/libbluray-$(LIBBLURAY_VER).tar.bz2
 	$(START_BUILD)
@@ -378,10 +378,10 @@ LUA_POSIX_URL = git://github.com/luaposix/luaposix.git
 LUA_POSIX_PATCH = lua-$(LUA_VER)-luaposix-$(LUA_POSIX_VER).patch
 
 $(ARCHIVE)/$(LUA_SOURCE):
-	$(WGET) http://www.lua.org/ftp/lua-$(LUA_VER).tar.gz
+	$(WGET) https://www.lua.org/ftp/lua-$(LUA_VER).tar.gz
 
-(ARCHIVE)/$(LUA_POSIX_SOURCE):
-	get-git-archive.sh $(LUA_POSIX_URL) release-v$(LUA_POSIX_VERSION) $(notdir $@) $(ARCHIVE)
+$(ARCHIVE)/$(LUA_POSIX_SOURCE):
+	get-git-archive.sh $(LUA_POSIX_URL) release-v$(LUA_POSIX_VER) $(notdir $@) $(ARCHIVE)
 
 $(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/$(LUA_POSIX_SOURCE) $(ARCHIVE)/$(LUA_SOURCE)
 	$(START_BUILD)
@@ -437,7 +437,7 @@ LUA_EXPAT_SOURCE = luaexpat-$(LUA_EXPAT_VER).tar.gz
 LUA_EXPAT_PATCH = luaexpat-$(LUA_EXPAT_VER).patch
 
 $(ARCHIVE)/$(LUA_EXPAT_SOURCE):
-	$(WGET) http://matthewwild.co.uk/projects/luaexpat/$(LUA_EXPAT_SOURCE)
+	$(WGET) https://matthewwild.co.uk/projects/luaexpat/$(LUA_EXPAT_SOURCE)
 
 $(D)/luaexpat: $(D)/bootstrap $(D)/lua $(D)/libexpat $(ARCHIVE)/$(LUA_EXPAT_SOURCE)
 	$(START_BUILD)
@@ -519,7 +519,7 @@ $(D)/luasoap: $(D)/bootstrap $(D)/lua $(D)/luasocket $(D)/luaexpat $(ARCHIVE)/$(
 # luajson
 #
 $(ARCHIVE)/json.lua:
-	$(WGET) http://github.com/swiboe/swiboe/raw/master/term_gui/json.lua
+	$(WGET) https://github.com/swiboe/swiboe/raw/master/term_gui/json.lua
 
 $(D)/luajson: $(D)/bootstrap $(D)/lua $(ARCHIVE)/json.lua
 	$(START_BUILD)
@@ -535,7 +535,7 @@ BOOST_MICRO = 0
 BOOST_VER = $(BOOST_MAJOR)_$(BOOST_MINOR)_$(BOOST_MICRO)
 
 $(ARCHIVE)/boost_$(BOOST_VER).tar.bz2:
-	$(WGET) http://sourceforge.net/projects/boost/files/boost/$(BOOST_MAJOR).$(BOOST_MINOR).$(BOOST_MICRO)/boost_$(BOOST_VER).tar.bz2
+	$(WGET) https://sourceforge.net/projects/boost/files/boost/$(BOOST_MAJOR).$(BOOST_MINOR).$(BOOST_MICRO)/boost_$(BOOST_VER).tar.bz2
 
 $(D)/libboost: $(D)/bootstrap $(ARCHIVE)/boost_$(BOOST_VER).tar.bz2
 	$(START_BUILD)
@@ -554,7 +554,7 @@ $(D)/libboost: $(D)/bootstrap $(ARCHIVE)/boost_$(BOOST_VER).tar.bz2
 ZLIB_VER = 1.2.8
 
 $(ARCHIVE)/zlib-$(ZLIB_VER).tar.xz:
-	$(WGET) http://sourceforge.net/projects/libpng/files/zlib/$(ZLIB_VER)/zlib-$(ZLIB_VER).tar.xz
+	$(WGET) https://sourceforge.net/projects/libpng/files/zlib/$(ZLIB_VER)/zlib-$(ZLIB_VER).tar.xz
 
 $(D)/zlib: $(D)/bootstrap $(ARCHIVE)/zlib-$(ZLIB_VER).tar.xz
 	$(START_BUILD)
@@ -647,7 +647,7 @@ $(D)/timezone: $(D)/bootstrap find-zic $(ARCHIVE)/tzdata$(TZ_VER).tar.gz
 FREETYPE_VER = 2.6.5
 
 $(ARCHIVE)/freetype-$(FREETYPE_VER).tar.bz2:
-	$(WGET) http://sourceforge.net/projects/freetype/files/freetype2/$(FREETYPE_VER)/freetype-$(FREETYPE_VER).tar.bz2
+	$(WGET) https://sourceforge.net/projects/freetype/files/freetype2/$(FREETYPE_VER)/freetype-$(FREETYPE_VER).tar.bz2
 
 $(D)/libfreetype: $(D)/bootstrap $(D)/zlib $(D)/bzip2 $(D)/libpng $(ARCHIVE)/freetype-$(FREETYPE_VER).tar.bz2
 	$(START_BUILD)
@@ -689,7 +689,7 @@ LIRC_PATCH = lirc-$(LIRC_VER).patch
 LIRC = $(D)/lirc
 
 $(ARCHIVE)/$(LIRC_SOURCE):
-	$(WGET) http://sourceforge.net/projects/lirc/files/LIRC/$(LIRC_VER)/lirc-$(LIRC_VER).tar.bz2
+	$(WGET) https://sourceforge.net/projects/lirc/files/LIRC/$(LIRC_VER)/lirc-$(LIRC_VER).tar.bz2
 
 ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), spark spark7162))
@@ -744,7 +744,7 @@ endif
 JPEG_VER = 9b
 
 $(ARCHIVE)/jpegsrc.v$(JPEG_VER).tar.gz:
-	$(WGET) http://www.ijg.org/files/jpegsrc.v$(JPEG_VER).tar.gz
+	$(WGET) https://www.ijg.org/files/jpegsrc.v$(JPEG_VER).tar.gz
 
 $(D)/libjpeg_old: $(D)/bootstrap $(ARCHIVE)/jpegsrc.v$(JPEG_VER).tar.gz
 	$(START_BUILD)
@@ -775,7 +775,7 @@ $(D)/libjpeg_old: $(D)/bootstrap $(ARCHIVE)/jpegsrc.v$(JPEG_VER).tar.gz
 JPEG_TURBO_VER = 1.5.0
 
 $(ARCHIVE)/libjpeg-turbo-$(JPEG_TURBO_VER).tar.gz:
-	$(WGET) http://sourceforge.net/projects/libjpeg-turbo/files/$(JPEG_TURBO_VER)/libjpeg-turbo-$(JPEG_TURBO_VER).tar.gz
+	$(WGET) https://sourceforge.net/projects/libjpeg-turbo/files/$(JPEG_TURBO_VER)/libjpeg-turbo-$(JPEG_TURBO_VER).tar.gz
 
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), ufs910))
 $(D)/libjpeg: $(D)/libjpeg_old
@@ -825,7 +825,7 @@ PNG_VER = 1.6.29
 PNG_VER_X = 16
 
 $(ARCHIVE)/libpng-$(PNG_VER).tar.xz:
-	$(WGET) http://prdownloads.sourceforge.net/libpng/libpng-$(PNG_VER).tar.xz
+	$(WGET) https://prdownloads.sourceforge.net/libpng/libpng-$(PNG_VER).tar.xz
 
 $(D)/libpng: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libpng-$(PNG_VER).tar.xz
 	$(START_BUILD)
@@ -854,7 +854,7 @@ $(D)/libpng: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libpng-$(PNG_VER).tar.xz
 PNGPP_VER = 0.2.9
 
 $(ARCHIVE)/png++-$(PNGPP_VER).tar.gz:
-	$(WGET) http://download.savannah.gnu.org/releases/pngpp/png++-$(PNGPP_VER).tar.gz
+	$(WGET) https://download.savannah.gnu.org/releases/pngpp/png++-$(PNGPP_VER).tar.gz
 
 $(D)/png++: $(D)/bootstrap $(D)/libpng $(ARCHIVE)/png++-$(PNGPP_VER).tar.gz
 	$(START_BUILD)
@@ -871,7 +871,7 @@ $(D)/png++: $(D)/bootstrap $(D)/libpng $(ARCHIVE)/png++-$(PNGPP_VER).tar.gz
 GIFLIB_VER = 5.1.4
 
 $(ARCHIVE)/giflib-$(GIFLIB_VER).tar.bz2:
-	$(WGET) http://sourceforge.net/projects/giflib/files/giflib-$(GIFLIB_VER).tar.bz2
+	$(WGET) https://sourceforge.net/projects/giflib/files/giflib-$(GIFLIB_VER).tar.bz2
 
 $(D)/libgif: $(D)/bootstrap $(ARCHIVE)/giflib-$(GIFLIB_VER).tar.bz2
 	$(START_BUILD)
@@ -944,7 +944,7 @@ FRIBIDI_SOURCE = fribidi-$(FRIBIDI_VER).tar.bz2
 FRIBIDI_PATCH = fribidi-$(FRIBIDI_VER).patch
 
 $(ARCHIVE)/fribidi-$(FRIBIDI_VER).tar.bz2:
-	$(WGET) http://fribidi.org/download/fribidi-$(FRIBIDI_VER).tar.bz2
+	$(WGET) https://fribidi.org/download/fribidi-$(FRIBIDI_VER).tar.bz2
 
 $(D)/libfribidi: $(D)/bootstrap $(ARCHIVE)/fribidi-$(FRIBIDI_VER).tar.bz2
 	$(START_BUILD)
@@ -984,7 +984,7 @@ LIBSIGCPP_E2_MICRO = 7
 LIBSIGCPP_E2_VER=$(LIBSIGCPP_E2_MAJOR).$(LIBSIGCPP_E2_MINOR).$(LIBSIGCPP_E2_MICRO)
 
 $(ARCHIVE)/libsigc++-$(LIBSIGCPP_E2_VER).tar.gz:
-	$(WGET) http://ftp.gnome.org/pub/GNOME/sources/libsigc++/$(LIBSIGCPP_E2_MAJOR).$(LIBSIGCPP_E2_MINOR)/libsigc++-$(LIBSIGCPP_E2_VER).tar.gz
+	$(WGET) https://ftp.gnome.org/pub/GNOME/sources/libsigc++/$(LIBSIGCPP_E2_MAJOR).$(LIBSIGCPP_E2_MINOR)/libsigc++-$(LIBSIGCPP_E2_VER).tar.gz
 
 $(D)/libsigc++_e2: $(D)/bootstrap $(ARCHIVE)/libsigc++-$(LIBSIGCPP_E2_VER).tar.gz
 	$(START_BUILD)
@@ -1010,7 +1010,7 @@ LIBSIGCPP_MICRO = 1
 LIBSIGCPP_VER=$(LIBSIGCPP_MAJOR).$(LIBSIGCPP_MINOR).$(LIBSIGCPP_MICRO)
 
 $(ARCHIVE)/libsigc++-$(LIBSIGCPP_VER).tar.xz:
-	$(WGET) http://ftp.gnome.org/pub/GNOME/sources/libsigc++/$(LIBSIGCPP_MAJOR).$(LIBSIGCPP_MINOR)/libsigc++-$(LIBSIGCPP_VER).tar.xz
+	$(WGET) https://ftp.gnome.org/pub/GNOME/sources/libsigc++/$(LIBSIGCPP_MAJOR).$(LIBSIGCPP_MINOR)/libsigc++-$(LIBSIGCPP_VER).tar.xz
 
 $(D)/libsigc++: $(D)/bootstrap $(ARCHIVE)/libsigc++-$(LIBSIGCPP_VER).tar.xz
 	$(START_BUILD)
@@ -1039,7 +1039,7 @@ $(D)/libsigc++: $(D)/bootstrap $(ARCHIVE)/libsigc++-$(LIBSIGCPP_VER).tar.xz
 MAD_VER = 0.15.1b
 
 $(ARCHIVE)/libmad-$(MAD_VER).tar.gz:
-	$(WGET) http://sourceforge.net/projects/mad/files/libmad/$(MAD_VER)/libmad-$(MAD_VER).tar.gz
+	$(WGET) https://sourceforge.net/projects/mad/files/libmad/$(MAD_VER)/libmad-$(MAD_VER).tar.gz
 
 $(D)/libmad: $(D)/bootstrap $(ARCHIVE)/libmad-$(MAD_VER).tar.gz
 	$(START_BUILD)
@@ -1075,7 +1075,7 @@ $(D)/libmad: $(D)/bootstrap $(ARCHIVE)/libmad-$(MAD_VER).tar.gz
 ID3TAG_VER = 0.15.1b
 
 $(ARCHIVE)/libid3tag-$(ID3TAG_VER)$(ID3TAG_SUBVER).tar.gz:
-	$(WGET) http://sourceforge.net/projects/mad/files/libid3tag/$(ID3TAG_VER)/libid3tag-$(ID3TAG_VER).tar.gz
+	$(WGET) https://sourceforge.net/projects/mad/files/libid3tag/$(ID3TAG_VER)/libid3tag-$(ID3TAG_VER).tar.gz
 
 $(D)/libid3tag: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libid3tag-$(ID3TAG_VER).tar.gz
 	$(START_BUILD)
@@ -1107,7 +1107,7 @@ $(D)/libid3tag: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libid3tag-$(ID3TAG_VER).tar.
 VORBIS_VER = 1.3.5
 
 $(ARCHIVE)/libvorbis-$(VORBIS_VER).tar.xz:
-	$(WGET) http://downloads.xiph.org/releases/vorbis/libvorbis-$(VORBIS_VER).tar.xz
+	$(WGET) https://downloads.xiph.org/releases/vorbis/libvorbis-$(VORBIS_VER).tar.xz
 
 $(D)/libvorbis: $(D)/bootstrap $(D)/libogg $(ARCHIVE)/libvorbis-$(VORBIS_VER).tar.xz
 	$(START_BUILD)
@@ -1142,7 +1142,7 @@ VORBISIDEC_VER = 1.0.2+svn$(VORBISIDEC_SVN)
 VORBISIDEC_VER_APPEND = .orig
 
 $(ARCHIVE)/libvorbisidec_$(VORBISIDEC_VER)$(VORBISIDEC_VER_APPEND).tar.gz:
-	$(WGET) http://ftp.de.debian.org/debian/pool/main/libv/libvorbisidec/libvorbisidec_$(VORBISIDEC_VER)$(VORBISIDEC_VER_APPEND).tar.gz
+	$(WGET) https://ftp.de.debian.org/debian/pool/main/libv/libvorbisidec/libvorbisidec_$(VORBISIDEC_VER)$(VORBISIDEC_VER_APPEND).tar.gz
 
 $(D)/libvorbisidec: $(D)/bootstrap $(D)/libogg $(ARCHIVE)/libvorbisidec_$(VORBISIDEC_VER)$(VORBISIDEC_VER_APPEND).tar.gz
 	$(START_BUILD)
@@ -1171,7 +1171,7 @@ $(D)/libvorbisidec: $(D)/bootstrap $(D)/libogg $(ARCHIVE)/libvorbisidec_$(VORBIS
 ICONV_VER = 1.14
 
 $(ARCHIVE)/libiconv-$(ICONV_VER).tar.gz:
-	$(WGET) http://ftp.gnu.org/gnu/libiconv/libiconv-$(ICONV_VER).tar.gz
+	$(WGET) https://ftp.gnu.org/gnu/libiconv/libiconv-$(ICONV_VER).tar.gz
 
 $(D)/libiconv: $(D)/bootstrap $(ARCHIVE)/libiconv-$(ICONV_VER).tar.gz
 	$(START_BUILD)
@@ -1200,7 +1200,7 @@ EXPAT_VER = 2.2.0
 EXPAT_SOURCE = expat-$(EXPAT_VER).tar.bz2
 
 $(ARCHIVE)/expat-$(EXPAT_VER).tar.bz2:
-	$(WGET) http://sourceforge.net/projects/expat/files/expat/$(EXPAT_VER)/$(EXPAT_SOURCE)
+	$(WGET) https://sourceforge.net/projects/expat/files/expat/$(EXPAT_VER)/$(EXPAT_SOURCE)
 
 $(D)/libexpat: $(D)/bootstrap $(ARCHIVE)/expat-$(EXPAT_VER).tar.bz2
 	$(START_BUILD)
@@ -1225,7 +1225,7 @@ $(D)/libexpat: $(D)/bootstrap $(ARCHIVE)/expat-$(EXPAT_VER).tar.bz2
 FONTCONFIG_VER = 2.11.93
 
 $(ARCHIVE)/fontconfig-$(FONTCONFIG_VER).tar.bz2:
-	$(WGET) http://www.freedesktop.org/software/fontconfig/release/fontconfig-$(FONTCONFIG_VER).tar.bz2
+	$(WGET) https://www.freedesktop.org/software/fontconfig/release/fontconfig-$(FONTCONFIG_VER).tar.bz2
 
 $(D)/fontconfig: $(D)/bootstrap $(D)/libfreetype $(D)/libexpat $(ARCHIVE)/fontconfig-$(FONTCONFIG_VER).tar.bz2
 	$(START_BUILD)
@@ -1253,7 +1253,7 @@ $(D)/fontconfig: $(D)/bootstrap $(D)/libfreetype $(D)/libexpat $(ARCHIVE)/fontco
 LIBDVDCSS_VER = 1.2.13
 
 $(ARCHIVE)/libdvdcss-$(LIBDVDCSS_VER).tar.bz2:
-	$(WGET) http://download.videolan.org/pub/libdvdcss/$(LIBDVDCSS_VER)/$(lastword $(subst /, ,$@))
+	$(WGET) https://download.videolan.org/pub/libdvdcss/$(LIBDVDCSS_VER)/$(lastword $(subst /, ,$@))
 
 $(D)/libdvdcss: $(D)/bootstrap $(ARCHIVE)/libdvdcss-$(LIBDVDCSS_VER).tar.bz2
 	$(START_BUILD)
@@ -1276,7 +1276,7 @@ $(D)/libdvdcss: $(D)/bootstrap $(ARCHIVE)/libdvdcss-$(LIBDVDCSS_VER).tar.bz2
 LIBDVDNAV_VER = 4.2.1
 
 $(ARCHIVE)/libdvdnav-$(LIBDVDNAV_VER).tar.xz:
-	$(WGET) http://dvdnav.mplayerhq.hu/releases/libdvdnav-$(LIBDVDNAV_VER).tar.xz
+	$(WGET) https://dvdnav.mplayerhq.hu/releases/libdvdnav-$(LIBDVDNAV_VER).tar.xz
 
 $(D)/libdvdnav: $(D)/bootstrap $(D)/libdvdread $(ARCHIVE)/libdvdnav-$(LIBDVDNAV_VER).tar.xz
 	$(START_BUILD)
@@ -1313,7 +1313,7 @@ $(D)/libdvdnav: $(D)/bootstrap $(D)/libdvdread $(ARCHIVE)/libdvdnav-$(LIBDVDNAV_
 LIBDVDREAD_VER = 4.9.9
 
 $(ARCHIVE)/libdvdread-$(LIBDVDREAD_VER).tar.xz:
-	$(WGET) http://dvdnav.mplayerhq.hu/releases/libdvdread-$(LIBDVDREAD_VER).tar.xz
+	$(WGET) https://dvdnav.mplayerhq.hu/releases/libdvdread-$(LIBDVDREAD_VER).tar.xz
 
 $(D)/libdvdread: $(D)/bootstrap $(ARCHIVE)/libdvdread-$(LIBDVDREAD_VER).tar.xz
 	$(START_BUILD)
@@ -1380,7 +1380,7 @@ FFMPEG_VER = 2.8.6
 #FFMPEG_VER = 3.0.1
 
 $(ARCHIVE)/ffmpeg-$(FFMPEG_VER).tar.xz:
-	$(WGET) http://www.ffmpeg.org/releases/ffmpeg-$(FFMPEG_VER).tar.xz
+	$(WGET) https://www.ffmpeg.org/releases/ffmpeg-$(FFMPEG_VER).tar.xz
 
 ifeq ($(IMAGE), enigma2)
 FFMPEG_EXTRA  = --enable-librtmp
@@ -1646,7 +1646,7 @@ $(D)/libass: $(D)/bootstrap $(D)/libfreetype $(D)/libfribidi $(ARCHIVE)/libass-$
 SQLITE_VER = 3110000
 
 $(ARCHIVE)/sqlite-autoconf-$(SQLITE_VER).tar.gz:
-	$(WGET) http://www.sqlite.org/2016/sqlite-autoconf-$(SQLITE_VER).tar.gz
+	$(WGET) https://www.sqlite.org/2016/sqlite-autoconf-$(SQLITE_VER).tar.gz
 
 $(D)/sqlite: $(D)/bootstrap $(ARCHIVE)/sqlite-autoconf-$(SQLITE_VER).tar.gz
 	$(START_BUILD)
@@ -1673,7 +1673,7 @@ LIBSOUP_MINOR = 0
 LIBSOUP_VER = $(LIBSOUP_MAJOR).$(LIBSOUP_MINOR)
 
 $(ARCHIVE)/libsoup-$(LIBSOUP_VER).tar.xz:
-	$(WGET) http://download.gnome.org/sources/libsoup/$(LIBSOUP_MAJOR)/libsoup-$(LIBSOUP_VER).tar.xz
+	$(WGET) https://download.gnome.org/sources/libsoup/$(LIBSOUP_MAJOR)/libsoup-$(LIBSOUP_VER).tar.xz
 
 $(D)/libsoup: $(D)/bootstrap $(D)/sqlite $(D)/libxml2_e2 $(D)/glib2 $(ARCHIVE)/libsoup-$(LIBSOUP_VER).tar.xz
 	$(START_BUILD)
@@ -1698,7 +1698,7 @@ $(D)/libsoup: $(D)/bootstrap $(D)/sqlite $(D)/libxml2_e2 $(D)/glib2 $(ARCHIVE)/l
 OGG_VER = 1.3.2
 
 $(ARCHIVE)/libogg-$(OGG_VER).tar.gz:
-	$(WGET) http://downloads.xiph.org/releases/ogg/libogg-$(OGG_VER).tar.gz
+	$(WGET) https://downloads.xiph.org/releases/ogg/libogg-$(OGG_VER).tar.gz
 
 $(D)/libogg: $(D)/bootstrap $(ARCHIVE)/libogg-$(OGG_VER).tar.gz
 	$(START_BUILD)
@@ -1724,7 +1724,7 @@ $(D)/libogg: $(D)/bootstrap $(ARCHIVE)/libogg-$(OGG_VER).tar.gz
 FLAC_VER = 1.3.1
 
 $(ARCHIVE)/flac-$(FLAC_VER).tar.xz:
-	$(WGET) http://downloads.xiph.org/releases/flac/flac-$(FLAC_VER).tar.xz
+	$(WGET) https://downloads.xiph.org/releases/flac/flac-$(FLAC_VER).tar.xz
 
 $(D)/libflac: $(D)/bootstrap $(ARCHIVE)/flac-$(FLAC_VER).tar.xz
 	$(START_BUILD)
@@ -1900,7 +1900,7 @@ $(D)/libxml2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_VER).tar.gz
 LIBROXML_VER = 2.3.0
 
 $(ARCHIVE)/libroxml-$(LIBROXML_VER).tar.gz:
-	$(WGET) http://download.libroxml.net/pool/v2.x/libroxml-$(LIBROXML_VER).tar.gz
+	$(WGET) https://download.libroxml.net/pool/v2.x/libroxml-$(LIBROXML_VER).tar.gz
 
 $(D)/libroxml: $(D)/bootstrap $(ARCHIVE)/libroxml-$(LIBROXML_VER).tar.gz
 	$(START_BUILD)
@@ -1926,7 +1926,7 @@ $(D)/libroxml: $(D)/bootstrap $(ARCHIVE)/libroxml-$(LIBROXML_VER).tar.gz
 PUGIXML_VER = 1.7
 
 $(ARCHIVE)/pugixml-$(PUGIXML_VER).tar.gz:
-	$(WGET) http://github.com/zeux/pugixml/releases/download/v$(PUGIXML_VER)/pugixml-$(PUGIXML_VER).tar.gz
+	$(WGET) https://github.com/zeux/pugixml/releases/download/v$(PUGIXML_VER)/pugixml-$(PUGIXML_VER).tar.gz
 
 $(D)/pugixml: $(D)/bootstrap $(ARCHIVE)/pugixml-$(PUGIXML_VER).tar.gz
 	$(START_BUILD)
@@ -2036,7 +2036,7 @@ $(D)/libgd: $(D)/bootstrap $(D)/libpng $(D)/libjpeg $(D)/libfreetype $(ARCHIVE)/
 USB_VER = 1.0.9
 
 $(ARCHIVE)/libusb-$(USB_VER).tar.bz2:
-	$(WGET) http://sourceforge.net/projects/libusb/files/libusb-1.0/libusb-$(USB_VER)/libusb-$(USB_VER).tar.bz2
+	$(WGET) https://sourceforge.net/projects/libusb/files/libusb-1.0/libusb-$(USB_VER)/libusb-$(USB_VER).tar.bz2
 
 $(D)/libusb: $(D)/bootstrap $(ARCHIVE)/libusb-$(USB_VER).tar.bz2
 	$(START_BUILD)
@@ -2069,7 +2069,7 @@ $(D)/libusb: $(D)/bootstrap $(ARCHIVE)/libusb-$(USB_VER).tar.bz2
 USBCOMPAT_VER = 0.1.5
 
 $(ARCHIVE)/libusb-compat-$(USBCOMPAT_VER).tar.bz2:
-	$(WGET) http://sourceforge.net/projects/libusb/files/libusb-compat-0.1/libusb-compat-$(USBCOMPAT_VER)/libusb-compat-$(USBCOMPAT_VER).tar.bz2
+	$(WGET) https://sourceforge.net/projects/libusb/files/libusb-compat-0.1/libusb-compat-$(USBCOMPAT_VER)/libusb-compat-$(USBCOMPAT_VER).tar.bz2
 
 $(D)/libusbcompat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/libusb-compat-$(USBCOMPAT_VER).tar.bz2
 	$(START_BUILD)
@@ -2266,7 +2266,7 @@ $(D)/libdvbsi++: $(D)/bootstrap $(ARCHIVE)/$(LIBDVBSI++_SOURCE)
 LIBMODPLUG_VER = 0.8.8.4
 
 $(ARCHIVE)/libmodplug-$(LIBMODPLUG_VER).tar.gz:
-	$(WGET) http://sourceforge.net/projects/modplug-xmms/files/libmodplug/$(LIBMODPLUG_VER)/libmodplug-$(LIBMODPLUG_VER).tar.gz
+	$(WGET) https://sourceforge.net/projects/modplug-xmms/files/libmodplug/$(LIBMODPLUG_VER)/libmodplug-$(LIBMODPLUG_VER).tar.gz
 
 $(D)/libmodplug: $(D)/bootstrap $(ARCHIVE)/libmodplug-$(LIBMODPLUG_VER).tar.gz
 	$(START_BUILD)
@@ -2289,7 +2289,7 @@ $(D)/libmodplug: $(D)/bootstrap $(ARCHIVE)/libmodplug-$(LIBMODPLUG_VER).tar.gz
 LZO_VER = 2.10
 
 $(ARCHIVE)/lzo-$(LZO_VER).tar.gz:
-	$(WGET) http://www.oberhumer.com/opensource/lzo/download/lzo-$(LZO_VER).tar.gz
+	$(WGET) https://www.oberhumer.com/opensource/lzo/download/lzo-$(LZO_VER).tar.gz
 
 $(D)/lzo: $(D)/bootstrap $(ARCHIVE)/lzo-$(LZO_VER).tar.gz
 	$(START_BUILD)
@@ -2312,7 +2312,7 @@ $(D)/lzo: $(D)/bootstrap $(ARCHIVE)/lzo-$(LZO_VER).tar.gz
 PCRE_VER = 8.39
 
 $(ARCHIVE)/pcre-$(PCRE_VER).tar.bz2:
-	$(WGET) http://sourceforge.net/projects/pcre/files/pcre/$(PCRE_VER)/pcre-$(PCRE_VER).tar.bz2
+	$(WGET) https://sourceforge.net/projects/pcre/files/pcre/$(PCRE_VER)/pcre-$(PCRE_VER).tar.bz2
 
 $(D)/libpcre: $(D)/bootstrap $(ARCHIVE)/pcre-$(PCRE_VER).tar.bz2
 	$(START_BUILD)
@@ -2338,7 +2338,7 @@ $(D)/libpcre: $(D)/bootstrap $(ARCHIVE)/pcre-$(PCRE_VER).tar.bz2
 MINIDLNA_VER = 1.1.5
 
 $(ARCHIVE)/minidlna-$(MINIDLNA_VER).tar.gz:
-	$(WGET) http://sourceforge.net/projects/minidlna/files/minidlna/$(MINIDLNA_VER)/minidlna-$(MINIDLNA_VER).tar.gz
+	$(WGET) https://sourceforge.net/projects/minidlna/files/minidlna/$(MINIDLNA_VER)/minidlna-$(MINIDLNA_VER).tar.gz
 
 $(D)/minidlna: $(D)/bootstrap $(D)/zlib $(D)/sqlite $(D)/libexif $(D)/libjpeg $(D)/libid3tag $(D)/libogg $(D)/libvorbis $(D)/libflac $(D)/ffmpeg $(ARCHIVE)/minidlna-$(MINIDLNA_VER).tar.gz
 	$(START_BUILD)
@@ -2366,7 +2366,7 @@ $(D)/minidlna: $(D)/bootstrap $(D)/zlib $(D)/sqlite $(D)/libexif $(D)/libjpeg $(
 LIBEXIF_VER = 0.6.21
 
 $(ARCHIVE)/libexif-$(LIBEXIF_VER).tar.gz:
-	$(WGET) http://sourceforge.net/projects/libexif/files/libexif/$(LIBEXIF_VER)/libexif-$(LIBEXIF_VER).tar.gz
+	$(WGET) https://sourceforge.net/projects/libexif/files/libexif/$(LIBEXIF_VER)/libexif-$(LIBEXIF_VER).tar.gz
 
 $(D)/libexif: $(D)/bootstrap $(ARCHIVE)/libexif-$(LIBEXIF_VER).tar.gz
 	$(START_BUILD)
@@ -2389,7 +2389,7 @@ $(D)/libexif: $(D)/bootstrap $(ARCHIVE)/libexif-$(LIBEXIF_VER).tar.gz
 DJMOUNT_VER = 0.71
 
 $(ARCHIVE)/djmount-$(DJMOUNT_VER).tar.gz:
-	$(WGET) http://sourceforge.net/projects/djmount/files/djmount/$(DJMOUNT_VER)/djmount-$(DJMOUNT_VER).tar.gz
+	$(WGET) https://sourceforge.net/projects/djmount/files/djmount/$(DJMOUNT_VER)/djmount-$(DJMOUNT_VER).tar.gz
 
 $(D)/djmount: $(D)/bootstrap $(D)/fuse $(ARCHIVE)/djmount-$(DJMOUNT_VER).tar.gz
 	$(START_BUILD)
@@ -2410,7 +2410,7 @@ $(D)/djmount: $(D)/bootstrap $(D)/fuse $(ARCHIVE)/djmount-$(DJMOUNT_VER).tar.gz
 LIBUPNP_VER = 1.6.22
 
 $(ARCHIVE)/libupnp-$(LIBUPNP_VER).tar.bz2:
-	$(WGET) http://sourceforge.net/projects/pupnp/files/pupnp/libUPnP\ $(LIBUPNP_VER)/libupnp-$(LIBUPNP_VER).tar.bz2
+	$(WGET) https://sourceforge.net/projects/pupnp/files/pupnp/libUPnP\ $(LIBUPNP_VER)/libupnp-$(LIBUPNP_VER).tar.bz2
 
 $(D)/libupnp: $(D)/bootstrap $(ARCHIVE)/libupnp-$(LIBUPNP_VER).tar.bz2
 	$(START_BUILD)
@@ -2435,7 +2435,7 @@ $(D)/libupnp: $(D)/bootstrap $(ARCHIVE)/libupnp-$(LIBUPNP_VER).tar.bz2
 RARFS_VER = 0.1.1
 
 $(ARCHIVE)/rarfs-$(RARFS_VER).tar.gz:
-	$(WGET) http://sourceforge.net/projects/rarfs/files/rarfs/$(RARFS_VER)/rarfs-$(RARFS_VER).tar.gz
+	$(WGET) https://sourceforge.net/projects/rarfs/files/rarfs/$(RARFS_VER)/rarfs-$(RARFS_VER).tar.gz
 
 $(D)/rarfs: $(D)/bootstrap $(D)/fuse $(ARCHIVE)/rarfs-$(RARFS_VER).tar.gz
 	$(START_BUILD)
@@ -2483,7 +2483,7 @@ $(D)/sshfs: $(D)/bootstrap $(D)/glib2 $(D)/fuse $(ARCHIVE)/sshfs-fuse-$(SSHFS_VE
 HOWL_VER = 1.0.0
 
 $(ARCHIVE)/howl-$(HOWL_VER).tar.gz:
-	$(WGET) http://sourceforge.net/projects/howl/files/howl/$(HOWL_VER)/howl-$(HOWL_VER).tar.gz
+	$(WGET) https://sourceforge.net/projects/howl/files/howl/$(HOWL_VER)/howl-$(HOWL_VER).tar.gz
 
 $(D)/howl: $(D)/bootstrap $(ARCHIVE)/howl-$(HOWL_VER).tar.gz
 	$(START_BUILD)
@@ -2507,7 +2507,7 @@ $(D)/howl: $(D)/bootstrap $(ARCHIVE)/howl-$(HOWL_VER).tar.gz
 LIBDAEMON_VER = 0.14
 
 $(ARCHIVE)/libdaemon-$(LIBDAEMON_VER).tar.gz:
-	$(WGET) http://0pointer.de/lennart/projects/libdaemon/libdaemon-$(LIBDAEMON_VER).tar.gz
+	$(WGET) https://0pointer.de/lennart/projects/libdaemon/libdaemon-$(LIBDAEMON_VER).tar.gz
 
 $(D)/libdaemon: $(D)/bootstrap $(ARCHIVE)/libdaemon-$(LIBDAEMON_VER).tar.gz
 	$(START_BUILD)
@@ -2532,7 +2532,7 @@ $(D)/libdaemon: $(D)/bootstrap $(ARCHIVE)/libdaemon-$(LIBDAEMON_VER).tar.gz
 LIBPLIST_VER = 1.10
 
 $(ARCHIVE)/libplist-$(LIBPLIST_VER).tar.gz:
-	$(WGET) http://cgit.sukimashita.com/libplist.git/snapshot/libplist-$(LIBPLIST_VER).tar.gz
+	$(WGET) https://cgit.sukimashita.com/libplist.git/snapshot/libplist-$(LIBPLIST_VER).tar.gz
 
 $(D)/libplist: $(D)/bootstrap $(D)/libxml2_e2 $(ARCHIVE)/libplist-$(LIBPLIST_VER).tar.gz
 	$(START_BUILD)
@@ -2563,7 +2563,7 @@ $(D)/libplist: $(D)/bootstrap $(D)/libxml2_e2 $(ARCHIVE)/libplist-$(LIBPLIST_VER
 LIBAO_VER = 1.1.0
 
 $(ARCHIVE)/libao-$(LIBAO_VER).tar.gz:
-	$(WGET) http://downloads.xiph.org/releases/ao/libao-$(LIBAO_VER).tar.gz
+	$(WGET) https://downloads.xiph.org/releases/ao/libao-$(LIBAO_VER).tar.gz
 
 $(D)/libao: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/libao-$(LIBAO_VER).tar.gz
 	$(START_BUILD)
@@ -2590,7 +2590,7 @@ $(D)/libao: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/libao-$(LIBAO_VER).tar.gz
 NETTLE_VER = 3.1
 
 $(ARCHIVE)/nettle-$(NETTLE_VER).tar.gz:
-	$(WGET) http://www.lysator.liu.se/~nisse/archive/nettle-$(NETTLE_VER).tar.gz
+	$(WGET) https://www.lysator.liu.se/~nisse/archive/nettle-$(NETTLE_VER).tar.gz
 
 $(D)/nettle: $(D)/bootstrap $(D)/gmp $(ARCHIVE)/nettle-$(NETTLE_VER).tar.gz
 	$(START_BUILD)
@@ -2658,7 +2658,7 @@ GLIBNETW_MINOR = 0
 GLIBNETW_VER = $(GLIBNETW_MAJOR).$(GLIBNETW_MINOR)
 
 $(ARCHIVE)/glib-networking-$(GLIBNETW_VER).tar.xz:
-	$(WGET) http://ftp.acc.umu.se/pub/GNOME/sources/glib-networking/$(GLIBNETW_MAJOR)/glib-networking-$(GLIBNETW_VER).tar.xz
+	$(WGET) https://ftp.acc.umu.se/pub/GNOME/sources/glib-networking/$(GLIBNETW_MAJOR)/glib-networking-$(GLIBNETW_VER).tar.xz
 
 $(D)/glib-networking: $(D)/bootstrap $(D)/gnutls $(D)/glib2 $(ARCHIVE)/glib-networking-$(GLIBNETW_VER).tar.xz
 	$(START_BUILD)
@@ -2675,4 +2675,3 @@ $(D)/glib-networking: $(D)/bootstrap $(D)/gnutls $(D)/glib2 $(ARCHIVE)/glib-netw
 		$(MAKE) install prefix=$(TARGET_DIR) giomoduledir=$(TARGET_DIR)/usr/lib/gio/modules
 	$(REMOVE)/glib-networking-$(GLIBNETW_VER)
 	$(TOUCH)
-

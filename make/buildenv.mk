@@ -100,7 +100,7 @@ REMOVE                = $(SILENT)rm -rf $(BUILD_TMP)
 RM_PKGPREFIX          = rm -rf $(PKGPREFIX)
 START_BUILD           = @echo "--------------------------------------------"; echo -e "Start build of \033[01;32m$(subst $(BASE_DIR)/cdk_new/.deps/,,$@)\033[0m."; echo
 #Comment next line if you want to see the names of the files being patched
-SILENT_PATCH          = -s
+#SILENT_PATCH          = -s
 PATCH                 = patch -p1 $(SILENT_PATCH) -i $(PATCHES)
 TOUCH                 = @touch $@; echo -e "Build of \033[01;32m$(subst $(BASE_DIR)/cdk_new/.deps/,,$@)\033[0m completed."; echo
 MAKEFLAGS            += --silent

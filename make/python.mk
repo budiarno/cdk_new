@@ -31,7 +31,7 @@ PYTHON_DIR = /usr/lib/python$(PYTHON_VERSION)
 PYTHON_INCLUDE_DIR = /usr/include/python$(PYTHON_VERSION)
 
 $(ARCHIVE)/Python-$(PYTHON_VER).tar.xz:
-	$(WGET) http://www.python.org/ftp/python/$(PYTHON_VER)/Python-$(PYTHON_VER).tar.xz
+	$(WGET) https://www.python.org/ftp/python/$(PYTHON_VER)/Python-$(PYTHON_VER).tar.xz
 
 $(D)/host_python: $(ARCHIVE)/Python-$(PYTHON_VER).tar.xz
 	$(START_BUILD)
@@ -146,7 +146,7 @@ $(D)/python: $(D)/bootstrap $(D)/host_python $(D)/libncurses $(D)/zlib $(D)/open
 PYTHON_SETUPTOOLS_VER = 5.2
 
 $(ARCHIVE)/setuptools-$(PYTHON_SETUPTOOLS_VER).tar.gz:
-	$(WGET) http://pypi.python.org/packages/source/s/setuptools/setuptools-$(PYTHON_SETUPTOOLS_VER).tar.gz
+	$(WGET) https://pypi.python.org/packages/source/s/setuptools/setuptools-$(PYTHON_SETUPTOOLS_VER).tar.gz
 
 $(D)/python_setuptools: $(D)/bootstrap $(D)/python $(ARCHIVE)/setuptools-$(PYTHON_SETUPTOOLS_VER).tar.gz
 	$(START_BUILD)
@@ -164,7 +164,7 @@ $(D)/python_setuptools: $(D)/bootstrap $(D)/python $(ARCHIVE)/setuptools-$(PYTHO
 LIBXMLCCWRAP_VER = 0.0.12
 
 $(ARCHIVE)/libxmlccwrap-$(LIBXMLCCWRAP_VER).tar.gz:
-	$(WGET) http://www.ant.uni-bremen.de/whomes/rinas/libxmlccwrap/download/libxmlccwrap-$(PYTHON_IMAGING_VER).tar.gz
+	$(WGET) https://www.ant.uni-bremen.de/whomes/rinas/libxmlccwrap/download/libxmlccwrap-$(PYTHON_IMAGING_VER).tar.gz
 
 $(D)/libxmlccwrap: $(D)/bootstrap $(D)/libxml2_e2 $(D)/libxslt $(ARCHIVE)/libxmlccwrap-$(LIBXMLCCWRAP_VER).tar.gz
 	$(START_BUILD)
@@ -189,7 +189,7 @@ PYTHON_LXML_MINOR = 8
 PYTHON_LXML_VER = $(PYTHON_LXML_MAJOR).$(PYTHON_LXML_MINOR)
 
 $(ARCHIVE)/lxml-$(PYTHON_LXML_VER).tgz:
-	$(WGET) http://launchpad.net/lxml/$(PYTHON_LXML_MAJOR)/$(PYTHON_LXML_VER)/+download/lxml-$(PYTHON_LXML_VER).tgz
+	$(WGET) https://launchpad.net/lxml/$(PYTHON_LXML_MAJOR)/$(PYTHON_LXML_VER)/+download/lxml-$(PYTHON_LXML_VER).tgz
 
 $(D)/python_lxml: $(D)/bootstrap $(D)/python $(D)/libxslt $(D)/python_setuptools $(ARCHIVE)/lxml-$(PYTHON_LXML_VER).tgz
 	$(START_BUILD)
@@ -209,7 +209,7 @@ $(D)/python_lxml: $(D)/bootstrap $(D)/python $(D)/libxslt $(D)/python_setuptools
 PYTHON_TWISTED_VER = 16.0.0
 
 $(ARCHIVE)/Twisted-$(PYTHON_TWISTED_VER).tar.bz2:
-	$(WGET) http://pypi.python.org/packages/source/T/Twisted/Twisted-$(PYTHON_TWISTED_VER).tar.bz2
+	$(WGET) https://pypi.python.org/packages/source/T/Twisted/Twisted-$(PYTHON_TWISTED_VER).tar.bz2
 
 $(D)/python_twisted: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/Twisted-$(PYTHON_TWISTED_VER).tar.bz2
 	$(START_BUILD)
@@ -253,7 +253,7 @@ $(D)/python_imaging: $(D)/bootstrap $(D)/libjpeg $(D)/libfreetype $(D)/python $(
 PYTHON_PYCRYPTO_VER = 2.6.1
 
 $(ARCHIVE)/pycrypto-$(PYTHON_PYCRYPTO_VER).tar.gz:
-	$(WGET) http://pypi.python.org/packages/source/p/pycrypto/pycrypto-$(PYTHON_PYCRYPTO_VER).tar.gz
+	$(WGET) https://pypi.python.org/packages/source/p/pycrypto/pycrypto-$(PYTHON_PYCRYPTO_VER).tar.gz
 
 $(D)/python_pycrypto: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/pycrypto-$(PYTHON_PYCRYPTO_VER).tar.gz
 	$(START_BUILD)
@@ -281,7 +281,7 @@ $(D)/python_pycrypto: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIV
 PYTHON_PYUSB_VER = 1.0.0a3
 
 $(ARCHIVE)/pyusb-$(PYTHON_PYUSB_VER).tar.gz:
-	$(WGET) http://pypi.python.org/packages/source/p/pyusb/pyusb-$(PYTHON_PYUSB_VER).tar.gz
+	$(WGET) https://pypi.python.org/packages/source/p/pyusb/pyusb-$(PYTHON_PYUSB_VER).tar.gz
 
 $(D)/python_pyusb: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/pyusb-$(PYTHON_PYUSB_VER).tar.gz
 	$(START_BUILD)
@@ -425,7 +425,7 @@ $(D)/python_cryptography: $(D)/bootstrap $(D)/libffi $(D)/python $(D)/python_set
 PYTHON_PYOPENSSL_VER = 0.13.1
 
 $(ARCHIVE)/pyOpenSSL-$(PYTHON_PYOPENSSL_VER).tar.gz:
-	$(WGET) http://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-$(PYTHON_PYOPENSSL_VER).tar.gz
+	$(WGET) https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-$(PYTHON_PYOPENSSL_VER).tar.gz
 
 $(D)/python_pyopenssl: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/pyOpenSSL-$(PYTHON_PYOPENSSL_VER).tar.gz
 	$(START_BUILD)
@@ -480,7 +480,7 @@ $(D)/python_wifi: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/p
 PYTHON_CHEETAH_VER = 2.4.4
 
 $(ARCHIVE)/Cheetah-$(PYTHON_CHEETAH_VER).tar.gz:
-	$(WGET) http://pypi.python.org/packages/source/C/Cheetah/Cheetah-$(PYTHON_CHEETAH_VER).tar.gz
+	$(WGET) https://pypi.python.org/packages/source/C/Cheetah/Cheetah-$(PYTHON_CHEETAH_VER).tar.gz
 
 $(D)/python_cheetah: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/Cheetah-$(PYTHON_CHEETAH_VER).tar.gz
 	$(START_BUILD)
@@ -498,7 +498,7 @@ $(D)/python_cheetah: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE
 PYTHON_MECHANIZE_VER = 0.2.5
 
 $(ARCHIVE)/mechanize-$(PYTHON_MECHANIZE_VER).tar.gz:
-	$(WGET) http://pypi.python.org/packages/source/m/mechanize/mechanize-$(PYTHON_MECHANIZE_VER).tar.gz
+	$(WGET) https://pypi.python.org/packages/source/m/mechanize/mechanize-$(PYTHON_MECHANIZE_VER).tar.gz
 
 $(D)/python_mechanize: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/mechanize-$(PYTHON_MECHANIZE_VER).tar.gz
 	$(START_BUILD)
@@ -534,7 +534,7 @@ $(D)/python_gdata: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/
 PYTHON_ZOPE_INTERFACE_VER = 4.1.1
 
 $(ARCHIVE)/zope.interface-$(PYTHON_ZOPE_INTERFACE_VER).tar.gz:
-	$(WGET) http://pypi.python.org/packages/source/z/zope.interface/zope.interface-$(PYTHON_ZOPE_INTERFACE_VER).tar.gz
+	$(WGET) https://pypi.python.org/packages/source/z/zope.interface/zope.interface-$(PYTHON_ZOPE_INTERFACE_VER).tar.gz
 
 $(D)/python_zope_interface: $(D)/bootstrap $(D)/python $(D)/python_setuptools $(ARCHIVE)/zope.interface-$(PYTHON_ZOPE_INTERFACE_VER).tar.gz
 	$(START_BUILD)
