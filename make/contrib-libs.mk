@@ -664,14 +664,19 @@ $(D)/libfreetype: $(D)/bootstrap $(D)/zlib $(D)/bzip2 $(D)/libpng $(ARCHIVE)/fre
 		sed -r "s:.*(#.*SUBPIXEL_(RENDERING|HINTING  2)) .*:\1:g" \
 			-i include/freetype/config/ftoption.h; \
 		$(CONFIGURE) \
-			--prefix=$(TARGET_DIR)/usr \
-			--mandir=$(TARGET_DIR)/.remove \
+			--prefix=/usr \
+			--mandir=/.remove \
 		; \
 		$(MAKE) all; \
-		$(MAKE) install; \
+		$(MAKE) install DESTDIR=$(TARGET_DIR); \
 		if [ ! -e $(TARGET_DIR)/usr/include/freetype ] ; then \
 			ln -sf freetype2 $(TARGET_DIR)/usr/include/freetype; \
 		fi; \
+		sed -e 's:^prefix=.*:prefix="$(TARGET_DIR)/usr":' \
+		    -e 's:^exec_prefix=.*:exec_prefix="$${prefix}":' \
+		    -e 's:^includedir=.*:includedir="$${prefix}/include":' \
+		    -e 's:^libdir=.*:libdir="$${exec_prefix}/lib":' \
+		    -i $(TARGET_DIR)/usr/bin/freetype-config; \
 		mv $(TARGET_DIR)/usr/bin/freetype-config $(HOST_DIR)/bin/freetype-config
 	$(REWRITE_LIBTOOL)/libfreetype.la
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/freetype2.pc
