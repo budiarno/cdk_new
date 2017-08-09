@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 20170302.1
+# Version 20170809.1
 
 ##############################################
 
@@ -20,7 +20,7 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 4: player (1-2)"
 	echo "Parameter 5: external LCD support (1-3)"
 	echo "Parameter 6: image (Enigma=1/2 Neutrino=3/4 (1-4)"
-	echo "Parameter 7: Neutrino variant (1-4) or Enigma2 diff (0-4)"
+	echo "Parameter 7: Neutrino variant (1-8) or Enigma2 diff (0-4)"
 	echo "Parameter 8: media Framework (1-3, Enigma2 only))"
 	echo "Parameter 9: destination (1-2)"
 	exit
