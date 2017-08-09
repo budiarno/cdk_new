@@ -67,7 +67,7 @@ GSTREAMER_BASE_PATCH += gst-plugins-base-$(GSTREAMER_BASE_VER)-taglist-not-send-
 $(ARCHIVE)/$(GSTREAMER_BASE_SOURCE):
 	$(WGET) https://gstreamer.freedesktop.org/src/gst-plugins-base/$(GSTREAMER_BASE_SOURCE)
 
-$(D)/gst_plugins_base: $(D)/bootstrap $(D)/glib2 $(D)/orc $(D)/gstreamer $(D)/libogg $(D)/alsa-lib $(D)/libogg $(D)/libvorbis $(ARCHIVE)/$(GSTREAMER_BASE_SOURCE)
+$(D)/gst_plugins_base: $(D)/bootstrap $(D)/glib2 $(D)/orc $(D)/gstreamer $(D)/alsa-lib $(D)/libogg $(D)/libvorbis $(ARCHIVE)/$(GSTREAMER_BASE_SOURCE)
 	$(START_BUILD)
 	$(REMOVE)/gst-plugins-base-$(GSTREAMER_BASE_VER)
 	$(UNTAR)/$(GSTREAMER_BASE_SOURCE)
@@ -390,7 +390,7 @@ GSTREAMER_FLUENDO_SOURCE = gst-fluendo-mpegdemux-$(GSTREAMER_FLUENDO_VERSION).ta
 GSTREAMER_FLUENDO_PATCH = gst-plugins-fluendo-$(GSTREAMER_FLUENDO_VERSION)-mpegdemux.patch
 
 $(ARCHIVE)/$(GSTREAMER_FLUENDO_SOURCE):
-	$(WGET) http://core.fluendo.com/gstreamer/src/gst-fluendo-mpegdemux/$(GSTREAMER_FLUENDO_SOURCE)
+	$(WGET) https://core.fluendo.com/gstreamer/src/gst-fluendo-mpegdemux/$(GSTREAMER_FLUENDO_SOURCE)
 
 $(D)/gst_plugins_fluendo_mpegdemux: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(ARCHIVE)/$(GSTREAMER_FLUENDO_SOURCE)
 	$(START_BUILD)
@@ -420,7 +420,7 @@ GSTREAMER_GMEDIARENDER_SOURCE = gmediarender-$(GSTREAMER_GMEDIARENDER_VER).tar.b
 GSTREAMER_GMEDIARENDER_PATCH = gst-gmediarender-$(GSTREAMER_GMEDIARENDER_VER).patch
 
 $(ARCHIVE)/$(GSTREAMER_GMEDIARENDER_SOURCE):
-	$(WGET) http://savannah.nongnu.org/download/gmrender/$(GSTREAMER_GMEDIARENDER_SOURCE)
+	$(WGET) https://savannah.nongnu.org/download/gmrender/$(GSTREAMER_GMEDIARENDER_SOURCE)
 
 $(D)/gst_gmediarender: $(D)/bootstrap $(D)/gst_plugins_dvbmediasink $(D)/libupnp $(ARCHIVE)/$(GSTREAMER_GMEDIARENDER_SOURCE)
 	$(START_BUILD)
@@ -458,6 +458,7 @@ $(D)/orc: $(D)/bootstrap $(ARCHIVE)/$(ORC_SOURCE)
 	$(UNTAR)/$(ORC_SOURCE)
 	$(SILENT)set -e; cd $(BUILD_TMP)/orc-$(ORC_VER); \
 		$(CONFIGURE) \
+			--datarootdir=/.remove \
 			--prefix=/usr \
 		; \
 		$(MAKE) all; \
@@ -478,7 +479,7 @@ LIBDCA_SOURCE = libdca-$(LIBDCA_VER).tar.bz2
 LIBDCA_PATCH =
 
 $(ARCHIVE)/$(LIBDCA_SOURCE):
-	$(WGET) http://download.videolan.org/pub/videolan/libdca/$(LIBDCA_VER)/$(LIBDCA_SOURCE)
+	$(WGET) https://download.videolan.org/pub/videolan/libdca/$(LIBDCA_VER)/$(LIBDCA_SOURCE)
 
 $(D)/libdca: $(D)/bootstrap $(ARCHIVE)/$(LIBDCA_SOURCE)
 	$(START_BUILD)
