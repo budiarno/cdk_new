@@ -5,7 +5,7 @@ UID := $(shell id -u)
 ifeq ($(UID), 0)
 warn:
 	@echo "You are running as root. Do not do this, it is dangerous."
-	@echo "Aborting the build. Goodbye."
+	@echo "Aborting the build. Log in as a regular user and retry."
 else
 
 PARALLEL_JOBS := $(shell echo $$((1 + `getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1`)))
@@ -37,7 +37,6 @@ printenv:
 	@echo "HOST_DIR         : $(HOST_DIR)"
 	@echo "TARGET_DIR       : $(TARGET_DIR)"
 	@echo "PATH             : `type -p fmt>/dev/null&&echo $(PATH)|sed 's/:/ /g' |fmt -65|sed 's/ /:/g; 2,$$s/^/                 : /;'||echo $(PATH)`"
-	@echo "CPU_CORES        : $(CPU_CORES)"
 	@echo "BOXARCH          : $(BOXARCH)"
 	@echo "BUILD            : $(BUILD)"
 	@echo "TARGET           : $(TARGET)"
@@ -47,11 +46,11 @@ printenv:
 	@echo "PLAYER_VERSION   : $(PLAYER_VER)"
 	@echo "MEDIAFW          : $(MEDIAFW)"
 	@echo "EXTERNAL_LCD     : $(EXTERNAL_LCD)"
+	@echo "PARALLEL_JOBS    : $(PARALLEL_JOBS)"
+	@echo "IMAGE            : $(IMAGE)"
 ifeq ($(TARGET), $(filter $(TARGET), hs7110 hs7119 hs7420 hs7429 hs7810a hs7819))
 	@echo "DESTINATION      : $(DESTINATION)"
 endif
-	@echo "IMAGE            : $(IMAGE)"
-	@echo "PARALLEL_JOBS    : $(PARALLEL_JOBS)"
 	@echo '================================================================================'
 ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
 	@echo "NEUTRINO_VARIANT             : $(NEUTRINO_VARIANT)"

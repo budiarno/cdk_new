@@ -271,24 +271,36 @@ echo "IMAGE=$IMAGE" >> config
 case "$IMAGE" in
 	neutrin*)
 		case $7 in
-			[1-4])	REPLY=$7;;
+			[1-8])	REPLY=$7;;
 			*)	echo -e "\nWhich Neutrino variant do you want to build?"
 				echo "   1)   Neutrino mp (cst-next)"
-				echo "   2)   Neutrino mp (cst-next-ni)"
-				echo "   3)   Neutrino HD2 exp"
-				echo "   4*)  Neutrino mp (Tangos)"
-#				echo "   5)  Neutrino mp (martii-github)"
-				read -p " Select Neutrino variant (1-4)? ";;
+				echo "   2)   Neutrino mp (cst-next + plugins)"
+				echo "   3)   Neutrino mp (cst-next-ni)"
+				echo "   4)   Neutrino mp (cst-next-ni + plugins)"
+				echo "   5)   Neutrino HD2 exp"
+				echo "   6)   Neutrino HD2 exp + plugins"
+				echo "   7)   Neutrino mp (Tangos)"
+				echo "   8*)  Neutrino mp (Tangos + plugins)"
+#				echo "   9)  Neutrino mp (martii-github)"
+				read -p " Select Neutrino variant (1-8)? ";;
 		esac
 		case "$REPLY" in
 			1)	echo "make yaud-neutrino-mp-cst-next" > $CURDIR/build
 				NEUTRINO_VAR=mp-cst-next;;
-			2)	echo "make yaud-neutrino-mp-cst-next-ni" > $CURDIR/build
+			2)	echo "make yaud-neutrino-mp-cst-next" > $CURDIR/build
+				NEUTRINO_VAR=mp-cst-next-plugins;;
+			3)	echo "make yaud-neutrino-mp-cst-next-ni" > $CURDIR/build
 				NEUTRINO_VAR=mp-cst-next-ni;;
-			3)	echo "make yaud-neutrino-hd2" > $CURDIR/build
+			4)	echo "make yaud-neutrino-mp-cst-next-ni" > $CURDIR/build
+				NEUTRINO_VAR=mp-cst-next-ni-plugins;;
+			5)	echo "make yaud-neutrino-hd2" > $CURDIR/build
 				NEUTRINO_VAR=neutrino-hd2;;
-			*)	echo "make yaud-neutrino-mp-tangos" > $CURDIR/build
+			6)	echo "make yaud-neutrino-hd2" > $CURDIR/build
+				NEUTRINO_VAR=neutrino-hd2-plugins;;
+			7)	echo "make yaud-neutrino-mp-tangos" > $CURDIR/build
 				NEUTRINO_VAR=mp-tangos;;
+			*)	echo "make yaud-neutrino-mp-tangos" > $CURDIR/build
+				NEUTRINO_VAR=mp-tangos-plugins;;
 		esac
 		echo "NEUTRINO_VARIANT=$NEUTRINO_VAR" >> config
 		MEDIAFW="buildinplayer"
