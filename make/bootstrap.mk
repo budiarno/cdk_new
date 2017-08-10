@@ -6,8 +6,11 @@ BOOTSTRAP += $(HOST_DIR)/bin/opkg-find-requires.sh
 BOOTSTRAP += $(HOST_DIR)/bin/opkg-find-provides.sh
 BOOTSTRAP += $(HOST_DIR)/bin/opkg-module-deps.sh
 BOOTSTRAP += $(HOST_DIR)/bin/get-git-archive.sh
-BOOTSTRAP += $(D)/host_pkgconfig $(D)/host_module_init_tools $(D)/host_mtd_utils
+BOOTSTRAP += $(D)/host_pkgconfig
+BOOTSTRAP += $(D)/host_module_init_tools
+BOOTSTRAP += $(D)/host_mtd_utils
 
+bootstrap: $(D)/bootstrap
 $(D)/bootstrap: $(BOOTSTRAP)
 	$(TOUCH)
 
