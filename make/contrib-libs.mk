@@ -846,13 +846,13 @@ $(D)/libpng: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libpng-$(PNG_VER).tar.xz
 		done; \
 		$(CONFIGURE) \
 			--prefix=/usr \
-			--bindir=$(HOST_DIR)/bin \
+			--disable-mips-msa \
 			--disable-powerpc-vsx \
 			--mandir=/.remove \
 		; \
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
-	sed -e 's:^prefix=.*:prefix="$(TARGET_DIR)/usr":' -i $(TARGET_DIR)/usr/bin/libpng$(PNG_VER_X)-config; \
+		sed -e 's:^prefix=.*:prefix="$(TARGET_DIR)/usr":' -i $(TARGET_DIR)/usr/bin/libpng$(PNG_VER_X)-config; \
 		mv $(TARGET_DIR)/usr/bin/libpng*-config $(HOST_DIR)/bin/
 	$(REWRITE_LIBTOOL)/libpng16.la
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libpng$(PNG_VER_X).pc
@@ -1799,9 +1799,9 @@ $(D)/libxml2_e2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_E2_VER).t
 		$(CONFIGURE) \
 			--target=$(TARGET) \
 			--prefix=/usr \
+			--datarootdir=/.remove \
 			--enable-shared \
 			--disable-static \
-			--datarootdir=/.remove \
 			--with-python=$(HOST_DIR) \
 			--without-c14n \
 			--without-debug \
@@ -1813,12 +1813,12 @@ $(D)/libxml2_e2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_E2_VER).t
 		mv $(TARGET_DIR)/usr/bin/xml2-config $(HOST_DIR)/bin
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libxml-2.0.pc $(HOST_DIR)/bin/xml2-config
 	$(SILENT)sed -i 's/^\(Libs:.*\)/\1 -lz/' $(PKG_CONFIG_PATH)/libxml-2.0.pc
-		if [ -e "$(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxml2mod.la" ]; then \
-			sed -e "/^dependency_libs/ s,/usr/lib/libxml2.la,$(TARGET_DIR)/usr/lib/libxml2.la,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxml2mod.la; \
-			sed -e "/^libdir/ s,$(PYTHON_DIR)/site-packages,$(TARGET_DIR)$(PYTHON_DIR)/site-packages,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxml2mod.la; \
-		fi; \
-		sed -e "/^XML2_LIBDIR/ s,/usr/lib,$(TARGET_DIR)/usr/lib,g" -i $(TARGET_DIR)/usr/lib/xml2Conf.sh; \
-		sed -e "/^XML2_INCLUDEDIR/ s,/usr/include,$(TARGET_DIR)/usr/include,g" -i $(TARGET_DIR)/usr/lib/xml2Conf.sh
+	if [ -e "$(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxml2mod.la" ]; then \
+		sed -e "/^dependency_libs/ s,/usr/lib/libxml2.la,$(TARGET_DIR)/usr/lib/libxml2.la,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxml2mod.la; \
+		sed -e "/^libdir/ s,$(PYTHON_DIR)/site-packages,$(TARGET_DIR)$(PYTHON_DIR)/site-packages,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxml2mod.la; \
+	fi; \
+	sed -e "/^XML2_LIBDIR/ s,/usr/lib,$(TARGET_DIR)/usr/lib,g" -i $(TARGET_DIR)/usr/lib/xml2Conf.sh; \
+	sed -e "/^XML2_INCLUDEDIR/ s,/usr/include,$(TARGET_DIR)/usr/include,g" -i $(TARGET_DIR)/usr/lib/xml2Conf.sh
 	$(REWRITE_LIBTOOL)/libxml2.la
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,xmlcatalog xmllint)
 	$(REMOVE)/libxml2-$(LIBXML2_E2_VER)
@@ -2148,6 +2148,7 @@ $(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_LIB_VER).tar.bz2
 # alsa-utils
 #
 ALSA_UTILS_VER = 1.1.4
+ALSA_UTILS_PATCH  = alsa-utils-$(ALSA_UTILS_VER).patch
 
 $(ARCHIVE)/alsa-utils-$(ALSA_UTILS_VER).tar.bz2:
 	$(WGET) ftp://ftp.alsa-project.org/pub/utils/alsa-utils-$(ALSA_UTILS_VER).tar.bz2
@@ -2157,6 +2158,12 @@ $(D)/alsa-utils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/alsa-utils-$(ALSA_UTILS
 	$(REMOVE)/alsa-utils-$(ALSA_UTILS_VER)
 	$(UNTAR)/alsa-utils-$(ALSA_UTILS_VER).tar.bz2
 	$(SILENT)set -e; cd $(BUILD_TMP)/alsa-utils-$(ALSA_UTILS_VER); \
+		for i in \
+			$(ALSA_UTILS_PATCH) \
+		; do \
+			echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
+			$(PATCH)/$$i; \
+		done; \
 		sed -ir -r "s/(alsamixer|amidi|aplay|iecset|speaker-test|seq|alsactl|alsaucm|topology)//g" Makefile.am ;\
 		autoreconf -fi -I $(TARGET_DIR)/usr/share/aclocal; \
 		$(CONFIGURE) \
