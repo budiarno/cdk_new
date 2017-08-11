@@ -697,12 +697,14 @@ $(D)/libstb-hal-cst-next-tangos.config.status: | $(NEUTRINO_DEPS)
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	@touch $@
+
 
 $(D)/libstb-hal-cst-next-tangos.do_compile: $(D)/libstb-hal-cst-next-tangos.config.status
 	$(START_BUILD)
 	cd $(SOURCE_DIR)/libstb-hal-cst-next-tangos; \
 		$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGET_DIR)
-	@touch $@
+	$(TOUCH)
 
 $(D)/libstb-hal-cst-next-tangos: $(D)/libstb-hal-cst-next-tangos.do_prepare $(D)/libstb-hal-cst-next-tangos.do_compile
 	$(START_BUILD)

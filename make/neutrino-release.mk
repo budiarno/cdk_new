@@ -469,11 +469,13 @@ release_neutrino_base:
 	install -d $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/logo
 	ln -sf /usr/share/tuxbox/neutrino/icons/logo $(RELEASE_DIR)/logos
 	ln -sf /usr/share $(RELEASE_DIR)/share
-	install -d $(RELEASE_DIR)/var/{bin,boot,etc,httpd,lib,tuxbox,update}
+	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,net,tuxbox,update}
 	install -d $(RELEASE_DIR)/var/lib/nfs
+	install -d $(RELEASE_DIR)/var/net/epg}
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,locale,plugins,themes}
-	install -d $(RELEASE_DIR)/var/tuxbox/config/zapit
-	export CROSS_COMPILE=$(TARGET)- && $(MAKE) install -C $(BUILD_TMP)/busybox-$(BUSYBOX_VER) CONFIG_PREFIX=$(RELEASE_DIR)
+	install -d $(RELEASE_DIR)/var/tuxbox/plugins/{webtv}
+	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
+#	export CROSS_COMPILE=$(TARGET)- && $(MAKE) install -C $(BUILD_TMP)/busybox-$(BUSYBOX_VER) CONFIG_PREFIX=$(RELEASE_DIR) -j1
 	mkdir -p $(RELEASE_DIR)/etc/rc.d/rc0.d
 	ln -s ../init.d/sendsigs $(RELEASE_DIR)/etc/rc.d/rc0.d/S20sendsigs
 	ln -s ../init.d/umountfs $(RELEASE_DIR)/etc/rc.d/rc0.d/S40umountfs
@@ -828,7 +830,7 @@ endif
 $(D)/release_neutrino: \
 $(D)/%release_neutrino: release_neutrino_base release_neutrino_$(BOXTYPE)
 	$(TUXBOX_CUSTOMIZE)
-	touch $@
+	$(TOUCH)
 #
 # FOR YOUR OWN CHANGES use these folder in cdk/own_build/neutrino-hd
 #
@@ -875,7 +877,9 @@ endif
 # sh4-linux-strip all
 #
 ifneq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug))
-	find $(RELEASE_DIR)/ -name '*' -exec $(TARGET)-strip --strip-unneeded {} &>/dev/null \;
+	@echo -n -e "Stripping..."; \
+	find $(RELEASE_DIR)/ -name '*' -exec $(TARGET)-strip --strip-unneeded {} &>/dev/null; \
+	@echo " done."
 endif
 
 #
