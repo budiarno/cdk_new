@@ -179,6 +179,7 @@ $(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(AR
 		echo "glib_cv_uscore=no" >> config.cache; \
 		for i in \
 			$(GLIB_PATCH) \
+			libglib2-2.51.0-subdir-objects.patch \
 		; do \
 			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
 			$(PATCH)/$$i; \
@@ -2123,7 +2124,7 @@ $(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_LIB_VER).tar.bz2
 			echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
 			$(PATCH)/$$i; \
 		done; \
-		$(CONFIGURE) \
+		$(CONFIGURE_ALSA) \
 			--prefix=/usr \
 			--with-alsa-devdir=/dev/snd/ \
 			--with-plugindir=/usr/lib/alsa \
