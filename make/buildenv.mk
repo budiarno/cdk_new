@@ -34,8 +34,8 @@ CONTROL_DIR           = $(BASE_DIR)/pkgs/control
 HOST_DIR              = $(BASE_DIR)/tufsbox/host
 PACKAGE_DIR           = $(BASE_DIR)/pkgs/opkg
 RELEASE_DIR           = $(BASE_DIR)/tufsbox/release
-PKGPREFIX             = $(BUILD_TMP)/pkg
-TARGET_DIR          = $(BASE_DIR)/tufsbox/cdkroot
+PKG_DIR               = $(BUILD_TMP)/pkg
+TARGET_DIR            = $(BASE_DIR)/tufsbox/cdkroot
 
 CUSTOM_DIR            = $(CDK_DIR)/custom
 SCRIPTS_DIR           = $(CDK_DIR)/scripts
@@ -97,14 +97,38 @@ export RM=$(shell which rm) -f
 # unpack tarballs, clean up
 UNTAR                 = $(SILENT)tar -C $(BUILD_TMP) -xf $(ARCHIVE)
 REMOVE                = $(SILENT)rm -rf $(BUILD_TMP)
-RM_PKGPREFIX          = rm -rf $(PKGPREFIX)
+RM_PKG_DIR            = rm -rf $(PKG_DIR)
 START_BUILD           = @echo "--------------------------------------------"; echo -e "Start build of \033[01;32m$(subst $(BASE_DIR)/cdk_new/.deps/,,$@)\033[0m."; echo
-#Comment next line if you want to see the names of the files being patched
-#SILENT_PATCH          = -s
 PATCH                 = patch -p1 $(SILENT_PATCH) -i $(PATCHES)
 TOUCH                 = @touch $@; echo -e "Build of \033[01;32m$(subst $(BASE_DIR)/cdk_new/.deps/,,$@)\033[0m completed."; echo
 MAKEFLAGS            += --silent
 MAKEFLAGS            += --no-print-directory
+#
+# To put more focus on warnings, be less verbose as default
+# Use 'make V=1' to see the full commands
+ifeq ("$(origin V)", "command line")
+KBUILD_VERBOSE        = $(V)
+endif
+ifndef KBUILD_VERBOSE
+KBUILD_VERBOSE        = 0
+endif
+
+# If KBUILD_VERBOSE equals 0 then the above command will be hidden.
+# If KBUILD_VERBOSE equals 1 then the above command is displayed.
+ifeq ($(KBUILD_VERBOSE),1)
+SILENT_PATCH          =
+CONFIGURE_SILENT      =
+SILENT                =
+ifndef VERBOSE
+VERBOSE               = 1
+endif
+export VERBOSE
+else
+SILENT_PATCH          = -s
+CONFIGURE_SILENT      = -q
+SILENT                = @
+MAKEFLAGS            += --silent
+endif
 #
 #
 #
@@ -126,10 +150,6 @@ endif
 TUXBOX_YAUD_CUSTOMIZE = $(SILENT)[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(CDK_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
 TUXBOX_CUSTOMIZE      = $(SILENT)[ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(CDK_DIR) $(BOXTYPE) || true
 
-#
-#
-#Comment the next line if you like lots of checking... messages
-CONFIGURE_SILENT=-q
 
 CONFIGURE_OPTS = \
 	--build=$(BUILD) \

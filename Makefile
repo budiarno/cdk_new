@@ -51,6 +51,11 @@ printenv:
 ifeq ($(TARGET), $(filter $(TARGET), hs7110 hs7119 hs7420 hs7429 hs7810a hs7819))
 	@echo "DESTINATION      : $(DESTINATION)"
 endif
+ifeq ($(VERBOSEMAKE), V=1)
+	@echo "VERBOSE BUILD    : yes"
+else
+	@echo "VERBOSE BUILD    : no"
+endif
 	@echo '================================================================================'
 ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
 	@echo "NEUTRINO_VARIANT             : $(NEUTRINO_VARIANT)"

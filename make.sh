@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 20170809.1
+# Version 20170811.1
 
 ##############################################
 
@@ -14,17 +14,26 @@ fi
 ##############################################
 
 if [ "$1" == -h ] || [ "$1" == --help ]; then
+	echo "Usage: $0 [-h | --help] | [-v | --verbose] [parameters]"
+	echo
 	echo "Parameter 1: target system (1-36)"
 	echo "Parameter 2: kernel (1-2)"
 	echo "Parameter 3: optimization (1-4)"
 	echo "Parameter 4: player (1-2)"
 	echo "Parameter 5: external LCD support (1-3)"
 	echo "Parameter 6: image (Enigma=1/2 Neutrino=3/4 (1-4)"
-	echo "Parameter 7: Neutrino variant (1-8) or Enigma2 diff (0-4)"
+	echo "Parameter 7: Neutrino variant (1-8) or Enigma2 diff (0-5)"
 	echo "Parameter 8: media Framework (1-3, Enigma2 only))"
 	echo "Parameter 9: destination (1-2)"
 	exit
 fi
+
+VERBOSEMAKE=
+if [ "$1" == -v ] || [ "$1" == --verbose ]; then
+	VERBOSEMAKE="V=1"
+	shift
+fi
+export VERBOSEMAKE
 
 ##############################################
 
@@ -54,7 +63,7 @@ fi
 ##############################################
 
 CURDIR=`pwd`
-echo -ne "\nChecking the .elf files in $CURDIR/root/boot..."
+echo -ne "Checking the .elf files in $CURDIR/root/boot..."
 set='audio_7100 audio_7105 audio_7109 audio_7111 video_7100 video_7105 video_7109 video_7111'
 ELFMISSING=0
 for i in $set;
@@ -285,21 +294,21 @@ case "$IMAGE" in
 				read -p " Select Neutrino variant (1-8)? ";;
 		esac
 		case "$REPLY" in
-			1)	echo "make yaud-neutrino-mp-cst-next" > $CURDIR/build
+			1)	echo "make $VERBOSEMAKE yaud-neutrino-mp-cst-next" > $CURDIR/build
 				NEUTRINO_VAR=mp-cst-next;;
-			2)	echo "make yaud-neutrino-mp-cst-next" > $CURDIR/build
+			2)	echo "make $VERBOSEMAKE yaud-neutrino-mp-cst-next" > $CURDIR/build
 				NEUTRINO_VAR=mp-cst-next-plugins;;
-			3)	echo "make yaud-neutrino-mp-cst-next-ni" > $CURDIR/build
+			3)	echo "make $VERBOSEMAKE yaud-neutrino-mp-cst-next-ni" > $CURDIR/build
 				NEUTRINO_VAR=mp-cst-next-ni;;
-			4)	echo "make yaud-neutrino-mp-cst-next-ni" > $CURDIR/build
+			4)	echo "make $VERBOSEMAKE yaud-neutrino-mp-cst-next-ni" > $CURDIR/build
 				NEUTRINO_VAR=mp-cst-next-ni-plugins;;
-			5)	echo "make yaud-neutrino-hd2" > $CURDIR/build
+			5)	echo "make $VERBOSEMAKE yaud-neutrino-hd2" > $CURDIR/build
 				NEUTRINO_VAR=neutrino-hd2;;
-			6)	echo "make yaud-neutrino-hd2" > $CURDIR/build
+			6)	echo "make $VERBOSEMAKE yaud-neutrino-hd2" > $CURDIR/build
 				NEUTRINO_VAR=neutrino-hd2-plugins;;
-			7)	echo "make yaud-neutrino-mp-tangos" > $CURDIR/build
+			7)	echo "make $VERBOSEMAKE yaud-neutrino-mp-tangos" > $CURDIR/build
 				NEUTRINO_VAR=mp-tangos;;
-			*)	echo "make yaud-neutrino-mp-tangos" > $CURDIR/build
+			*)	echo "make $VERBOSEMAKE yaud-neutrino-mp-tangos" > $CURDIR/build
 				NEUTRINO_VAR=mp-tangos-plugins;;
 		esac
 		echo "NEUTRINO_VARIANT=$NEUTRINO_VAR" >> config
@@ -307,7 +316,7 @@ case "$IMAGE" in
 
 		if [ "$LASTIMAGE1" ] || [ "$LASTIMAGE3" ] || [ ! "$LASTBOX" == "$TARGET" ]; then
 			if [ -e ./.deps/ ]; then
-				echo -n -e "\nSettings changed, performing distclean..."
+				echo -n -e "Settings changed, performing distclean..."
 				make distclean 2> /dev/null > /dev/null
 				echo "[Done]"
 			fi
@@ -366,16 +375,16 @@ case "$IMAGE" in
 		echo "E2_DIFF=$DIFF" >> config
 		echo "E2_REVISION=$REVISION" >> config
 
-		echo "make yaud-enigma2" > $CURDIR/build
+		echo "make $VERBOSEMAKE  yaud-enigma2" > $CURDIR/build
 
 		if [ "$LASTIMAGE2" ] || [ "$LASTIMAGE3" ] || [ ! "$LASTBOX" == "$TARGET" ]; then
 			if [ -e ./.deps/ ]; then
-				echo -n -e "\nSettings changed, performing distclean..."
+				echo -n -e "Settings changed, performing distclean..."
 				make distclean 2> /dev/null > /dev/null
 				echo " [Done]"
 			fi
 		elif [ ! "$DIFF" == "$LASTDIFF" ]; then
-			echo -n -e "\nDiff changed, OpenPli Enigma2 will be rebuilt."
+			echo -n -e "Diff changed, OpenPli Enigma2 will be rebuilt."
 			rm -f ./.deps/enigma2.do_prepare
 			rm -f ./.deps/enigma2_networkbrowser
 			rm -f ./.deps/enigma2_openwebif
