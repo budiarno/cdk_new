@@ -29,6 +29,7 @@ NEUTRINO_MP_CST_NEXT_PATCHES += $(PATCHES)/neutrino-mp-cst-next.patch
 NEUTRINO_MP_CST_NEXT_NI_PATCHES += $(PATCHES)/neutrino-mp-cst-next_ni.patch
 
 # Neutrino MP Tango
+NEUTRINO_MP_LIBSTB_CST_NEXT_TANGOS_PATCHES += $(PATCHES)/libstb-hal-cst-next-tangos.patch
 NEUTRINO_MP_TANGOS_PATCHES += $(PATCHES)/neutrino-mp-tangos.patch
 
 # Neutrino HD2
