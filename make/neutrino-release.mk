@@ -471,9 +471,9 @@ release_neutrino_base:
 	ln -sf /usr/share $(RELEASE_DIR)/share
 	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,net,tuxbox,update}
 	install -d $(RELEASE_DIR)/var/lib/nfs
-	install -d $(RELEASE_DIR)/var/net/epg}
+	install -d $(RELEASE_DIR)/var/net/epg
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,locale,plugins,themes}
-	install -d $(RELEASE_DIR)/var/tuxbox/plugins/{webtv}
+	install -d $(RELEASE_DIR)/var/tuxbox/plugins/webtv
 	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
 #	export CROSS_COMPILE=$(TARGET)- && $(MAKE) install -C $(BUILD_TMP)/busybox-$(BUSYBOX_VER) CONFIG_PREFIX=$(RELEASE_DIR) -j1
 	mkdir -p $(RELEASE_DIR)/etc/rc.d/rc0.d
