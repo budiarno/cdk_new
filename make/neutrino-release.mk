@@ -87,9 +87,6 @@ release_neutrino_common_ipbox:
 	cp -p $(TARGET_DIR)/usr/bin/lircd $(RELEASE_DIR)/usr/bin/
 	rm -f $(RELEASE_DIR)/lib/firmware/*
 	rm -f $(RELEASE_DIR)/lib/modules/boxtype.ko
-	rm -f $(RELEASE_DIR)/lib/modules/ramzswap.ko
-	rm -f $(RELEASE_DIR)/lib/modules/stmvbi.ko
-	rm -f $(RELEASE_DIR)/lib/modules/stmvout.ko
 	rm -f $(RELEASE_DIR)/etc/network/interfaces
 
 #
@@ -511,6 +508,7 @@ release_neutrino_base:
 	install -d $(RELEASE_DIR)/var/lib/nfs
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,locale,plugins,themes}
 	install -d $(RELEASE_DIR)/var/tuxbox/config/zapit
+	export CROSS_COMPILE=$(TARGET)- && $(MAKE) install -C $(BUILD_TMP)/busybox-$(BUSYBOX_VER) CONFIG_PREFIX=$(RELEASE_DIR)
 	mkdir -p $(RELEASE_DIR)/etc/rc.d/rc0.d
 	ln -s ../init.d/sendsigs $(RELEASE_DIR)/etc/rc.d/rc0.d/S20sendsigs
 	ln -s ../init.d/umountfs $(RELEASE_DIR)/etc/rc.d/rc0.d/S40umountfs

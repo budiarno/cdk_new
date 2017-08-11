@@ -87,7 +87,6 @@ release_enigma2_common_ipbox:
 	mkdir -p $(RELEASE_DIR)/var/run/lirc
 	rm -f $(RELEASE_DIR)/lib/firmware/*
 	rm -f $(RELEASE_DIR)/lib/modules/boxtype.ko
-	rm -f $(RELEASE_DIR)/lib/modules/lzo*.ko
 	rm -f $(RELEASE_DIR)/lib/modules/ramzswap.ko
 	rm -f $(RELEASE_DIR)/lib/modules/stmvbi.ko
 	rm -f $(RELEASE_DIR)/lib/modules/stmvout.ko
@@ -620,7 +619,7 @@ release_enigma2_base:
 	ln -s /usr/local/share/keymaps $(RELEASE_DIR)/usr/share/keymaps
 	install -d $(RELEASE_DIR)/usr/share/{fonts,udhcpc,zoneinfo}
 	install -d $(RELEASE_DIR)/var/{etc,opkg}
-	ln -fs halt $(RELEASE_DIR)/sbin/reboot
+	export CROSS_COMPILE=$(TARGET)- && $(MAKE) install -C $(BUILD_TMP)/busybox-$(BUSYBOX_VER) CONFIG_PREFIX=$(RELEASE_DIR)
 	ln -fs halt $(RELEASE_DIR)/sbin/poweroff
 	mkdir -p $(RELEASE_DIR)/etc/rc.d/rc0.d
 	ln -s ../init.d/sendsigs $(RELEASE_DIR)/etc/rc.d/rc0.d/S20sendsigs
@@ -779,7 +778,7 @@ endif
 	rm -f $(RELEASE_DIR)/lib/*.{a,o,la}
 	chmod 755 $(RELEASE_DIR)/lib/*
 	cp -R $(TARGET_DIR)/usr/lib/* $(RELEASE_DIR)/usr/lib/
-	rm -rf $(RELEASE_DIR)/usr/lib/{engines,enigma2,gconv,libxslt-plugins,pkgconfig,python$(PYTHON_VER),sigc++-1.2,sigc++-2.0}
+	rm -rf $(RELEASE_DIR)/usr/lib/{engines,enigma2,gconv,libxslt-plugins,pkgconfig,python$(PYTHON_VERSION),sigc++-1.2,sigc++-2.0}
 	rm -f $(RELEASE_DIR)/usr/lib/*.{a,o,la}
 	chmod 755 $(RELEASE_DIR)/usr/lib/*
 #
@@ -813,7 +812,7 @@ endif
 #
 # python2.7
 #
-	if [ $(PYTHON_VERSION) == 2.7 ]; then \
+	if [ $(PYTHON_VERSION_MAJOR) == 2.7 ]; then \
 		install -d $(RELEASE_DIR)/usr/include; \
 		install -d $(RELEASE_DIR)$(PYTHON_INCLUDE_DIR); \
 		cp $(TARGET_DIR)$(PYTHON_INCLUDE_DIR)/pyconfig.h $(RELEASE_DIR)$(PYTHON_INCLUDE_DIR); \
@@ -1003,7 +1002,7 @@ endif
 	rm -rf $(RELEASE_DIR)$(PYTHON_DIR)/site-packages/twisted/trial/test
 	rm -rf $(RELEASE_DIR)$(PYTHON_DIR)/site-packages/twisted/web/test
 	rm -rf $(RELEASE_DIR)$(PYTHON_DIR)/site-packages/twisted/words/test
-	rm -rf $(RELEASE_DIR)$(PYTHON_DIR)/site-packages/*-py$(PYTHON_VERSION).egg-info
+	rm -rf $(RELEASE_DIR)$(PYTHON_DIR)/site-packages/*-py$(PYTHON_VERSION_MAJOR).egg-info
 	rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/DemoPlugins
 	rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/FrontprocessorUpgrade
 	rm -rf $(RELEASE_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NFIFlash
@@ -1092,7 +1091,7 @@ endif
 	find $(RELEASE_DIR)$(PYTHON_DIR)/ -name '*.o' -exec rm -f {} \;
 	find $(RELEASE_DIR)$(PYTHON_DIR)/ -name '*.la' -exec rm -f {} \;
 	$(TUXBOX_CUSTOMIZE)
-	$(TOUCH)
+	@touch $(D)/enigma2_release
 #
 # FOR YOUR OWN CHANGES use these folder in cdk/own_build/enigma2
 #

@@ -1,7 +1,7 @@
 #
-# hotplug_e2
+# enigma2_hotplug_e2_helper
 #
-$(D)/hotplug_e2: $(D)/bootstrap
+$(D)/enigma2_hotplug_e2_helper: $(D)/bootstrap
 	$(START_BUILD)
 	$(REMOVE)/hotplug-e2-helper
 	set -e; if [ -d $(ARCHIVE)/hotplug-e2-helper.git ]; \
@@ -9,7 +9,7 @@ $(D)/hotplug_e2: $(D)/bootstrap
 		else cd $(ARCHIVE); git clone https://github.com/OpenPLi/hotplug-e2-helper.git hotplug-e2-helper.git; \
 		fi
 	cp -ra $(ARCHIVE)/hotplug-e2-helper.git $(BUILD_TMP)/hotplug-e2-helper
-	set -e; cd $(BUILD_TMP)/hotplug-e2-helper; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/hotplug-e2-helper; \
 		$(PATCH)/hotplug-e2-helper.patch; \
 		$(CONFIGURE) \
 			--prefix=/usr \
@@ -20,9 +20,9 @@ $(D)/hotplug_e2: $(D)/bootstrap
 	$(TOUCH)
 
 #
-# tuxtxtlib
+# enigma2_tuxtxtlib
 #
-$(D)/tuxtxtlib: $(D)/bootstrap
+$(D)/enigma2_tuxtxtlib: $(D)/bootstrap
 	$(START_BUILD)
 	$(REMOVE)/tuxtxtlib
 	set -e; if [ -d $(ARCHIVE)/tuxtxt.git ]; \
@@ -30,7 +30,7 @@ $(D)/tuxtxtlib: $(D)/bootstrap
 		else cd $(ARCHIVE); git clone https://github.com/OpenPLi/tuxtxt.git tuxtxt.git; \
 		fi
 	cp -ra $(ARCHIVE)/tuxtxt.git/libtuxtxt $(BUILD_TMP)/tuxtxtlib
-	set -e; cd $(BUILD_TMP)/tuxtxtlib; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/tuxtxtlib; \
 		$(PATCH)/tuxtxtlib-1.0-fix-dbox-headers.patch; \
 		aclocal; \
 		autoheader; \
@@ -55,13 +55,13 @@ $(D)/tuxtxtlib: $(D)/bootstrap
 	$(TOUCH)
 
 #
-# tuxtxt32bpp
+# enigma2_tuxtxt32bpp
 #
-$(D)/tuxtxt32bpp: $(D)/bootstrap $(D)/tuxtxtlib
+$(D)/enigma2_tuxtxt32bpp: $(D)/bootstrap $(D)/tuxtxtlib
 	$(START_BUILD)
 	$(REMOVE)/tuxtxt
 	cp -ra $(ARCHIVE)/tuxtxt.git/tuxtxt $(BUILD_TMP)/tuxtxt; \
-	set -e; cd $(BUILD_TMP)/tuxtxt; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/tuxtxt; \
 		$(PATCH)/tuxtxt32bpp-1.0-fix-dbox-headers.patch; \
 		aclocal; \
 		autoheader; \
@@ -96,7 +96,7 @@ $(D)/enigma2-plugins: $(D)/enigma2_networkbrowser $(D)/enigma2_openwebif
 $(D)/enigma2_openwebif: $(D)/bootstrap $(D)/python $(D)/python_cheetah
 	$(START_BUILD)
 	$(REMOVE)/e2openplugin-OpenWebif
-	set -e; if [ -d $(ARCHIVE)/e2openplugin-OpenWebif.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/e2openplugin-OpenWebif.git ]; \
 		then cd $(ARCHIVE)/e2openplugin-OpenWebif.git; git pull; \
 		else cd $(ARCHIVE); git clone https://github.com/E2OpenPlugins/e2openplugin-OpenWebif.git e2openplugin-OpenWebif.git; \
 		fi
@@ -128,17 +128,17 @@ $(D)/enigma2_openwebif: $(D)/bootstrap $(D)/python $(D)/python_cheetah
 $(D)/enigma2_networkbrowser: $(D)/bootstrap $(D)/python
 	$(START_BUILD)
 	$(REMOVE)/enigma2-networkbrowser
-	set -e; if [ -d $(ARCHIVE)/enigma2-plugins.git ]; \
+	$(SILENT)set -e; if [ -d $(ARCHIVE)/enigma2-plugins.git ]; \
 		then cd $(ARCHIVE)/enigma2-plugins.git; git pull; \
 		else cd $(ARCHIVE); git clone https://github.com/OpenPLi/enigma2-plugins.git enigma2-plugins.git; \
 		fi
 	cp -ra $(ARCHIVE)/enigma2-plugins.git/networkbrowser/ $(BUILD_TMP)/enigma2-networkbrowser
-	set -e; cd $(BUILD_TMP)/enigma2-networkbrowser; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/enigma2-networkbrowser; \
 		$(PATCH)/enigma2-networkbrowser-support-autofs.patch; \
-	set -e; cd $(BUILD_TMP)/enigma2-networkbrowser/src/lib; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/enigma2-networkbrowser/src/lib; \
 		$(BUILDENV) \
 		sh4-linux-gcc -shared -o netscan.so \
-			-I $(TARGET_DIR)/usr/include/python$(PYTHON_VERSION) \
+			-I $(TARGET_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR) \
 			-include Python.h \
 			errors.h \
 			list.c \
@@ -156,7 +156,7 @@ $(D)/enigma2_networkbrowser: $(D)/bootstrap $(D)/python
 			statusq.c \
 			statusq.h \
 			time_compat.h
-	set -e; cd $(BUILD_TMP)/enigma2-networkbrowser; \
+	$(SILENT)set -e; cd $(BUILD_TMP)/enigma2-networkbrowser; \
 		mkdir -p $(TARGET_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NetworkBrowser ; \
 		cp -a po $(TARGET_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NetworkBrowser/ ; \
 		cp -a meta $(TARGET_DIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NetworkBrowser/ ; \
