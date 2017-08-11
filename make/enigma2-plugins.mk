@@ -57,10 +57,10 @@ $(D)/enigma2_tuxtxtlib: $(D)/bootstrap
 #
 # enigma2_tuxtxt32bpp
 #
-$(D)/enigma2_tuxtxt32bpp: $(D)/bootstrap $(D)/tuxtxtlib
+$(D)/enigma2_tuxtxt32bpp: $(D)/bootstrap $(D)/enigma2_tuxtxtlib
 	$(START_BUILD)
 	$(REMOVE)/tuxtxt
-	cp -ra $(ARCHIVE)/tuxtxt.git/tuxtxt $(BUILD_TMP)/tuxtxt; \
+	cp -ra $(ARCHIVE)/tuxtxt.git/tuxtxt $(BUILD_TMP)/tuxtxt
 	$(SILENT)set -e; cd $(BUILD_TMP)/tuxtxt; \
 		$(PATCH)/tuxtxt32bpp-1.0-fix-dbox-headers.patch; \
 		aclocal; \
@@ -135,7 +135,7 @@ $(D)/enigma2_networkbrowser: $(D)/bootstrap $(D)/python
 	cp -ra $(ARCHIVE)/enigma2-plugins.git/networkbrowser/ $(BUILD_TMP)/enigma2-networkbrowser
 	$(SILENT)set -e; cd $(BUILD_TMP)/enigma2-networkbrowser; \
 		$(PATCH)/enigma2-networkbrowser-support-autofs.patch; \
-	$(SILENT)set -e; cd $(BUILD_TMP)/enigma2-networkbrowser/src/lib; \
+	set -e; cd $(BUILD_TMP)/enigma2-networkbrowser/src/lib; \
 		$(BUILDENV) \
 		sh4-linux-gcc -shared -o netscan.so \
 			-I $(TARGET_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR) \
