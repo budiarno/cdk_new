@@ -1,7 +1,5 @@
-BUILDLOG/
-custom/yaud-*
-custom/release_*
-own_build/
+build_logfile/
++custom/*-local.shown_build/
 Patches/patch-neutrino/
 root/boot/*
 .deps/
