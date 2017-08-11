@@ -119,10 +119,6 @@ ifeq ($(KBUILD_VERBOSE),1)
 SILENT_PATCH          =
 CONFIGURE_SILENT      =
 SILENT                =
-ifndef VERBOSE
-VERBOSE               = 1
-endif
-export VERBOSE
 else
 SILENT_PATCH          = -s
 CONFIGURE_SILENT      = -q
