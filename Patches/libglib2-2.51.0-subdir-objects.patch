@@ -1,0 +1,12 @@
+--- glib-2.51.0/configure.ac
++++ glib-2.51.0/configure.ac
+@@ -63,7 +63,7 @@
+ # Save this value here, since automake will set cflags later
+ cflags_set=${CFLAGS:+set}
+ 
+-AM_INIT_AUTOMAKE([1.11 -Wno-portability no-define no-dist-gzip dist-xz tar-ustar])
++AM_INIT_AUTOMAKE([1.11 -Wno-portability no-define no-dist-gzip dist-xz tar-ustar] [subdir-objects])
+ AM_MAINTAINER_MODE([enable])
+ 
+ # Support silent build rules. Disable
+
