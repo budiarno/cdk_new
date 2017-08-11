@@ -29,8 +29,8 @@ $(D)/busybox: $(D)/bootstrap $(D)/module_init_tools $(ARCHIVE)/busybox-$(BUSYBOX
 		done; \
 		install -m 0644 $(lastword $^) .config; \
 		sed -i -e 's#^CONFIG_PREFIX.*#CONFIG_PREFIX="$(TARGET_DIR)"#' .config; \
-		$(BUILDENV) $(MAKE) busybox CROSS_COMPILE=$(TARGET)- CFLAGS_EXTRA="$(TARGET_CFLAGS)"; \
-		$(MAKE) install CROSS_COMPILE=$(TARGET)- CFLAGS_EXTRA="$(TARGET_CFLAGS)" CONFIG_PREFIX=$(TARGET_DIR)
+		$(BUILDENV) $(MAKE) busybox CROSS_COMPILE=$(TARGET)- CFLAGS_EXTRA="$(TARGET_CFLAGS)" -j1; \
+		$(MAKE) install CROSS_COMPILE=$(TARGET)- CFLAGS_EXTRA="$(TARGET_CFLAGS)" CONFIG_PREFIX=$(TARGET_DIR) -j1
 #	$(REMOVE)/busybox-$(BUSYBOX_VER)
 	$(TOUCH)
 
@@ -158,7 +158,7 @@ $(D)/gdb-remote: $(ARCHIVE)/gdb-$(GDB_VER).tar.xz | $(TARGET_DIR)
 # gdb built for target or local-PC
 $(D)/gdb: $(D)/bootstrap $(D)/libncurses $(D)/zlib $(ARCHIVE)/gdb-$(GDB_VER).tar.xz
 	$(START_BUILD)
-	$(RM_PKGPREFIX)
+	$(RM_PKG_DIR)
 	$(UNTAR)/gdb-$(GDB_VER).tar.xz
 	$(SILENT)set -e; cd $(BUILD_TMP)/gdb-$(GDB_VER); \
 		for i in \
@@ -273,7 +273,8 @@ endif
 MODULE_INIT_TOOLS_VER = 3.16
 
 $(ARCHIVE)/module-init-tools-$(MODULE_INIT_TOOLS_VER).tar.bz2:
-	$(WGET) https://ftp.be.debian.org/pub/linux/utils/kernel/module-init-tools/module-init-tools-$(MODULE_INIT_TOOLS_VER).tar.bz2
+#	$(WGET) https://ftp.be.debian.org/pub/linux/utils/kernel/module-init-tools/module-init-tools-$(MODULE_INIT_TOOLS_VER).tar.bz2
+	$(WGET) http://ftp.europeonline.com/pub/linux/utils/kernel/module-init-tools/module-init-tools-$(MODULE_INIT_TOOLS_VER).tar.bz2
 
 $(D)/host_module_init_tools: $(ARCHIVE)/module-init-tools-$(MODULE_INIT_TOOLS_VER).tar.bz2
 	$(START_BUILD)
@@ -823,7 +824,7 @@ $(D)/hdparm: $(D)/bootstrap $(ARCHIVE)/hdparm-$(HDPARM_VER).tar.gz
 		$(BUILDENV) \
 		$(MAKE) CROSS=$(TARGET)- all; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
-	$(REMOVE)/hdparm-$(HDPARM_VER) $(PKGPREFIX)
+	$(REMOVE)/hdparm-$(HDPARM_VER) $(PKG_DIR)
 	$(TOUCH)
 
 #
@@ -960,7 +961,7 @@ $(D)/autofs: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/autofs-$(AUTOFS_VER).tar.g
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/auto.master $(TARGET_DIR)/etc/
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/auto.misc $(TARGET_DIR)/etc/
 	$(SILENT)install -m 644 $(SKEL_ROOT)/etc/auto.network $(TARGET_DIR)/etc/
-	ln -s /usr/sbin/automount $(TARGET_DIR)/sbin/automount
+	ln -sf /usr/sbin/automount $(TARGET_DIR)/sbin/automount
 	$(REMOVE)/autofs-$(AUTOFS_VER)
 	$(TOUCH)
 

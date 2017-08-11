@@ -1,13 +1,16 @@
 #
 # python helpers
 #
+PYTHON_DIR         = /usr/lib/python$(PYTHON_VERSION_MAJOR)
+PYTHON_INCLUDE_DIR = /usr/include/python$(PYTHON_VERSION_MAJOR)
+
 PYTHON_BUILD = \
 	CC="$(TARGET)-gcc" \
 	CFLAGS="$(TARGET_CFLAGS)" \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
 	LDSHARED="$(TARGET)-gcc -shared" \
 	PYTHONPATH=$(TARGET_DIR)$(PYTHON_DIR)/site-packages \
-	CPPFLAGS="$(TARGET_CPPFLAGS) -I$(TARGET_DIR)/usr/include/python$(PYTHON_VERSION)" \
+	CPPFLAGS="$(TARGET_CPPFLAGS) -I$(TARGET_DIR)$(PYTHON_INCLUDE_DIR)" \
 	$(HOST_DIR)/bin/python ./setup.py build --executable=/usr/bin/python
 
 PYTHON_INSTALL = \
@@ -16,33 +19,31 @@ PYTHON_INSTALL = \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
 	LDSHARED="$(TARGET)-gcc -shared" \
 	PYTHONPATH=$(TARGET_DIR)$(PYTHON_DIR)/site-packages \
-	CPPFLAGS="$(TARGET_CPPFLAGS) -I$(TARGET_DIR)/usr/include/python$(PYTHON_VERSION)" \
+	CPPFLAGS="$(TARGET_CPPFLAGS) -I$(TARGET_DIR)$(PYTHON_INCLUDE_DIR)" \
 	$(HOST_DIR)/bin/python ./setup.py install --root=$(TARGET_DIR) --prefix=/usr
 
 #
 # host_python
 #
-PYTHON_MAJOR = 2.7
-PYTHON_MINOR = 11
-PYTHON_VER = $(PYTHON_MAJOR).$(PYTHON_MINOR)
-# backwards compatibility
-PYTHON_VERSION = $(PYTHON_MAJOR)
-PYTHON_DIR = /usr/lib/python$(PYTHON_VERSION)
-PYTHON_INCLUDE_DIR = /usr/include/python$(PYTHON_VERSION)
+PYTHON_VERSION_MAJOR = 2.7
+PYTHON_VERSION_MINOR = 11
+PYTHON_VERSION = $(PYTHON_VERSION_MAJOR).$(PYTHON_VERSION_MINOR)
+PYTHON_SOURCE = Python-$(PYTHON_VERSION).tar.xz
+PYTHON_PATCH  = python-$(PYTHON_VERSION).patch
+PYTHON_PATCH += python-$(PYTHON_VERSION)-xcompile.patch
+PYTHON_PATCH += python-$(PYTHON_VERSION)-revert_use_of_sysconfigdata.patch
+PYTHON_PATCH += python-$(PYTHON_VERSION)-pgettext.patch
 
-$(ARCHIVE)/Python-$(PYTHON_VER).tar.xz:
-	$(WGET) https://www.python.org/ftp/python/$(PYTHON_VER)/Python-$(PYTHON_VER).tar.xz
+$(ARCHIVE)/$(PYTHON_SOURCE):
+	$(WGET) https://www.python.org/ftp/python/$(PYTHON_VERSION)/$(PYTHON_SOURCE)
 
-$(D)/host_python: $(ARCHIVE)/Python-$(PYTHON_VER).tar.xz
+$(D)/host_python: $(ARCHIVE)/$(PYTHON_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/Python-$(PYTHON_VER)
-	$(UNTAR)/Python-$(PYTHON_VER).tar.xz
-	$(SILENT)set -e; cd $(BUILD_TMP)/Python-$(PYTHON_VER); \
+	$(REMOVE)/Python-$(PYTHON_VERSION)
+	$(UNTAR)/$(PYTHON_SOURCE)
+	$(SILENT)set -e; cd $(BUILD_TMP)/Python-$(PYTHON_VERSION); \
 		for i in \
-			python-$(PYTHON_VER)-xcompile.patch \
-			python-$(PYTHON_VER)-revert_use_of_sysconfigdata.patch \
-			python-$(PYTHON_VER).patch \
-			python-$(PYTHON_VER)-pgettext.patch \
+			$(PYTHON_PATCH) \
 		; do \
 			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
 			$(PATCH)/$$i; \
@@ -67,22 +68,19 @@ $(D)/host_python: $(ARCHIVE)/Python-$(PYTHON_VER).tar.xz
 		; \
 		$(MAKE) all install; \
 		cp ./hostpgen $(HOST_DIR)/bin/pgen
-	$(REMOVE)/Python-$(PYTHON_VER)
+	$(REMOVE)/Python-$(PYTHON_VERSION)
 	$(TOUCH)
 
 #
 # python
 #
-$(D)/python: $(D)/bootstrap $(D)/host_python $(D)/libncurses $(D)/zlib $(D)/openssl $(D)/libffi $(D)/bzip2 $(D)/libreadline $(D)/sqlite $(ARCHIVE)/Python-$(PYTHON_VER).tar.xz
+$(D)/python: $(D)/bootstrap $(D)/host_python $(D)/libncurses $(D)/zlib $(D)/openssl $(D)/libffi $(D)/bzip2 $(D)/libreadline $(D)/sqlite $(ARCHIVE)/$(PYTHON_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/Python-$(PYTHON_VER)
-	$(UNTAR)/Python-$(PYTHON_VER).tar.xz
-	$(SILENT)set -e; cd $(BUILD_TMP)/Python-$(PYTHON_VER); \
+	$(REMOVE)/Python-$(PYTHON_VERSION)
+	$(UNTAR)/$(PYTHON_SOURCE)
+	$(SILENT)set -e; cd $(BUILD_TMP)/Python-$(PYTHON_VERSION); \
 		for i in \
-			python-$(PYTHON_VER)-xcompile.patch \
-			python-$(PYTHON_VER)-revert_use_of_sysconfigdata.patch \
-			python-$(PYTHON_VER).patch \
-			python-$(PYTHON_VER)-pgettext.patch \
+			$(PYTHON_PATCH) \
 		; do \
 			echo -e "==> \033[31mApplying Patch:\033[0m $$i"; \
 			$(PATCH)/$$i; \
@@ -116,7 +114,7 @@ $(D)/python: $(D)/bootstrap $(D)/host_python $(D)/libncurses $(D)/zlib $(D)/open
 			ac_cv_have_lchflags=no \
 			ac_cv_py_format_size_t=yes \
 			ac_cv_broken_sem_getvalue=no \
-			HOSTPYTHON=$(HOST_DIR)/bin/python \
+			HOSTPYTHON=$(HOST_DIR)/bin/python$(PYTHON_VERSION_MAJOR) \
 		; \
 		$(MAKE) $(MAKE_OPTS) \
 			PYTHON_MODULES_INCLUDE="$(TARGET_DIR)/usr/include" \
@@ -129,15 +127,15 @@ $(D)/python: $(D)/bootstrap $(D)/host_python $(D)/libncurses $(D)/zlib $(D)/open
 			CFLAGS="$(TARGET_CFLAGS)" \
 			LDFLAGS="$(TARGET_LDFLAGS)" \
 			LD="$(TARGET)-gcc" \
-			HOSTPYTHON=$(HOST_DIR)/bin/python \
+			HOSTPYTHON=$(HOST_DIR)/bin/python$(PYTHON_VERSION_MAJOR) \
 			HOSTPGEN=$(HOST_DIR)/bin/pgen \
-			all DESTDIR=$(TARGET_DIR) \
+			all install DESTDIR=$(TARGET_DIR) \
 		; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
-	ln -sf ../../libpython$(PYTHON_VERSION).so.1.0 $(TARGET_DIR)/$(PYTHON_DIR)/config/libpython$(PYTHON_VERSION).so; \
-	ln -sf $(TARGET_DIR)/$(PYTHON_INCLUDE_DIR) $(TARGET_DIR)/usr/include/python
+	ln -sf ../../libpython$(PYTHON_VERSION_MAJOR).so.1.0 $(TARGET_DIR)$(PYTHON_DIR)/config/libpython$(PYTHON_VERSION_MAJOR).so; \
+	ln -sf $(TARGET_DIR)$(PYTHON_INCLUDE_DIR) $(TARGET_DIR)/usr/include/python
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/python-2.7.pc
-	$(REMOVE)/Python-$(PYTHON_VER)
+	$(REMOVE)/Python-$(PYTHON_VERSION)
 	$(TOUCH)
 
 #
