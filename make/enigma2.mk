@@ -113,7 +113,7 @@ endif
 #
 # yaud-enigma2
 #
-yaud-enigma2: yaud-none $(D)/enigma2 $(D)/enigma2-plugins $(D)/release_enigma2 | $(YAUD_ENIGMA2_DEPS)
+yaud-enigma2: yaud-none $(D)/enigma2 $(D)/enigma2-plugins $(D)/enigma2_release | $(YAUD_ENIGMA2_DEPS)
 	$(TUXBOX_YAUD_CUSTOMIZE)
 	@echo "***************************************************************"
 	@echo -e "\033[01;32m"

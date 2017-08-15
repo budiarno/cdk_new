@@ -5,7 +5,7 @@
 #
 # release_cube_common
 #
-release_enigma2_cube_common:
+enigma2_release_cube_common:
 	install -m 0755 $(SKEL_ROOT)/release/halt_cuberevo $(RELEASE_DIR)/etc/init.d/halt
 	install -m 0777 $(SKEL_ROOT)/release/reboot_cuberevo $(RELEASE_DIR)/etc/init.d/reboot
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/stgfb/stmfb/stmcore-display-stx7109c3.ko $(RELEASE_DIR)/lib/modules/
@@ -19,62 +19,62 @@ release_enigma2_cube_common:
 #
 # release_cube_common_tuner
 #
-release_enigma2_cube_common_tuner:
+enigma2_release_cube_common_tuner:
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontends/multituner/*.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/kernel/drivers/media/dvb/frontends/dvb-pll.ko $(RELEASE_DIR)/lib/modules/
 
 #
 # release_cuberevo_9500hd
 #
-release_enigma2_cuberevo_9500hd: release_enigma2_cube_common release_enigma2_cube_common_tuner
+enigma2_release_cuberevo_9500hd: enigma2_release_cube_common enigma2_release_cube_common_tuner
 	echo "cuberevo-9500hd" > $(RELEASE_DIR)/etc/hostname
 
 #
 # release_cuberevo_2000hd
 #
-release_enigma2_cuberevo_2000hd: release_enigma2_cube_common release_enigma2_cube_common_tuner
+enigma2_release_cuberevo_2000hd: enigma2_release_cube_common enigma2_release_cube_common_tuner
 	echo "cuberevo-2000hd" > $(RELEASE_DIR)/etc/hostname
 
 #
 # release_cuberevo_250hd
 #
-release_enigma2_cuberevo_250hd: release_enigma2_cube_common release_enigma2_cube_common_tuner
+enigma2_release_cuberevo_250hd: enigma2_release_cube_common enigma2_release_cube_common_tuner
 	echo "cuberevo-250hd" > $(RELEASE_DIR)/etc/hostname
 
 #
 # release_cuberevo_mini_fta
 #
-release_enigma2_cuberevo_mini_fta: release_enigma2_cube_common release_enigma2_cube_common_tuner
+enigma2_release_cuberevo_mini_fta: enigma2_release_cube_common enigma2_release_cube_common_tuner
 	echo "cuberevo-mini-fta" > $(RELEASE_DIR)/etc/hostname
 
 #
 # release_cuberevo_mini2
 #
-release_enigma2_cuberevo_mini2: release_enigma2_cube_common release_enigma2_cube_common_tuner
+enigma2_release_cuberevo_mini2: enigma2_release_cube_common enigma2_release_cube_common_tuner
 	echo "cuberevo-mini2" > $(RELEASE_DIR)/etc/hostname
 
 #
 # release_cuberevo_mini
 #
-release_enigma2_cuberevo_mini: release_enigma2_cube_common release_enigma2_cube_common_tuner
+enigma2_release_cuberevo_mini: enigma2_release_cube_common enigma2_release_cube_common_tuner
 	echo "cuberevo-mini" > $(RELEASE_DIR)/etc/hostname
 
 #
 # release_cuberevo
 #
-release_enigma2_cuberevo: release_enigma2_cube_common release_enigma2_cube_common_tuner
+enigma2_release_cuberevo: enigma2_release_cube_common enigma2_release_cube_common_tuner
 	echo "cuberevo" > $(RELEASE_DIR)/etc/hostname
 
 #
 # release_cuberevo_3000hd
 #
-release_enigma2_cuberevo_3000hd: release_enigma2_cube_common release_enigma2_cube_common_tuner
+enigma2_release_cuberevo_3000hd: enigma2_release_cube_common enigma2_release_cube_common_tuner
 	echo "cuberevo-3000hd" > $(RELEASE_DIR)/etc/hostname
 
 #
 # release_common_ipbox
 #
-release_enigma2_common_ipbox:
+enigma2_release_common_ipbox:
 	install -m 0755 $(SKEL_ROOT)/release/halt_ipbox $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontends/*.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/stgfb/stmfb/stmcore-display-stx7109c3.ko $(RELEASE_DIR)/lib/modules/
@@ -96,7 +96,7 @@ release_enigma2_common_ipbox:
 #
 # release_ipbox9900
 #
-release_enigma2_ipbox9900: release_enigma2_common_ipbox
+enigma2_release_ipbox9900: enigma2_release_common_ipbox
 	echo "ipbox9900" > $(RELEASE_DIR)/etc/hostname
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/ipbox99xx/micom.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/rmu/rmu.ko $(RELEASE_DIR)/lib/modules/
@@ -107,7 +107,7 @@ release_enigma2_ipbox9900: release_enigma2_common_ipbox
 #
 # release_ipbox99
 #
-release_enigma2_ipbox99: release_enigma2_common_ipbox
+enigma2_release_ipbox99: enigma2_release_common_ipbox
 	echo "ipbox99" > $(RELEASE_DIR)/etc/hostname
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/ipbox99xx/micom.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/ipbox99xx_fan/ipbox_fan.ko $(RELEASE_DIR)/lib/modules/
@@ -117,7 +117,7 @@ release_enigma2_ipbox99: release_enigma2_common_ipbox
 #
 # release_ipbox55
 #
-release_enigma2_ipbox55: release_enigma2_common_ipbox
+enigma2_release_ipbox55: enigma2_release_common_ipbox
 	echo "ipbox55" > $(RELEASE_DIR)/etc/hostname
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/ipbox55/front.ko $(RELEASE_DIR)/lib/modules/
 	cp -f $(SKEL_ROOT)/root_enigma2/usr/local/share/enigma2/keymap_ipbox.xml $(RELEASE_DIR)/usr/local/share/enigma2/keymap.xml
@@ -126,7 +126,7 @@ release_enigma2_ipbox55: release_enigma2_common_ipbox
 #
 # release_ufs910
 #
-release_enigma2_ufs910:
+enigma2_release_ufs910:
 	echo "ufs910" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_ufs $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/vfd/vfd.ko $(RELEASE_DIR)/lib/modules/
@@ -145,7 +145,7 @@ release_enigma2_ufs910:
 #
 # release_ufs912
 #
-release_enigma2_ufs912:
+enigma2_release_ufs912:
 	echo "ufs912" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_ufs912 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/micom/micom.ko $(RELEASE_DIR)/lib/modules/
@@ -160,7 +160,7 @@ release_enigma2_ufs912:
 #
 # release_ufs913
 #
-release_enigma2_ufs913:
+enigma2_release_ufs913:
 	echo "ufs913" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_ufs912 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/micom/micom.ko $(RELEASE_DIR)/lib/modules/
@@ -175,7 +175,7 @@ release_enigma2_ufs913:
 #
 # release_ufs922
 #
-release_enigma2_ufs922:
+enigma2_release_ufs922:
 	echo "ufs922" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_ufs $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/micom/micom.ko $(RELEASE_DIR)/lib/modules/
@@ -193,7 +193,7 @@ release_enigma2_ufs922:
 #
 # release_ufc960
 #
-release_enigma2_ufc960:
+enigma2_release_ufc960:
 	echo "ufc960" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_ufs $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/micom/micom.ko $(RELEASE_DIR)/lib/modules/
@@ -208,7 +208,7 @@ release_enigma2_ufc960:
 #
 # release_spark
 #
-release_enigma2_spark:
+enigma2_release_spark:
 	echo "spark" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_spark $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/aotom_spark/aotom.ko $(RELEASE_DIR)/lib/modules/
@@ -234,7 +234,7 @@ release_enigma2_spark:
 #
 # release_spark7162
 #
-release_enigma2_spark7162:
+enigma2_release_spark7162:
 	echo "spark7162" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_spark7162 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/aotom_spark/aotom.ko $(RELEASE_DIR)/lib/modules/
@@ -261,7 +261,7 @@ release_enigma2_spark7162:
 #
 # release_fortis_hdbox
 #
-release_enigma2_fortis_hdbox:
+enigma2_release_fortis_hdbox:
 	echo "fortis" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_fortis_hdbox $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/nuvoton/nuvoton.ko $(RELEASE_DIR)/lib/modules/
@@ -281,7 +281,7 @@ release_enigma2_fortis_hdbox:
 #
 # release_atevio7500
 #
-release_enigma2_atevio7500:
+enigma2_release_atevio7500:
 	echo "atevio7500" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_fortis_hdbox $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/nuvoton/nuvoton.ko $(RELEASE_DIR)/lib/modules/
@@ -307,7 +307,7 @@ release_enigma2_atevio7500:
 #
 # release_octagon1008
 #
-release_enigma2_octagon1008:
+enigma2_release_octagon1008:
 	echo "octagon1008" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_octagon1008 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/nuvoton/nuvoton.ko $(RELEASE_DIR)/lib/modules/
@@ -329,7 +329,7 @@ release_enigma2_octagon1008:
 #
 # release_hs7110
 #
-release_enigma2_hs7110:
+enigma2_release_hs7110:
 	echo "hs7110" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_hs7110 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/nuvoton/nuvoton.ko $(RELEASE_DIR)/lib/modules/
@@ -345,7 +345,7 @@ release_enigma2_hs7110:
 #
 # release_hs7420
 #
-release_enigma2_hs7420:
+enigma2_release_hs7420:
 	echo "hs7420" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_hs742x $(RELEASE_DIR)/etc/init.d/halt
 	chmod 755 $(RELEASE_DIR)/etc/init.d/halt
@@ -368,7 +368,7 @@ release_enigma2_hs7420:
 #
 # release_hs7429
 #
-release_enigma2_hs7429:
+enigma2_release_hs7429:
 	echo "hs7429" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_hs742x $(RELEASE_DIR)/etc/init.d/halt
 	chmod 755 $(RELEASE_DIR)/etc/init.d/halt
@@ -391,7 +391,7 @@ release_enigma2_hs7429:
 #
 # release_hs7810a
 #
-release_enigma2_hs7810a:
+enigma2_release_hs7810a:
 	echo "hs7810a" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_hs7810a $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/nuvoton/nuvoton.ko $(RELEASE_DIR)/lib/modules/
@@ -413,7 +413,7 @@ release_enigma2_hs7810a:
 #
 # release_hs7119
 #
-release_enigma2_hs7119:
+enigma2_release_hs7119:
 	echo "hs7119" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_hs7119 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/nuvoton/nuvoton.ko $(RELEASE_DIR)/lib/modules/
@@ -435,7 +435,7 @@ release_enigma2_hs7119:
 #
 # release_hs7819
 #
-release_enigma2_hs7819:
+enigma2_release_hs7819:
 	echo "hs7819" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_hs7819 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/nuvoton/nuvoton.ko $(RELEASE_DIR)/lib/modules/
@@ -457,7 +457,7 @@ release_enigma2_hs7819:
 #
 # release_atemio520
 #
-release_enigma2_atemio520:
+enigma2_release_atemio520:
 	echo "atemio520" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_atemio520 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/cn_micom/cn_micom.ko $(RELEASE_DIR)/lib/modules/
@@ -472,7 +472,7 @@ release_enigma2_atemio520:
 #
 # release_atemio530
 #
-release_enigma2_atemio530:
+enigma2_release_atemio530:
 	echo "atemio530" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_atemio530 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/cn_micom/cn_micom.ko $(RELEASE_DIR)/lib/modules/
@@ -487,7 +487,7 @@ release_enigma2_atemio530:
 #
 # release_hl101
 #
-release_enigma2_hl101:
+enigma2_release_hl101:
 	echo "hl101" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_hl101 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/proton/proton.ko $(RELEASE_DIR)/lib/modules/
@@ -506,7 +506,7 @@ release_enigma2_hl101:
 #
 # release_adb_box
 #
-release_enigma2_adb_box:
+enigma2_release_adb_box:
 	echo "Adb_Box" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_adb_box $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/adb_box_vfd/vfd.ko $(RELEASE_DIR)/lib/modules/
@@ -531,7 +531,7 @@ release_enigma2_adb_box:
 #
 # release_tf7700
 #
-release_enigma2_tf7700:
+enigma2_release_tf7700:
 	echo "tf7700" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_tf7700 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontcontroller/tffp/tffp.ko $(RELEASE_DIR)/lib/modules/
@@ -549,7 +549,7 @@ release_enigma2_tf7700:
 #
 # release_vitamin_hd5000
 #
-release_enigma2_vitamin_hd5000:
+enigma2_release_vitamin_hd5000:
 	echo "vitamin_hd5000" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_ufs912 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/stgfb/stmfb/stmcore-display-sti7111.ko $(RELEASE_DIR)/lib/modules/
@@ -564,7 +564,7 @@ release_enigma2_vitamin_hd5000:
 #
 # release_sagemcom88
 #
-release_enigma2_sagemcom88:
+enigma2_release_sagemcom88:
 	echo "sagemcom88" > $(RELEASE_DIR)/etc/hostname
 	install -m 0755 $(SKEL_ROOT)/release/halt_ufs912 $(RELEASE_DIR)/etc/init.d/halt
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/stgfb/stmfb/stmcore-display-sti7105.ko $(RELEASE_DIR)/lib/modules/
@@ -583,7 +583,7 @@ release_enigma2_sagemcom88:
 #
 # release_arivalink200
 #
-release_enigma2_arivalink200:
+enigma2_release_arivalink200:
 	echo "Ariva@Link200" > $(RELEASE_DIR)/etc/hostname
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/stgfb/stmfb/stmcore-display-stx7109c3.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/extra/frontends/*.ko $(RELEASE_DIR)/lib/modules/
@@ -601,7 +601,7 @@ release_enigma2_arivalink200:
 # release_base
 #
 # the following target creates the common file base
-release_enigma2_base:
+enigma2_release_base:
 	$(START_BUILD)
 	rm -rf $(RELEASE_DIR) || true
 	install -d $(RELEASE_DIR)
@@ -1065,8 +1065,8 @@ endif
 #
 # The main target depends on the model.
 #
-$(D)/release_enigma2: \
-$(D)/%release_enigma2: release_enigma2_base release_enigma2_$(BOXTYPE)
+$(D)/enigma2_release: \
+$(D)/%enigma2_release: enigma2_release_base enigma2_release_$(BOXTYPE)
 #
 # Do not remove pyo files, remove pyc instead
 #
@@ -1091,13 +1091,13 @@ endif
 	find $(RELEASE_DIR)/$(PYTHON_DIR)/ -name '*.o' -exec rm -f {} \;
 	find $(RELEASE_DIR)/$(PYTHON_DIR)/ -name '*.la' -exec rm -f {} \;
 	$(TUXBOX_CUSTOMIZE)
-	@touch $(D)/enigma2_release
+	@touch $@
 #
 # FOR YOUR OWN CHANGES use these folder in cdk/own_build/enigma2
 #
 #	default for all receivers
 	$(SILENT)find $(CDK_DIR)/own_build/enigma2/ -mindepth 1 -maxdepth 1 -exec cp -at$(RELEASE_DIR)/ -- {} +
-#	receiver specific (only if directory exist)
+#	receiver specific (only if directory exists)
 	[ -d "$(CDK_DIR)/own_build/enigma2.$(BOXTYPE)" ] && find $(CDK_DIR)/own_build/enigma2.$(BOXTYPE)/ -mindepth 1 -maxdepth 1 -exec cp -at$(RELEASE_DIR)/ -- {} + || true
 	$(SILENT)rm -f $(RELEASE_DIR)/for_your_own_changes
 #
@@ -1108,8 +1108,9 @@ ifneq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), debug))
 	find $(RELEASE_DIR)/ -name '*' -exec $(TARGET)-strip --strip-unneeded {} &>/dev/null; \
 	echo -e " done.\n"
 endif
+
 #
 # release-clean
 #
-release-enigma2-clean:
+enigma2-release-clean:
 	rm -f $(D)/release
