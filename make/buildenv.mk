@@ -20,22 +20,25 @@ SOURCE_DIR            = $(BASE_DIR)/source
 
 -include $(CDK_DIR)/config
 
-# for local extensions, e.g. LOCAL_NEUTRINO_DEPS
+# for local extensions
 -include $(CDK_DIR)/config.local
 
 # default platform...
 TARGET               ?= sh4-linux
 BOXARCH              ?= sh4
 
-BOOT_DIR              = $(BASE_DIR)/tufsbox/cdkroot-tftpboot
-CROSS_BASE            = $(BASE_DIR)/tufsbox/cross
+TUFSBOX_DIR           = $(BASE_DIR)/tufsbox
+TARGET_DIR            = $(TUFSBOX_DIR)/cdkroot
+IMAGE_DIR             = $(TUFSBOX_DIR)/cdkroot-flash
+BOOT_DIR              = $(TUFSBOX_DIR)/cdkroot-tftpboot
+CROSS_BASE            = $(TUFSBOX_DIR)/cross
 CROSS_DIR             = $(CROSS_BASE)
-CONTROL_DIR           = $(BASE_DIR)/pkgs/control
-HOST_DIR              = $(BASE_DIR)/tufsbox/host
-PACKAGE_DIR           = $(BASE_DIR)/pkgs/opkg
-RELEASE_DIR           = $(BASE_DIR)/tufsbox/release
+HOST_DIR              = $(TUFSBOX_DIR)/host
+RELEASE_DIR           = $(TUFSBOX_DIR)/release
+
+CONTROL_DIR           = $(TUFSBOX_DIR)/pkgs/control
+PACKAGE_DIR           = $(TUFSBOX_DIR)/pkgs/opkg
 PKG_DIR               = $(BUILD_TMP)/pkg
-TARGET_DIR            = $(BASE_DIR)/tufsbox/cdkroot
 
 CUSTOM_DIR            = $(CDK_DIR)/custom
 SCRIPTS_DIR           = $(CDK_DIR)/scripts

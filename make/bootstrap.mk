@@ -77,17 +77,14 @@ $(ARCHIVE)/stlinux24-sh4-libstdc++-dev-$(LIBGCC_VER).sh4.rpm
 # crosstool-ng
 #
 CROSSTOOL_NG_VER = 1.22.0
+CROSSTOOL_NG_SOURCE = crosstool-ng-$(CROSSTOOL_NG_VERSION).tar.xz
 
 $(ARCHIVE)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz:
-	$(WGET) http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
+	$(WGET) http://crosstool-ng.org/download/crosstool-ng/$(CROSSTOOL_NG_SOURCE)
 
-crosstool-ng: $(ARCHIVE)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
-	make $(BUILD_TMP)
-	if [ ! -e $(BASE_DIR)/cross ]; then \
-		mkdir -p $(BASE_DIR)/cross; \
-	fi;
+crosstool-ng: directories $(ARCHIVE)/$(CROSSTOOL_NG_SOURCE)
 	$(REMOVE)/crosstool-ng
-	$(UNTAR)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
+	$(UNTAR)/$(CROSSTOOL_NG_SOURCE)
 	$(SILENT)set -e; unset CONFIG_SITE; cd $(BUILD_TMP)/crosstool-ng; \
 		cp -a $(PATCHES)/crosstool-ng-$(CROSSTOOL_NG_VER).config .config; \
 		NUM_CPUS=$$(expr `getconf _NPROCESSORS_ONLN` \* 2); \
@@ -95,19 +92,17 @@ crosstool-ng: $(ARCHIVE)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
 		test $$NUM_CPUS -gt $$MEM_512M && NUM_CPUS=$$MEM_512M; \
 		test $$NUM_CPUS = 0 && NUM_CPUS=1; \
 		sed -i "s@^CT_PARALLEL_JOBS=.*@CT_PARALLEL_JOBS=$$NUM_CPUS@" .config; \
-		export NG_ARCHIVE=$(ARCHIVE); \
-		export BS_BASE_DIR=$(BASE_DIR); \
+		export BS_BASE_DIR=$(TUFSBOX_DIR); \
 		./configure --enable-local; \
 		MAKELEVEL=0 make; \
 		./ct-ng oldconfig; \
 		./ct-ng build
 
-crossmenuconfig: $(ARCHIVE)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
-	make $(BUILD_TMP)
-	$(REMOVE)/crosstool-ng-$(CROSSTOOL_NG_VER)
-	$(UNTAR)/crosstool-ng-$(CROSSTOOL_NG_VER).tar.xz
+crossmenuconfig: directories $(ARCHIVE)/crosstool-ng-$(CROSSTOOL_NG_VERSION).tar.xz
+	$(REMOVE)/crosstool-ng
+	$(UNTAR)/$(CROSSTOOL_NG_SOURCE)
 	$(SILENT)set -e; unset CONFIG_SITE; cd $(BUILD_TMP)/crosstool-ng; \
-		cp -a $(PATCHES)/crosstool-ng-$(CROSSTOOL_NG_VER).config .config; \
+		cp -a $(PATCHES)/crosstool-ng-$(CROSSTOOL_NG_VERSION)-$(BOXARCH).config .config; \
 		test -f ./configure || ./bootstrap && \
 		./configure --enable-local; MAKELEVEL=0 make; chmod 0755 ct-ng; \
 		./ct-ng menuconfig
