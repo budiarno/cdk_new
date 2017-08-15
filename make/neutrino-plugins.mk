@@ -102,7 +102,7 @@ neutrino-mp-plugins-distclean:
 #
 # xupnpd
 #
-$(D)/xupnpd: $(D)/bootstrap $(D)/plugins-scripts-lua
+$(D)/xupnpd: $(D)/bootstrap $(D)/neutrino-plugins-scripts-lua
 	$(START_BUILD)
 	$(REMOVE)/xupnpd
 	set -e; if [ -d $(ARCHIVE)/xupnpd.git ]; \
@@ -126,21 +126,21 @@ $(D)/xupnpd: $(D)/bootstrap $(D)/plugins-scripts-lua
 #
 # plugins-scripts-lua
 #
-$(D)/plugins-scripts-lua: $(D)/bootstrap $(D)/xupnpd
+$(D)/neutrino-plugins-scripts-lua: $(D)/bootstrap $(D)/xupnpd
 	$(START_BUILD)
-	$(REMOVE)/plugins-scripts-lua
+	$(REMOVE)neutrino-plugins-scripts-lua
 	set -e; if [ -d $(ARCHIVE)/cst-public-plugins-scripts-lua.git ]; \
 		then cd $(ARCHIVE)/cst-public-plugins-scripts-lua.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/coolstreamtech/cst-public-plugins-scripts-lua.git cst-public-plugins-scripts-lua.git; \
+		else cd $(ARCHIVE); git clone https://github.com/coolstreamtech/cst-public-plugins-scripts-lua.git cst-public-neutrino-plugins-scripts-lua.git; \
 		fi
-	cp -ra $(ARCHIVE)/cst-public-plugins-scripts-lua.git/plugins $(BUILD_TMP)/plugins-scripts-lua
-	set -e; cd $(BUILD_TMP)/plugins-scripts-lua; \
+	cp -ra $(ARCHIVE)/cst-public-plugins-scripts-lua.git/plugins $(BUILD_TMP)/neutrino-plugins-scripts-lua
+	set -e; cd $(BUILD_TMP)/neutrino-plugins-scripts-lua; \
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/plugins-scripts-lua/ard_mediathek/* $(TARGET_DIR)/var/tuxbox/plugins/
-		cp -R $(BUILD_TMP)/plugins-scripts-lua/favorites2bin/* $(TARGET_DIR)/var/tuxbox/plugins/
-		cp -R $(BUILD_TMP)/plugins-scripts-lua/mtv/* $(TARGET_DIR)/var/tuxbox/plugins/
-		cp -R $(BUILD_TMP)/plugins-scripts-lua/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
-	$(REMOVE)/plugins-scripts-lua
+		cp -R $(BUILD_TMP)/neutrino-plugins-scripts-lua/ard_mediathek/* $(TARGET_DIR)/var/tuxbox/plugins/
+		cp -R $(BUILD_TMP)/neutrino-plugins-scripts-lua/favorites2bin/* $(TARGET_DIR)/var/tuxbox/plugins/
+		cp -R $(BUILD_TMP)/neutrino-plugins-scripts-lua/mtv/* $(TARGET_DIR)/var/tuxbox/plugins/
+		cp -R $(BUILD_TMP)/neutrino-plugins-scripts-lua/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
+	$(REMOVE)/neutrino-plugins-scripts-lua
 	$(TOUCH)
 
 #
