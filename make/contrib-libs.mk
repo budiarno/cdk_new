@@ -1814,9 +1814,9 @@ $(D)/libxml2_e2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libxml2-$(LIBXML2_E2_VER).t
 		mv $(TARGET_DIR)/usr/bin/xml2-config $(HOST_DIR)/bin
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libxml-2.0.pc $(HOST_DIR)/bin/xml2-config
 	$(SILENT)sed -i 's/^\(Libs:.*\)/\1 -lz/' $(PKG_CONFIG_PATH)/libxml-2.0.pc
-	if [ -e "$(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxml2mod.la" ]; then \
-		sed -e "/^dependency_libs/ s,/usr/lib/libxml2.la,$(TARGET_DIR)/usr/lib/libxml2.la,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxml2mod.la; \
-		sed -e "/^libdir/ s,$(PYTHON_DIR)/site-packages,$(TARGET_DIR)$(PYTHON_DIR)/site-packages,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxml2mod.la; \
+	if [ -e "$(TARGET_DIR)/$(PYTHON_DIR)/site-packages/libxml2mod.la" ]; then \
+		sed -e "/^dependency_libs/ s,/usr/lib/libxml2.la,$(TARGET_DIR)/usr/lib/libxml2.la,g" -i $(TARGET_DIR)/$(PYTHON_DIR)/site-packages/libxml2mod.la; \
+		sed -e "/^libdir/ s,$(PYTHON_DIR)/site-packages,$(TARGET_DIR)/$(PYTHON_DIR)/site-packages,g" -i $(TARGET_DIR)/$(PYTHON_DIR)/site-packages/libxml2mod.la; \
 	fi; \
 	sed -e "/^XML2_LIBDIR/ s,/usr/lib,$(TARGET_DIR)/usr/lib,g" -i $(TARGET_DIR)/usr/lib/xml2Conf.sh; \
 	sed -e "/^XML2_INCLUDEDIR/ s,/usr/include,$(TARGET_DIR)/usr/include,g" -i $(TARGET_DIR)/usr/lib/xml2Conf.sh
@@ -1853,10 +1853,10 @@ $(D)/libxslt: $(D)/bootstrap $(D)/libxml2_e2 $(ARCHIVE)/libxslt-$(LIBXSLT_VER).t
 		sed -e "s,^prefix=,prefix=$(TARGET_DIR)," < xslt-config > $(HOST_DIR)/bin/xslt-config; \
 		chmod 755 $(HOST_DIR)/bin/xslt-config; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
-		if [ -e "$(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxsltmod.la" ]; then \
-			sed -e "/^dependency_libs/ s,/usr/lib/libexslt.la,$(TARGET_DIR)/usr/lib/libexslt.la,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxsltmod.la; \
-			sed -e "/^dependency_libs/ s,/usr/lib/libxslt.la,$(TARGET_DIR)/usr/lib/libxslt.la,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxsltmod.la; \
-			sed -e "/^libdir/ s,$(PYTHON_DIR)/site-packages,$(TARGET_DIR)$(PYTHON_DIR)/site-packages,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxsltmod.la; \
+		if [ -e "$(TARGET_DIR)/$(PYTHON_DIR)/site-packages/libxsltmod.la" ]; then \
+			sed -e "/^dependency_libs/ s,/usr/lib/libexslt.la,$(TARGET_DIR)/usr/lib/libexslt.la,g" -i $(TARGET_DIR)/$(PYTHON_DIR)/site-packages/libxsltmod.la; \
+			sed -e "/^dependency_libs/ s,/usr/lib/libxslt.la,$(TARGET_DIR)/usr/lib/libxslt.la,g" -i $(TARGET_DIR)/$(PYTHON_DIR)/site-packages/libxsltmod.la; \
+			sed -e "/^libdir/ s,$(PYTHON_DIR)/site-packages,$(TARGET_DIR)/$(PYTHON_DIR)/site-packages,g" -i $(TARGET_DIR)$(PYTHON_DIR)/site-packages/libxsltmod.la; \
 		fi; \
 		sed -e "/^XSLT_LIBDIR/ s,/usr/lib,$(TARGET_DIR)/usr/lib,g" -i $(TARGET_DIR)/usr/lib/xsltConf.sh; \
 		sed -e "/^XSLT_INCLUDEDIR/ s,/usr/include,$(TARGET_DIR)/usr/include,g" -i $(TARGET_DIR)/usr/lib/xsltConf.sh
